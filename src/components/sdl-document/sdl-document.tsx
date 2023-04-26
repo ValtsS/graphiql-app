@@ -19,37 +19,44 @@ export class DocumentContent {
     this.uuid = uuid;
   }
 
-  public render(linkClick: (uuid: string) => {}): JSX.Element {
+  public render(linkClick: (uuid: string) => void): JSX.Element {
     const eles: JSX.Element[] = [];
 
-    this.parts.forEach((p) => {
+    this.parts.forEach((p, i) => {
       switch (p.kind) {
         case DocumentPartKind.Regular: {
           if (p.link_uuid) {
             eles.push(
-              <a href="#" onClick={(e) => linkClick(p.link_uuid ?? '')}>
+              <a
+                href="#"
+                onClick={() => linkClick(p.link_uuid ?? '')}
+                key={`${this.uuid}${i.toString()}`}
+              >
                 {p.text}
               </a>
             );
-          } else eles.push(<>{p.text}</>);
+          } else
+            eles.push(
+              <React.Fragment key={`${this.uuid}${i.toString()}`}>{p.text}</React.Fragment>
+            );
 
           break;
         }
         case DocumentPartKind.Break:
-          eles.push(<p />);
+          eles.push(<p key={`${this.uuid}${i.toString()}`} />);
           break;
         default:
           throw new Error('Unrecognized document part kind');
       }
     });
 
-    return <>{eles.map((e) => e)}</>;
+    return <div key={this.uuid}>{eles}</div>;
   }
 }
 
 interface Props {
   content: DocumentContent;
-  onClick: (uuid: string) => {};
+  onClick: (uuid: string) => void;
 }
 
 export const SDLDocument = (props: Props) => {
