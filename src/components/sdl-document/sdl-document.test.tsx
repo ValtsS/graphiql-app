@@ -1,6 +1,7 @@
+import { DocumentPartKind } from '@/core/sdl-docs';
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
-import { DocumentContent, DocumentPartKind, SDLDocument } from './sdl-document';
+import { DocumentContent, SDLDocument } from './sdl-document';
 
 describe('Document', () => {
   const content = new DocumentContent('123');
