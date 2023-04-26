@@ -27,7 +27,7 @@ jobs:
       - name: Build code
         run: npm run build
       - name: Unit Test
-        run: npm run coverage:jest
+        run: npm run coverage
       - name: Debug
         run: pwd && ls -l
 
