@@ -3,6 +3,10 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ErrorPage } from '@/pages';
 import { RootLayout } from './routes/root-layout';
+import {
+  Experimental_CssVarsProvider as CssVarsProvider,
+  experimental_extendTheme as extendTheme,
+} from '@mui/material/styles';
 
 interface Props {
   routesConfig: RouteConfig[];
@@ -10,24 +14,36 @@ interface Props {
 
 export const GraphQLApp = (props: Props) => {
   const { routesConfig } = props;
-
+  const theme = extendTheme({
+    colorSchemes: {
+      light: {
+        palette: {
+          primary: {
+            main: '#FF4B2B',
+          },
+        },
+      },
+    },
+  });
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          {routesConfig.map((c, index) => (
-            <Route
-              path={c.path}
-              element={
-                <RootLayout key={'rootlayout_ca_' + index.toString()}>{c.element}</RootLayout>
-              }
-              key={'route_ca_' + index.toString()}
-            />
-          ))}
+      <CssVarsProvider theme={theme}>
+        <BrowserRouter>
+          <Routes>
+            {routesConfig.map((c, index) => (
+              <Route
+                path={c.path}
+                element={
+                  <RootLayout key={'rootlayout_ca_' + index.toString()}>{c.element}</RootLayout>
+                }
+                key={'route_ca_' + index.toString()}
+              />
+            ))}
 
-          <Route path="*" element={<ErrorPage error={new Error('Error 404')} />} />
-        </Routes>
-      </BrowserRouter>
+            <Route path="*" element={<ErrorPage error={new Error('Error 404')} />} />
+          </Routes>
+        </BrowserRouter>
+      </CssVarsProvider>
     </>
   );
 };
