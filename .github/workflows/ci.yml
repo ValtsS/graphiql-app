@@ -1,0 +1,23 @@
+name: CI
+
+on: push
+
+jobs:
+  build:
+    runs-on: [self-hosted, linux, x64]
+    if: ${{ github.event.repository.owner.login == github.actor }}
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build code
+        run: npm run build
+      - name: Test
+        run: npm run coverage
