@@ -39,7 +39,6 @@ export function generateBook(schema: string): DocumentBook {
   const ast = buildASTSchema(docNode);
 
   const queryType = ast.getQueryType();
-
   // const subscriptionType = ast.getSubscriptionType();
 
   const root: DocumentPage = {
