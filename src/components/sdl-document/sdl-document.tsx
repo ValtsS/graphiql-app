@@ -1,28 +1,28 @@
+import { DocumentPage, DocumentPart, DocumentPartKind } from '@/core/sdl-docs';
 import React from 'react';
 
-export const enum DocumentPartKind {
-  Regular = 'Regular',
-  Break = 'BR',
-}
-
-export type DocumentPart = {
-  kind: DocumentPartKind;
-  text?: JSX.Element;
-  link_uuid?: string;
-};
-
 export class DocumentContent {
-  uuid: string;
-  parts: DocumentPart[] = [];
+  private _page: DocumentPage;
 
   constructor(uuid: string) {
-    this.uuid = uuid;
+    this._page = {
+      parts: [],
+      uuid,
+    };
+  }
+
+  public get parts(): DocumentPart[] {
+    return this._page.parts;
+  }
+
+  public set parts(parts: DocumentPart[]) {
+    this._page.parts = parts;
   }
 
   public render(linkClick: (uuid: string) => void): JSX.Element {
     const eles: JSX.Element[] = [];
 
-    this.parts.forEach((p, i) => {
+    this._page.parts.forEach((p, i) => {
       switch (p.kind) {
         case DocumentPartKind.Regular: {
           if (p.link_uuid) {
@@ -30,27 +30,27 @@ export class DocumentContent {
               <a
                 href="#"
                 onClick={() => linkClick(p.link_uuid ?? '')}
-                key={`${this.uuid}${i.toString()}`}
+                key={`${this._page.uuid}${i.toString()}`}
               >
                 {p.text}
               </a>
             );
           } else
             eles.push(
-              <React.Fragment key={`${this.uuid}${i.toString()}`}>{p.text}</React.Fragment>
+              <React.Fragment key={`${this._page.uuid}${i.toString()}`}>{p.text}</React.Fragment>
             );
 
           break;
         }
         case DocumentPartKind.Break:
-          eles.push(<p key={`${this.uuid}${i.toString()}`} />);
+          eles.push(<p key={`${this._page.uuid}${i.toString()}`} />);
           break;
         default:
           throw new Error('Unrecognized document part kind');
       }
     });
 
-    return <div key={this.uuid}>{eles}</div>;
+    return <div key={this._page.uuid}>{eles}</div>;
   }
 }
 
