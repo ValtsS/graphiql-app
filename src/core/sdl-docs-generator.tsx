@@ -40,9 +40,6 @@ export function generateBook(schema: string): DocumentBook {
   const docNode = parse(schema);
   const ast = buildASTSchema(docNode);
 
-  const queryType = ast.getQueryType();
-  // const subscriptionType = ast.getSubscriptionType();
-
   const root: DocumentPage = {
     uuid: '/',
     parts: [],
@@ -71,7 +68,7 @@ export function generateBook(schema: string): DocumentBook {
   return book;
 }
 
-function prepQueryPage(queryType?: Maybe<GraphQLObjectType>) {
+function prepQueryPage(queryType: Maybe<GraphQLObjectType>) {
   const page: DocumentPage = {
     uuid: '/',
     parts: [],
