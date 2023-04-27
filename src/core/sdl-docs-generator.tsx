@@ -39,7 +39,7 @@ export function generateBook(schema: string): DocumentBook {
   const ast = buildASTSchema(docNode);
 
   const queryType = ast.getQueryType();
-  // const mutationType = ast.getMutationType();
+
   // const subscriptionType = ast.getSubscriptionType();
 
   const root: DocumentPage = {
@@ -60,8 +60,23 @@ export function generateBook(schema: string): DocumentBook {
 
       DocumentPageHelper.pushCloseBrace(root);
     }
+  }
 
-    console.log(queryType);
+  const mutationType = ast.getMutationType();
+
+  if (mutationType?.astNode) {
+    const fields = mutationType.astNode.fields;
+    if (fields && fields.length > 0) {
+      DocumentPageHelper.pushOpenBrace(root);
+
+      fields.forEach((field) => {
+        if (field.kind == Kind.FIELD_DEFINITION) {
+          prepareQueryFunction(field, root);
+        }
+      });
+
+      DocumentPageHelper.pushCloseBrace(root);
+    }
   }
 
   // const dirs = schema.getDirectives();
