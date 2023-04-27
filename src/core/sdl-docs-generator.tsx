@@ -65,6 +65,15 @@ export function generateBook(schema: string): DocumentBook {
 
   book['/'] = root;
 
+  const NotFoundPage: DocumentPage = {
+    uuid: '/404',
+    parts: [],
+  };
+  DocumentPageHelper.pushText(NotFoundPage, 'Not found');
+  DocumentPageHelper.pushLinkToPage(NotFoundPage, 'Back to start', '/');
+
+  book['/404'] = NotFoundPage;
+
   return book;
 }
 

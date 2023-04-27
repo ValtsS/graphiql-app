@@ -81,6 +81,14 @@ export class DocumentPageHelper {
     DocumentPageHelper.pushPart(page, part);
   }
 
+  static pushText(page: DocumentPage, text: string) {
+    const partName: DocumentPart = {
+      kind: DocumentPartKind.Regular,
+      text: <p>{text}:</p>,
+    };
+    DocumentPageHelper.pushPart(page, partName);
+  }
+
   static pushComment(page: DocumentPage, comment: string) {
     const partName: DocumentPart = {
       kind: DocumentPartKind.Regular,

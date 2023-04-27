@@ -21,11 +21,21 @@ export const SDLDocumentBrowser = (props: Props) => {
   }, [page]);
 
   const navigate = (uuid: string) => {
+    if (!props.book[uuid]) uuid = '/404';
     setState((prev) => [...prev, uuid]);
   };
 
+  const backAvailable = state.length > 1;
+
+  function goBack(): void {
+    setState((prev) => [...prev.slice(0, prev.length - 1)]);
+  }
+
   return (
     <div>
+      <button disabled={!backAvailable} onClick={goBack}>
+        Back
+      </button>
       <SDLDocument content={content} onClick={navigate}></SDLDocument>
     </div>
   );
