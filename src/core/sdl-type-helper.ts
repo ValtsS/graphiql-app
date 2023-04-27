@@ -1,23 +1,15 @@
-import {
-  ConstListValueNode,
-  ConstValueNode,
-  Kind,
-  ListTypeNode,
-  NamedTypeNode,
-  NonNullTypeNode,
-  TypeNode,
-} from 'graphql';
+import { ConstValueNode, Kind, TypeNode } from 'graphql';
 
 export function getTypeName(type: TypeNode): [string, string?] {
   switch (type.kind) {
     case Kind.NAMED_TYPE:
-      const v = (type as NamedTypeNode).name.value;
+      const v = type.name.value;
       return [v, v];
     case Kind.LIST_TYPE:
-      const [listType, listTypeName] = getTypeName((type as ListTypeNode).type);
+      const [listType, listTypeName] = getTypeName(type.type);
       return [listType, listTypeName];
     case Kind.NON_NULL_TYPE:
-      const [nonNullType, nonNullTypeName] = getTypeName((type as NonNullTypeNode).type);
+      const [nonNullType, nonNullTypeName] = getTypeName(type.type);
       return [nonNullType, nonNullTypeName];
     default:
       throw new Error(`Unsupported TypeNode kind: ${(type as TypeNode)?.kind}`);
@@ -37,9 +29,7 @@ export function getConstValue(value: ConstValueNode): string {
     case Kind.LIST:
       return (
         '[' +
-        (value as ConstListValueNode).values
-          .map((v) => getConstValue(v))
-          .reduce((prev, curr) => prev + ', ' + curr) +
+        value.values.map((v) => getConstValue(v)).reduce((prev, curr) => prev + ', ' + curr) +
         ']'
       );
     case Kind.OBJECT: {

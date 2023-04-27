@@ -1,15 +1,9 @@
 import {
-  EnumTypeDefinitionNode,
   FieldDefinitionNode,
   GraphQLNamedType,
   GraphQLObjectType,
   GraphQLSchema,
-  InputObjectTypeDefinitionNode,
-  InterfaceTypeDefinitionNode,
   Kind,
-  ObjectTypeDefinitionNode,
-  ScalarTypeDefinitionNode,
-  UnionTypeDefinitionNode,
   buildASTSchema,
   buildClientSchema,
   getIntrospectionQuery,
@@ -47,11 +41,6 @@ export function generateBook(schema: string): DocumentBook {
   generateRootPage(ast, book);
   generateTypePages(ast, book);
 
-  // const dirs = ast.getDirectives();
-  // console.log(dirs);
-  // const tms = ast.getTypeMap();
-  // console.log(tms);
-
   return book;
 }
 
@@ -77,13 +66,13 @@ function prepareTypePage(namedType: GraphQLNamedType, uuid: string): DocumentPag
 
     switch (node.kind) {
       case Kind.SCALAR_TYPE_DEFINITION:
-        const scalar = node as ScalarTypeDefinitionNode;
+        const scalar = node;
         DocumentPageHelper.pushText(page, scalar.name.value);
         DocumentPageHelper.pushLinkToPage(page, scalar.name.value, scalar.name.value);
 
         break;
       case Kind.OBJECT_TYPE_DEFINITION:
-        const obj = node as ObjectTypeDefinitionNode;
+        const obj = node;
         DocumentPageHelper.pushText(page, obj.name.value);
         obj.fields?.forEach((f) => {
           DocumentPageHelper.pushArg(
@@ -96,7 +85,7 @@ function prepareTypePage(namedType: GraphQLNamedType, uuid: string): DocumentPag
 
         break;
       case Kind.INTERFACE_TYPE_DEFINITION:
-        const intf = node as InterfaceTypeDefinitionNode;
+        const intf = node;
         DocumentPageHelper.pushText(page, intf.name.value);
 
         intf.fields?.forEach((f) => {
@@ -110,7 +99,7 @@ function prepareTypePage(namedType: GraphQLNamedType, uuid: string): DocumentPag
 
         break;
       case Kind.UNION_TYPE_DEFINITION:
-        const uni = node as UnionTypeDefinitionNode;
+        const uni = node;
 
         if (uni.description) DocumentPageHelper.pushComment(page, uni.description?.value);
         DocumentPageHelper.pushText(page, uni.name.value);
@@ -119,7 +108,7 @@ function prepareTypePage(namedType: GraphQLNamedType, uuid: string): DocumentPag
 
         break;
       case Kind.ENUM_TYPE_DEFINITION:
-        const enu = node as EnumTypeDefinitionNode;
+        const enu = node;
         if (enu.description) DocumentPageHelper.pushComment(page, enu.description?.value);
         DocumentPageHelper.pushText(page, `${enu.name.value} enum`);
         enu.values?.forEach((val, i) => {
@@ -130,7 +119,7 @@ function prepareTypePage(namedType: GraphQLNamedType, uuid: string): DocumentPag
 
         break;
       case Kind.INPUT_OBJECT_TYPE_DEFINITION:
-        const iobj = node as InputObjectTypeDefinitionNode;
+        const iobj = node;
         DocumentPageHelper.pushText(page, iobj.name.value);
         iobj.fields?.forEach((f) => {
           DocumentPageHelper.pushArg(
