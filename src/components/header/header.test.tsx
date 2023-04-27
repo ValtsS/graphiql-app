@@ -11,4 +11,20 @@ describe('Header', () => {
       </MemoryRouter>
     );
   });
+
+  it('NavMenu works', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <Header />
+      </MemoryRouter>
+    );
+  });
+
+  it('UserMenu works', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <Header />
+      </MemoryRouter>
+    );
+  });
 });

@@ -104,7 +104,7 @@ export const Authorization = (): ReactElement => {
                 Hello, Friend!
               </Typography>
               <Typography color={'white'}>
-                Enter your personal details and start journey with us
+                Enter your personal details
               </Typography>
               <Link
                 variant="body2"
