@@ -2,6 +2,7 @@ import {
   ConstListValueNode,
   ConstValueNode,
   FieldDefinitionNode,
+  GraphQLObjectType,
   Kind,
   ListTypeNode,
   NamedTypeNode,
@@ -11,8 +12,9 @@ import {
   buildClientSchema,
   getIntrospectionQuery,
   parse,
-  printSchema,
+  printSchema
 } from 'graphql';
+import { Maybe } from 'graphql/jsutils/Maybe';
 import { DocumentBook, DocumentPage, DocumentPageHelper } from './sdl-docs';
 
 export async function getremoteSchema(url: string) {
@@ -46,37 +48,17 @@ export function generateBook(schema: string): DocumentBook {
     parts: [],
   };
 
-  if (queryType?.astNode) {
-    const fields = queryType.astNode.fields;
-    if (fields && fields.length > 0) {
-      DocumentPageHelper.pushOpenBrace(root);
+  const queryPage = prepQueryPage(ast.getQueryType());
+  book['/query'] = queryPage;
+  DocumentPageHelper.pushLinkToPage(root, 'Queries', '/query');
 
-      fields.forEach((field) => {
-        if (field.kind == Kind.FIELD_DEFINITION) {
-          prepareQueryFunction(field, root);
-        }
-      });
+  const mutationPage = prepQueryPage(ast.getMutationType());
+  book['/mutate'] = mutationPage;
+  DocumentPageHelper.pushLinkToPage(root, 'Mutations', '/mutate');
 
-      DocumentPageHelper.pushCloseBrace(root);
-    }
-  }
-
-  const mutationType = ast.getMutationType();
-
-  if (mutationType?.astNode) {
-    const fields = mutationType.astNode.fields;
-    if (fields && fields.length > 0) {
-      DocumentPageHelper.pushOpenBrace(root);
-
-      fields.forEach((field) => {
-        if (field.kind == Kind.FIELD_DEFINITION) {
-          prepareQueryFunction(field, root);
-        }
-      });
-
-      DocumentPageHelper.pushCloseBrace(root);
-    }
-  }
+  const subscribePage = prepQueryPage(ast.getSubscriptionType());
+  book['/subscribe'] = subscribePage;
+  DocumentPageHelper.pushLinkToPage(root, 'Subscriptions', '/subscribe');
 
   // const dirs = schema.getDirectives();
   // const types = schema.getTypeMap();
@@ -87,6 +69,29 @@ export function generateBook(schema: string): DocumentBook {
   book['/'] = root;
 
   return book;
+}
+
+function prepQueryPage(queryType?: Maybe<GraphQLObjectType>) {
+  const page: DocumentPage = {
+    uuid: '/',
+    parts: [],
+  };
+
+  if (queryType?.astNode) {
+    const fields = queryType.astNode.fields;
+    if (fields && fields.length > 0) {
+      DocumentPageHelper.pushOpenBrace(page);
+
+      fields.forEach((field) => {
+        if (field.kind == Kind.FIELD_DEFINITION) {
+          processFunction(field, page);
+        }
+      });
+
+      DocumentPageHelper.pushCloseBrace(page);
+    }
+  }
+  return page;
 }
 
 function getTypeName(type: TypeNode): [string, string?] {
@@ -138,7 +143,7 @@ function getConstValue(value: ConstValueNode): string {
   }
 }
 
-function prepareQueryFunction(f: FieldDefinitionNode, root: DocumentPage) {
+function processFunction(f: FieldDefinitionNode, root: DocumentPage) {
   const desc = f.description?.value;
   if (desc) DocumentPageHelper.pushComment(root, desc);
 

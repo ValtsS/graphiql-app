@@ -12,7 +12,7 @@ export const SDLDocumentBrowser = (props: Props) => {
 
   if (state.length == 0) setState([props.root]);
 
-  const page = props.book[state[0]];
+  const page = props.book[state[state.length - 1]];
 
   const content = useMemo(() => {
     const c = new DocumentContent(page.uuid);
@@ -20,14 +20,13 @@ export const SDLDocumentBrowser = (props: Props) => {
     return c;
   }, [page]);
 
+  const navigate = (uuid: string) => {
+    setState((prev) => [...prev, uuid]);
+  };
+
   return (
     <div>
-      <SDLDocument
-        content={content}
-        onClick={function (uuid: string): void {
-          throw new Error('Function not implemented. UUID=' + uuid);
-        }}
-      ></SDLDocument>
+      <SDLDocument content={content} onClick={navigate}></SDLDocument>
     </div>
   );
 };
