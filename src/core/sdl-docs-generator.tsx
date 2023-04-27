@@ -62,37 +62,26 @@ function prepareTypePage(namedType: GraphQLNamedType, uuid: string): DocumentPag
 
   if (namedType?.astNode) {
     const node = namedType?.astNode;
-    console.log('node', node);
-    console.log('node-kind', node.kind);
-
     switch (node.kind) {
       case Kind.SCALAR_TYPE_DEFINITION:
-        const scalar = node;
-        DocumentPageHelper.pushText(page, scalar.name.value);
-        DocumentPageHelper.pushLinkToPage(page, scalar.name.value, scalar.name.value);
-
+        DocumentPageHelper.pushText(page, node.name.value);
+        DocumentPageHelper.pushLinkToPage(page, node.name.value, node.name.value);
         break;
       case Kind.OBJECT_TYPE_DEFINITION:
       case Kind.INTERFACE_TYPE_DEFINITION:
       case Kind.INPUT_OBJECT_TYPE_DEFINITION:
-        const obj = node;
-        DocumentPageHelper.pushText(page, obj.name.value);
-        obj.fields?.forEach((f) => pushTypeText(page, f));
+        DocumentPageHelper.pushText(page, node.name.value);
+        node.fields?.forEach((f) => pushTypeText(page, f));
         break;
       case Kind.UNION_TYPE_DEFINITION:
-        const uni = node;
-
-        if (uni.description) DocumentPageHelper.pushComment(page, uni.description?.value);
-        DocumentPageHelper.pushText(page, uni.name.value);
-
+        if (node.description) DocumentPageHelper.pushComment(page, node.description?.value);
+        DocumentPageHelper.pushText(page, node.name.value);
         //uni.types as links
-
         break;
       case Kind.ENUM_TYPE_DEFINITION:
-        const enu = node;
-        if (enu.description) DocumentPageHelper.pushComment(page, enu.description?.value);
-        DocumentPageHelper.pushText(page, `${enu.name.value} enum`);
-        enu.values?.forEach((val, i) => {
+        if (node.description) DocumentPageHelper.pushComment(page, node.description?.value);
+        DocumentPageHelper.pushText(page, `${node.name.value} enum`);
+        node.values?.forEach((val, i) => {
           if (val.description) DocumentPageHelper.pushComment(page, val.description?.value);
           if (i > 0) DocumentPageHelper.pushText(page, ' | ');
           DocumentPageHelper.pushText(page, val.name.value);
