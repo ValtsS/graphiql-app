@@ -76,7 +76,7 @@ export const Authorization = (): ReactElement => {
                     to="/reg"
                     sx={{ textDecoration: 'none' }}
                   >
-                    Don't have an account? Sign Up
+                    Don&apos;t have an account? Sign Up
                   </Link>
                 </Grid>
               </Grid>
@@ -103,9 +103,7 @@ export const Authorization = (): ReactElement => {
               >
                 Hello, Friend!
               </Typography>
-              <Typography color={'white'}>
-                Enter your personal details
-              </Typography>
+              <Typography color={'white'}>Enter your personal details</Typography>
               <Link
                 variant="body2"
                 component={RouterLink}
