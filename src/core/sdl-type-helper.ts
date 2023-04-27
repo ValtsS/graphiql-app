@@ -1,11 +1,11 @@
 import {
-  TypeNode,
-  Kind,
-  NamedTypeNode,
-  ListTypeNode,
-  NonNullTypeNode,
-  ConstValueNode,
   ConstListValueNode,
+  ConstValueNode,
+  Kind,
+  ListTypeNode,
+  NamedTypeNode,
+  NonNullTypeNode,
+  TypeNode,
 } from 'graphql';
 
 export function getTypeName(type: TypeNode): [string, string?] {
