@@ -1,34 +1,19 @@
-import React, { ReactElement } from 'react';
-import {
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Grid,
-  Typography,
-  Paper,
-  Box,
-  TextField,
-} from '@mui/material';
+import React, { FormEvent, ReactElement } from 'react';
+import { Button, Grid, Typography, Paper, Box, TextField, Link } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import style from './Registration.module.css';
 
 export const Registration = (): ReactElement => {
-  const handleSubmit = () => console.log('handleSubmit');
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => e.preventDefault();
   const handleSignUp = () => console.log('handleSignUp');
   return (
     <>
-      <Paper
-        sx={{
-          width: '50%',
-          margin: '100px auto',
-          textAlign: 'center',
-          display: 'flex',
-        }}
-        elevation={6}
-      >
+      <Paper className={style.paper} elevation={6}>
         <Grid container>
-          <Grid item md={6} xs={12} order={{ xs: 2, md: 1 }}>
+          <Grid item md={6} xs={12} order={{ xs: 1, md: 1 }}>
             <Box
               sx={{
-                background: 'linear-gradient(to right, #FF4B2B, #FF416C)',
+                background: 'linear-gradient(to right, #009999, #007195)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -37,28 +22,54 @@ export const Registration = (): ReactElement => {
                 height: '100%',
               }}
             >
-              <Typography variant="h4" component="h2" color={'white'} mt={5}>
+              <Typography
+                variant="h4"
+                component="h2"
+                color={'white'}
+                mt={5}
+                sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', md: '2rem' } }}
+              >
                 Welcome Back!
               </Typography>
               <Typography color={'white'}>
                 To keep connected with us please login with your personal info
               </Typography>
-              <Button
-                variant="outlined"
-                sx={{ color: 'white', border: '1px solid white', m: '50px 0' }}
-                fullWidth
-                onClick={handleSignUp}
+              <Link
+                variant="body2"
+                component={RouterLink}
+                to="/auth"
+                sx={{ textDecoration: 'none' }}
               >
-                Sign In
-              </Button>
+                <Button
+                  variant="outlined"
+                  sx={{ color: 'white', border: '1px solid white', m: '50px 0' }}
+                  fullWidth
+                  onClick={handleSignUp}
+                >
+                  Sign In
+                </Button>
+              </Link>
             </Box>
           </Grid>
 
-          <Grid item md={6} xs={12} order={{ xs: 1, md: 2 }}>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ p: '50px' }}>
-              <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
+          <Grid item md={6} xs={12} order={{ xs: 2, md: 2 }}>
+            <Box component="form" onSubmit={(e) => handleSubmit(e)} sx={{ p: '50px' }}>
+              <Typography
+                variant="h4"
+                component="h1"
+                gutterBottom
+                sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', md: '2rem' } }}
+              >
                 Create Account
               </Typography>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="userName"
+                label={'Name'}
+                name="userName"
+              />
               <TextField
                 margin="normal"
                 required
@@ -66,8 +77,6 @@ export const Registration = (): ReactElement => {
                 id="email"
                 label={'Email Address'}
                 name="email"
-                autoComplete="email"
-                autoFocus
               />
               <TextField
                 margin="normal"
@@ -77,11 +86,6 @@ export const Registration = (): ReactElement => {
                 label={'Password'}
                 type="password"
                 id="password"
-                autoComplete="current-password"
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label={'Remember me'}
               />
               <Button
                 type="submit"
@@ -89,21 +93,8 @@ export const Registration = (): ReactElement => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2, color: '#fff' }}
               >
-                Sign in
+                Sign Up
               </Button>
-              {/* <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    {t('Forgot password?')}
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link variant="body2" component={RouterLink} to="/registration">
-                    {t("Don't have an account? Sign Up")}
-                  </Link>
-                </Grid>
-              </Grid>
-              <Copyright /> */}
             </Box>
           </Grid>
         </Grid>
@@ -111,25 +102,3 @@ export const Registration = (): ReactElement => {
     </>
   );
 };
-
-{
-  /* <form action="#">
-            <h1>Create Account</h1>
-            <div className="social-container">
-              <a href="#" className="social">
-                <i className="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" className="social">
-                <i className="fab fa-google-plus-g"></i>
-              </a>
-              <a href="#" className="social">
-                <i className="fab fa-linkedin-in"></i>
-              </a>
-            </div>
-            <span>or use your email for registration</span>
-            <input type="text" placeholder="Name" />
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <button>Sign Up</button>
-          </form> */
-}

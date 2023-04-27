@@ -19,7 +19,7 @@ export const GraphQLApp = (props: Props) => {
       light: {
         palette: {
           primary: {
-            main: '#FF4B2B',
+            main: '#009999',
           },
         },
       },

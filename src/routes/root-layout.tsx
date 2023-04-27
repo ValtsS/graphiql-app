@@ -18,7 +18,7 @@ export const RootLayout = (props: RootLayoutProps): ReactElement => {
           <>{notify.error}</>
         </>
       )}
-      <main>{props.children}</main>
+      <main >{props.children}</main>
       <footer></footer>
     </>
   );

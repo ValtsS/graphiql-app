@@ -1,7 +1,6 @@
-import React, { ReactElement } from 'react'
+import { Container } from '@mui/material';
+import React, { ReactElement } from 'react';
 
 export const Main = (): ReactElement => {
-  return (
-    <div>Main</div>
-  )
-}
+  return <Container>hello from main</Container>;
+};

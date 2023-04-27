@@ -1,0 +1,13 @@
+.paper {
+  width: 60%;
+  margin: 100px auto;
+  text-align: center;
+  display: flex;
+}
+
+@media (max-width: 580px) {
+  .paper {
+    width: 80%;
+    margin: 0 auto;
+  }
+}
