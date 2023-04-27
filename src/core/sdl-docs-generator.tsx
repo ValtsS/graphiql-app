@@ -12,7 +12,7 @@ import {
   buildClientSchema,
   getIntrospectionQuery,
   parse,
-  printSchema
+  printSchema,
 } from 'graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { DocumentBook, DocumentPage, DocumentPageHelper } from './sdl-docs';
