@@ -1,10 +1,12 @@
 import {
+  EnumTypeDefinitionNode,
   FieldDefinitionNode,
   GraphQLNamedType,
   GraphQLObjectType,
   GraphQLSchema,
   InputValueDefinitionNode,
   Kind,
+  UnionTypeDefinitionNode,
   buildASTSchema,
   buildClientSchema,
   getIntrospectionQuery,
@@ -74,18 +76,11 @@ function prepareTypePage(namedType: GraphQLNamedType, uuid: string): DocumentPag
         node.fields?.forEach((f) => pushTypeText(page, f));
         break;
       case Kind.UNION_TYPE_DEFINITION:
-        if (node.description) DocumentPageHelper.pushComment(page, node.description?.value);
-        DocumentPageHelper.pushText(page, node.name.value);
+        handleUnion(node, page);
         //uni.types as links
         break;
       case Kind.ENUM_TYPE_DEFINITION:
-        if (node.description) DocumentPageHelper.pushComment(page, node.description?.value);
-        DocumentPageHelper.pushText(page, `${node.name.value} enum`);
-        node.values?.forEach((val, i) => {
-          if (val.description) DocumentPageHelper.pushComment(page, val.description?.value);
-          if (i > 0) DocumentPageHelper.pushText(page, ' | ');
-          DocumentPageHelper.pushText(page, val.name.value);
-        });
+        handleEnumeration(node, page);
         break;
 
       default:
@@ -94,6 +89,21 @@ function prepareTypePage(namedType: GraphQLNamedType, uuid: string): DocumentPag
   }
 
   return page;
+}
+
+function handleUnion(node: UnionTypeDefinitionNode, page: DocumentPage) {
+  if (node.description) DocumentPageHelper.pushComment(page, node.description?.value);
+  DocumentPageHelper.pushText(page, node.name.value);
+}
+
+function handleEnumeration(node: EnumTypeDefinitionNode, page: DocumentPage) {
+  if (node.description) DocumentPageHelper.pushComment(page, node.description?.value);
+  DocumentPageHelper.pushText(page, `${node.name.value} enum`);
+  node.values?.forEach((val, i) => {
+    if (val.description) DocumentPageHelper.pushComment(page, val.description?.value);
+    if (i > 0) DocumentPageHelper.pushText(page, ' | ');
+    DocumentPageHelper.pushText(page, val.name.value);
+  });
 }
 
 function pushTypeText(page: DocumentPage, f: FieldDefinitionNode | InputValueDefinitionNode) {
