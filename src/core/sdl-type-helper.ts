@@ -7,7 +7,7 @@ export function getTypeName(type: TypeNode): [string, string?] {
       return [v, v];
     case Kind.LIST_TYPE:
       const [listType, listTypeName] = getTypeName(type.type);
-      return [listType, listTypeName];
+      return [`[${listType}]`, listTypeName];
     case Kind.NON_NULL_TYPE:
       const [nonNullType, nonNullTypeName] = getTypeName(type.type);
       return [nonNullType, nonNullTypeName];

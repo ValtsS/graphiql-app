@@ -60,19 +60,19 @@ function prepareTypePage(namedType: GraphQLNamedType, uuid: string): DocumentPag
     parts: [],
   };
 
-  if (namedType.description) DocumentPageHelper.pushText(page, namedType.description);
+  if (namedType.description) DocumentPageHelper.pushText(page, namedType.description, true);
 
   if (namedType?.astNode) {
     const node = namedType?.astNode;
     switch (node.kind) {
       case Kind.SCALAR_TYPE_DEFINITION:
-        DocumentPageHelper.pushText(page, node.name.value);
+        DocumentPageHelper.pushText(page, node.name.value + ' ');
         DocumentPageHelper.pushLinkToPage(page, node.name.value, node.name.value);
         break;
       case Kind.OBJECT_TYPE_DEFINITION:
       case Kind.INTERFACE_TYPE_DEFINITION:
       case Kind.INPUT_OBJECT_TYPE_DEFINITION:
-        DocumentPageHelper.pushText(page, node.name.value);
+        DocumentPageHelper.pushText(page, node.name.value, true);
         node.fields?.forEach((f) => pushTypeText(page, f));
         break;
       case Kind.UNION_TYPE_DEFINITION:
@@ -98,7 +98,7 @@ function handleUnion(node: UnionTypeDefinitionNode, page: DocumentPage) {
 
 function handleEnumeration(node: EnumTypeDefinitionNode, page: DocumentPage) {
   if (node.description) DocumentPageHelper.pushComment(page, node.description?.value);
-  DocumentPageHelper.pushText(page, `${node.name.value} enum`);
+  DocumentPageHelper.pushText(page, `${node.name.value} enum`, true);
   node.values?.forEach((val, i) => {
     if (val.description) DocumentPageHelper.pushComment(page, val.description?.value);
     if (i > 0) DocumentPageHelper.pushText(page, ' | ');
@@ -108,6 +108,7 @@ function handleEnumeration(node: EnumTypeDefinitionNode, page: DocumentPage) {
 
 function pushTypeText(page: DocumentPage, f: FieldDefinitionNode | InputValueDefinitionNode) {
   DocumentPageHelper.pushArg(page, f.name.value, getTypeName(f.type)[0], getTypeName(f.type)[1]);
+  DocumentPageHelper.pushBreak(page);
 }
 
 function Add404Page() {

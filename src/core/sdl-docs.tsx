@@ -81,12 +81,13 @@ export class DocumentPageHelper {
     DocumentPageHelper.pushPart(page, part);
   }
 
-  static pushText(page: DocumentPage, text: string) {
+  static pushText(page: DocumentPage, text: string, BreakLine: boolean = false) {
     const partName: DocumentPart = {
       kind: DocumentPartKind.Regular,
-      text: <p>{text}:</p>,
+      text: <>{text}</>,
     };
     DocumentPageHelper.pushPart(page, partName);
+    if (BreakLine) DocumentPageHelper.pushBreak(page);
   }
 
   static pushComment(page: DocumentPage, comment: string) {
