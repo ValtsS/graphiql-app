@@ -81,7 +81,7 @@ export class DocumentPageHelper {
     DocumentPageHelper.pushPart(page, part);
   }
 
-  static pushText(page: DocumentPage, text: string, BreakLine: boolean = false) {
+  static pushText(page: DocumentPage, text: string, BreakLine = false) {
     const partName: DocumentPart = {
       kind: DocumentPartKind.Regular,
       text: <>{text}</>,
