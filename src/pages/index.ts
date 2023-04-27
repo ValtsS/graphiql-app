@@ -1,2 +1,4 @@
+export * from './Main';
 export * from './error-page';
-export * from './registration-page';
+export * from './Authorization';
+export * from './Registration';

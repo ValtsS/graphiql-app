@@ -1,5 +1,7 @@
 import { AboutPage } from '@/pages/about-page/about-page';
-import { RegistrationPage } from '@/pages/registration-page/registration-page';
+import { Registration } from '@/pages/Registration/Registration';
+import { Authorization } from '@/pages/Authorization/Authorization';
+import { Main } from '@/pages';
 import React from 'react';
 
 export interface RouteConfig {
@@ -12,9 +14,21 @@ export interface RouteConfig {
 export const defaultRoutes: RouteConfig[] = [
   {
     path: '/',
-    element: <RegistrationPage />,
+    element: <Main />,
     displayInMenu: true,
     menuText: 'Main',
+  },
+  {
+    path: '/auth',
+    element: <Authorization />,
+    displayInMenu: true,
+    menuText: 'Authorization',
+  },
+  {
+    path: '/reg',
+    element: <Registration />,
+    displayInMenu: true,
+    menuText: 'Registration',
   },
   {
     path: '/about',
