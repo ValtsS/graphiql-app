@@ -1,10 +1,12 @@
 import React, { FormEvent, ReactElement } from 'react';
 import { Button, Grid, Typography, Paper, Box, TextField, Link } from '@mui/material';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import { Link as RouterLink } from 'react-router-dom';
 import style from './Registration.module.css';
 
 export const Registration = (): ReactElement => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => e.preventDefault();
+  // const handleSubmit = (e: FormEvent<HTMLFormElement>) => console.log('handleSignUp');
   const handleSignUp = () => console.log('handleSignUp');
   return (
     <>
@@ -53,7 +55,7 @@ export const Registration = (): ReactElement => {
           </Grid>
 
           <Grid item md={6} xs={12} order={{ xs: 2, md: 2 }}>
-            <Box component="form" onSubmit={(e) => handleSubmit(e)} sx={{ p: '50px' }}>
+            <Box component="form" onSubmit={(e) => handleSubmit(e)} sx={{ p: '50px' }} aria-label="form">
               <Typography
                 variant="h4"
                 component="h1"
@@ -69,7 +71,20 @@ export const Registration = (): ReactElement => {
                 id="userName"
                 label={'Name'}
                 name="userName"
+                aria-label="textbox-name"
               />
+              <input
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="raised-button-file"
+                multiple
+                type="file"
+              />
+              <label htmlFor="raised-button-file">
+                <Button component="span" variant="outlined">
+                  Upload your avatar&nbsp;&nbsp;<CloudUploadOutlinedIcon />
+                </Button>
+              </label>
               <TextField
                 margin="normal"
                 required
@@ -77,6 +92,7 @@ export const Registration = (): ReactElement => {
                 id="email"
                 label={'Email Address'}
                 name="email"
+                aria-label="textbox-email"
               />
               <TextField
                 margin="normal"
@@ -86,6 +102,7 @@ export const Registration = (): ReactElement => {
                 label={'Password'}
                 type="password"
                 id="password"
+                aria-label="textbox-password"
               />
               <Button
                 type="submit"
