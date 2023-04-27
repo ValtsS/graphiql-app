@@ -25,6 +25,20 @@ export class DocumentPageHelper {
     page.parts.push(part);
   }
 
+  static pushLinkToPage(page: DocumentPage, text: string, link_uuid: string) {
+    const part: DocumentPart = {
+      kind: DocumentPartKind.Regular,
+      link_uuid,
+      text: (
+        <>
+          {text}
+          <br />
+        </>
+      ),
+    };
+    DocumentPageHelper.pushPart(page, part);
+  }
+
   static pushBreak(page: DocumentPage) {
     const part: DocumentPart = {
       kind: DocumentPartKind.Regular,
