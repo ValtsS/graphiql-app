@@ -1,4 +1,4 @@
-import { DocumentPartKind } from '@/core/sdl-docs';
+import { DocumentPartKind } from '@/core/docs/sdl-docs';
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import { DocumentContent, SDLDocument } from './sdl-document';

@@ -1,6 +1,6 @@
 import { SDLDocumentBrowser } from '@/components/sdl-document-browser/sdl-document-browser';
-import { DocumentBook } from '@/core/sdl-docs';
-import { generateBook, getremoteSchema } from '@/core/sdl-docs-generator';
+import { DocumentBook } from '@/core/docs/sdl-docs';
+import { generateBook, getremoteSchema } from '@/core/docs/sdl-docs-generator';
 import React, { useCallback, useEffect, useState } from 'react';
 
 export const DocumentPage = ({ url }: { url: string }) => {

@@ -1,4 +1,4 @@
-import { DocumentPage, DocumentPart, DocumentPartKind } from '@/core/sdl-docs';
+import { DocumentPage, DocumentPart, DocumentPartKind } from '@/core/docs/sdl-docs';
 import React from 'react';
 
 export class DocumentContent {

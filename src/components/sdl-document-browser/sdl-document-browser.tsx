@@ -1,4 +1,4 @@
-import { DocumentBook } from '@/core/sdl-docs';
+import { DocumentBook } from '@/core/docs/sdl-docs';
 import React, { useMemo, useState } from 'react';
 import { DocumentContent, SDLDocument } from '../sdl-document/sdl-document';
 
