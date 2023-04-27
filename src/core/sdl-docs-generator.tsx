@@ -3,6 +3,7 @@ import {
   GraphQLNamedType,
   GraphQLObjectType,
   GraphQLSchema,
+  InputValueDefinitionNode,
   Kind,
   buildASTSchema,
   buildClientSchema,
@@ -72,31 +73,11 @@ function prepareTypePage(namedType: GraphQLNamedType, uuid: string): DocumentPag
 
         break;
       case Kind.OBJECT_TYPE_DEFINITION:
+      case Kind.INTERFACE_TYPE_DEFINITION:
+      case Kind.INPUT_OBJECT_TYPE_DEFINITION:
         const obj = node;
         DocumentPageHelper.pushText(page, obj.name.value);
-        obj.fields?.forEach((f) => {
-          DocumentPageHelper.pushArg(
-            page,
-            f.name.value,
-            getTypeName(f.type)[0],
-            getTypeName(f.type)[1]
-          );
-        });
-
-        break;
-      case Kind.INTERFACE_TYPE_DEFINITION:
-        const intf = node;
-        DocumentPageHelper.pushText(page, intf.name.value);
-
-        intf.fields?.forEach((f) => {
-          DocumentPageHelper.pushArg(
-            page,
-            f.name.value,
-            getTypeName(f.type)[0],
-            getTypeName(f.type)[1]
-          );
-        });
-
+        obj.fields?.forEach((f) => pushTypeText(page, f));
         break;
       case Kind.UNION_TYPE_DEFINITION:
         const uni = node;
@@ -116,28 +97,18 @@ function prepareTypePage(namedType: GraphQLNamedType, uuid: string): DocumentPag
           if (i > 0) DocumentPageHelper.pushText(page, ' | ');
           DocumentPageHelper.pushText(page, val.name.value);
         });
-
         break;
-      case Kind.INPUT_OBJECT_TYPE_DEFINITION:
-        const iobj = node;
-        DocumentPageHelper.pushText(page, iobj.name.value);
-        iobj.fields?.forEach((f) => {
-          DocumentPageHelper.pushArg(
-            page,
-            f.name.value,
-            getTypeName(f.type)[0],
-            getTypeName(f.type)[1]
-          );
-          DocumentPageHelper.pushBreak(page);
-        });
 
-        break;
       default:
         throw new Error(`Unexpected node kind in ${(node as GraphQLNamedType).name}`);
     }
   }
 
   return page;
+}
+
+function pushTypeText(page: DocumentPage, f: FieldDefinitionNode | InputValueDefinitionNode) {
+  DocumentPageHelper.pushArg(page, f.name.value, getTypeName(f.type)[0], getTypeName(f.type)[1]);
 }
 
 function Add404Page() {
