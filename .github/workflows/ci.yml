@@ -3,12 +3,21 @@ name: CI
 on: push
 
 jobs:
-  build:
+  build-and-test:
     runs-on: [self-hosted, linux, x64]
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [sonar]
+    defaults:
+      run:
+        working-directory: sonar
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          path: ${{ matrix.mode }}
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -17,5 +26,26 @@ jobs:
         run: npm ci
       - name: Build code
         run: npm run build
-      - name: Test
+      - name: Unit Test
         run: npm run coverage
+      - name: Debug
+        run: pwd && ls -l
+
+  sonarqube:
+    runs-on: [self-hosted, linux, x64]
+    needs: build-and-test
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [sonar]
+    defaults:
+      run:
+        working-directory: sonar
+    steps:
+      - name: Sonarqube
+        run: npm run sonar
+      - name: Cleanup
+        if: always()
+        run: |
+          pwd
+          cd .. && rm -rf ./sonar
