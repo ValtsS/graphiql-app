@@ -5,8 +5,6 @@ on: push
 jobs:
   build:
     runs-on: [self-hosted, linux, x64]
-    if: ${{ github.event.repository.owner.login == github.actor }}
-
     steps:
       - uses: actions/checkout@v3
         with:
