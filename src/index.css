@@ -30,9 +30,6 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-}
-
-body {
   font-family: 'Montserrat', sans-serif;
   background: #f6f5f7;
 }
