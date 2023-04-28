@@ -25,13 +25,10 @@ export class DocumentContent {
     this._page.parts.forEach((p, i) => {
       switch (p.kind) {
         case DocumentPartKind.Regular: {
-          if (p.link_uuid) {
+          const link = p.link_uuid;
+          if (link) {
             eles.push(
-              <a
-                href="#"
-                onClick={() => linkClick(p.link_uuid ?? '')}
-                key={`${this._page.uuid}${i.toString()}`}
-              >
+              <a href="#" onClick={() => linkClick(link)} key={`${this._page.uuid}${i.toString()}`}>
                 {p.text && p.text(linkClick)}
               </a>
             );

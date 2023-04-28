@@ -21,6 +21,10 @@ describe('Document', () => {
     expect(getByText('world')).toHaveAttribute('href', '#');
   });
 
+  it('test that get works', () => {
+    expect(content.parts.length).toBe(3);
+  });
+
   it('calls the onClick handler when a link is clicked', () => {
     const onClick = jest.fn();
     const { getByText } = render(<SDLDocument content={content} onClick={onClick} />);
