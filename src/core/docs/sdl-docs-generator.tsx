@@ -6,18 +6,11 @@ import {
   buildClientSchema,
   getIntrospectionQuery,
   parse,
-  printSchema
+  printSchema,
 } from 'graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import {
-  DocumentBook,
-  DocumentPage,
-  DocumentPageHelper
-} from './sdl-docs';
-import {
-  prepareTypePage,
-  processFunction
-} from './sdl-docs-helper';
+import { DocumentBook, DocumentPage, DocumentPageHelper } from './sdl-docs';
+import { prepareTypePage, processFunction } from './sdl-docs-helper';
 
 export async function getremoteSchema(url: string) {
   const { data, errors } = await fetch(url, {
