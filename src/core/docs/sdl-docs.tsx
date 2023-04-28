@@ -149,20 +149,4 @@ export class DocumentPageHelper {
       DocumentPageHelper.pushPart(page, defaultVal);
     }
   }
-
-  static pushOpenArg(page: DocumentPage) {
-    const part: DocumentPart = {
-      kind: DocumentPartKind.Regular,
-      text: () => <>{'('}</>,
-    };
-    DocumentPageHelper.pushPart(page, part);
-  }
-
-  static pushCloseArg(page: DocumentPage) {
-    const part: DocumentPart = {
-      kind: DocumentPartKind.Regular,
-      text: () => <>{')'}</>,
-    };
-    DocumentPageHelper.pushPart(page, part);
-  }
 }

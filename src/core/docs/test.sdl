@@ -35,6 +35,7 @@ type Query {
   
   getDefaults( a:Int = 4, b:Float = 3.3, c: String = "TestValue", d:Boolean = false, e:Boolean = true, f:Int=NULL, g:UserRole = ADMIN ): Int
   getDefaultsList( g:[UserRole]=[USER,GUEST]):Int
+  getDefaultsObject( h:InputObject = { name: "12345", description: "5678" } ):Int
   getRoles: UserRole
 
 }
@@ -99,7 +100,7 @@ type EnumValue {
   deprecationReason: String
 }
 
-type InterfaceType {
+interface InterfaceType {
   name: String
   description: String
   fields: [Field]
@@ -138,3 +139,8 @@ enum UserRole {
   GUEST
 }
 
+
+input InputObject {
+  name: String
+  description: String
+}

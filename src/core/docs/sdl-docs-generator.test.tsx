@@ -33,7 +33,7 @@ describe('Book generator test', () => {
   it('should render query page', () => {
     renderPage('/query');
     const funcs = screen.getAllByTestId('doc_function');
-    expect(funcs.length).toBe(21);
+    expect(funcs.length).toBe(22);
   });
 
   it.each([
@@ -57,6 +57,7 @@ describe('Book generator test', () => {
     'getRoles():UserRole',
     'getDefaults(a:Int=4b:Float=3.3c:String="TestValue"d:Boolean=falsee:Boolean=truef:Int=NULLg:UserRole=ADMIN):Int',
     'getDefaultsList(g:[UserRole]=[USER, GUEST]):Int',
+    'getDefaultsObject(h:InputObject={name: "12345" , description: "5678"}):Int',
   ])('check query function %s', (expected: string) => {
     renderPage('/query');
     const funcs = screen.getAllByTestId('doc_function');

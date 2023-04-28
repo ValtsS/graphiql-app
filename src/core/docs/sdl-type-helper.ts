@@ -34,11 +34,15 @@ export function getConstValue(value: ConstValueNode): string {
         ']'
       );
     case Kind.OBJECT: {
-      let objstr = '';
-      value.fields.forEach((f) => {
+      let objstr = '{';
+      value.fields.forEach((f, i) => {
         const fieldValue = getConstValue(f.value);
-        objstr += '\n' + f.name.value + ' = ' + fieldValue;
+        if (i > 0) {
+          objstr += ' , ';
+        }
+        objstr += f.name.value + ': ' + fieldValue;
       });
+      objstr += '}';
 
       return objstr;
     }
