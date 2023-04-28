@@ -38,14 +38,14 @@ type Query {
 
 type LanguageSpecification {
   # Language features
-  schemaDefinition: String
-  scalarTypes: [ScalarType]
-  objectTypes: [ObjectType]
-  inputTypes: [InputType]
-  enumTypes: [EnumType]
-  interfaceTypes: [InterfaceType]
-  unionTypes: [UnionType]
-  directives: [Directive]
+  schemaDefinition: String!
+  scalarTypes: [ScalarType!]!
+  objectTypes: [ObjectType!]
+  inputTypes: [InputType!]
+  enumTypes: [EnumType!]
+  interfaceTypes: [InterfaceType!]
+  unionTypes: [UnionType!]
+  directives: [Directive!]
 }
 
 type ScalarType {

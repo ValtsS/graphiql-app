@@ -34,7 +34,6 @@ describe('Book generator test', () => {
     renderPage('/query');
     const funcs = screen.getAllByTestId('doc_function');
     expect(funcs.length).toBe(18);
-
   });
 
   it.each([
@@ -54,17 +53,13 @@ describe('Book generator test', () => {
     'getInterfaceFields():[Field]',
     'getUnionType():UnionType',
     'getUnionTypes():[ObjectType]',
-    'getDirectives():[Directive]'
-  ])(
-    'check query function %s',
-    (expected: string) => {
-      renderPage('/query');
-      const funcs = screen.getAllByTestId('doc_function');
-      expect(funcs.length).toBe(18);
-      expect(funcs.some((val) => val.textContent == expected )).toBe(true);
-    }
-  );
-
+    'getDirectives():[Directive]',
+  ])('check query function %s', (expected: string) => {
+    renderPage('/query');
+    const funcs = screen.getAllByTestId('doc_function');
+    expect(funcs.length).toBe(18);
+    expect(funcs.some((val) => val.textContent == expected)).toBe(true);
+  });
 
   function renderPage(uuid: string) {
     const c = new DocumentContent(uuid);
