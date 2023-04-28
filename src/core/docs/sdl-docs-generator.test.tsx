@@ -33,7 +33,7 @@ describe('Book generator test', () => {
   it('should render query page', () => {
     renderPage('/query');
     const funcs = screen.getAllByTestId('doc_function');
-    expect(funcs.length).toBe(19);
+    expect(funcs.length).toBe(20);
   });
 
   it.each([
@@ -54,7 +54,8 @@ describe('Book generator test', () => {
     'getUnionType():UnionType',
     'getUnionTypes():[ObjectType]',
     'getDirectives():[Directive]',
-    'getDefaults(a:Int=4b:Float=3.3c:String="TestValue"d:Boolean=falsee:Boolean=truef:Int=NULL):Int',
+    'getRoles():UserRole',
+    'getDefaults(a:Int=4b:Float=3.3c:String="TestValue"d:Boolean=falsee:Boolean=truef:Int=NULLg:UserRole=ADMIN):Int',
   ])('check query function %s', (expected: string) => {
     renderPage('/query');
     const funcs = screen.getAllByTestId('doc_function');
@@ -178,6 +179,12 @@ describe('Book generator test', () => {
       subscriptionType: ObjectType
       types: [Type]
       directives: [Directive]
+    `,
+    ],
+    [
+      'UserRole',
+      `UserRole enum
+      ADMIN |USER | GUEST
     `,
     ],
   ])('check type presence %s', (typeName: string, expected: string) => {
