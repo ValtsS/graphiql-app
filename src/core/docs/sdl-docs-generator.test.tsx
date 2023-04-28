@@ -5,6 +5,7 @@ import { DocumentBook } from './sdl-docs';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { DocumentContent, SDLDocument } from '@/components/sdl-document/sdl-document';
+import fuzzball from 'fuzzball';
 
 describe('Book generator test', () => {
   let book: DocumentBook;
@@ -29,10 +30,41 @@ describe('Book generator test', () => {
     expect(screen.getByText('Subscriptions')).toHaveAttribute('href');
   });
 
-  it('should render correct root', () => {
+  it('should render query page', () => {
     renderPage('/query');
-    screen.debug();
+    const funcs = screen.getAllByTestId('doc_function');
+    expect(funcs.length).toBe(18);
+
   });
+
+  it.each([
+    'getLanguageSpecification():LanguageSpecification',
+    'getString():String',
+    'getInt():Int',
+    'getFloat():Float',
+    'getBoolean():Boolean',
+    'getID():ID',
+    'getObjectType():ObjectType',
+    'getFields():[Field]',
+    'getInputType():InputType',
+    'getInputFields():[InputField]',
+    'getEnumType():EnumType',
+    'getEnumValues():[EnumValue]',
+    'getInterfaceType():InterfaceType',
+    'getInterfaceFields():[Field]',
+    'getUnionType():UnionType',
+    'getUnionTypes():[ObjectType]',
+    'getDirectives():[Directive]'
+  ])(
+    'check query function %s',
+    (expected: string) => {
+      renderPage('/query');
+      const funcs = screen.getAllByTestId('doc_function');
+      expect(funcs.length).toBe(18);
+      expect(funcs.some((val) => val.textContent == expected )).toBe(true);
+    }
+  );
+
 
   function renderPage(uuid: string) {
     const c = new DocumentContent(uuid);

@@ -1,11 +1,18 @@
+import { Typography } from '@mui/material';
 import React from 'react';
+
+const COLOR_COMMENT = 'gray';
+const COLOR_FUNCTION = '#7F5342';
+const COLOR_TYPE = '#066555';
+const COLOR_VAR = '#1F377F';
 
 export const enum DocumentPartKind {
   Regular = 'Regular',
   Break = 'BR',
 }
 
-type JSXCallback = () => JSX.Element;
+export type RenderOnClick = (uuid: string) => void;
+export type JSXCallback = (event: RenderOnClick) => JSX.Element;
 
 export type DocumentPart = {
   kind: DocumentPartKind;
@@ -52,7 +59,7 @@ export class DocumentPageHelper {
   static pushFunction(page: DocumentPage, name: string) {
     const part: DocumentPart = {
       kind: DocumentPartKind.Regular,
-      text: () => <>{name}</>,
+      text: () => <Typography sx={{ color: COLOR_FUNCTION }}>{name}</Typography>,
     };
     DocumentPageHelper.pushPart(page, part);
   }
@@ -70,10 +77,10 @@ export class DocumentPageHelper {
     const partName: DocumentPart = {
       kind: DocumentPartKind.Regular,
       text: () => (
-        <p>
+        <Typography sx={{ color: COLOR_COMMENT }}>
           {'//'}
-          {comment}:
-        </p>
+          {comment}
+        </Typography>
       ),
     };
     DocumentPageHelper.pushPart(page, partName);
@@ -88,7 +95,11 @@ export class DocumentPageHelper {
     const parType: DocumentPart = {
       kind: DocumentPartKind.Regular,
       link_uuid: link,
-      text: () => <>{typename}</>,
+      text: () => (
+        <Typography sx={{ color: COLOR_TYPE }} component={'span'}>
+          {typename}
+        </Typography>
+      ),
     };
     DocumentPageHelper.pushPart(page, parType);
   }
@@ -102,14 +113,22 @@ export class DocumentPageHelper {
   ) {
     const partName: DocumentPart = {
       kind: DocumentPartKind.Regular,
-      text: () => <>{name}:</>,
+      text: () => (
+        <Typography component={'span'} sx={{ color: COLOR_VAR }}>
+          {name}:
+        </Typography>
+      ),
     };
     DocumentPageHelper.pushPart(page, partName);
 
     const partType: DocumentPart = {
       kind: DocumentPartKind.Regular,
       link_uuid: link,
-      text: () => <>{typename}</>,
+      text: () => (
+        <Typography sx={{ color: COLOR_TYPE }} component={'span'}>
+          {typename}
+        </Typography>
+      ),
     };
     DocumentPageHelper.pushPart(page, partType);
 

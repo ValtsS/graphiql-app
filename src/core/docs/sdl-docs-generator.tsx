@@ -1,12 +1,10 @@
+import { DocumentContent } from '@/components/sdl-document/sdl-document';
+import { Box } from '@mui/material';
 import {
-  EnumTypeDefinitionNode,
   FieldDefinitionNode,
-  GraphQLNamedType,
   GraphQLObjectType,
   GraphQLSchema,
-  InputValueDefinitionNode,
   Kind,
-  UnionTypeDefinitionNode,
   buildASTSchema,
   buildClientSchema,
   getIntrospectionQuery,
@@ -14,9 +12,16 @@ import {
   printSchema,
 } from 'graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { DocumentBook, DocumentPage, DocumentPageHelper, DocumentPartKind } from './sdl-docs';
-import { getConstValue, getTypeName } from './sdl-type-helper';
 import React from 'react';
+import {
+  DocumentBook,
+  DocumentPage,
+  DocumentPageHelper,
+  DocumentPartKind,
+  RenderOnClick,
+} from './sdl-docs';
+import { prepareTypePage, renderParts } from './sdl-docs-helper';
+import { getConstValue, getTypeName } from './sdl-type-helper';
 
 export async function getremoteSchema(url: string) {
   const { data, errors } = await fetch(url, {
@@ -53,63 +58,6 @@ function generateTypePages(ast: GraphQLSchema, book: DocumentBook) {
   for (const typeKey in typeMap) {
     book[typeKey] = prepareTypePage(typeMap[typeKey], typeKey);
   }
-}
-
-function prepareTypePage(namedType: GraphQLNamedType, uuid: string): DocumentPage {
-  const page: DocumentPage = {
-    uuid,
-    parts: [],
-  };
-
-  if (namedType.description) DocumentPageHelper.pushText(page, namedType.description, true);
-
-  if (namedType?.astNode) {
-    const node = namedType?.astNode;
-    switch (node.kind) {
-      case Kind.SCALAR_TYPE_DEFINITION:
-        DocumentPageHelper.pushText(page, node.name.value + ' ');
-        DocumentPageHelper.pushLinkToPage(page, node.name.value, node.name.value);
-        break;
-      case Kind.OBJECT_TYPE_DEFINITION:
-      case Kind.INTERFACE_TYPE_DEFINITION:
-      case Kind.INPUT_OBJECT_TYPE_DEFINITION:
-        DocumentPageHelper.pushText(page, node.name.value, true);
-        node.fields?.forEach((f) => pushTypeText(page, f));
-        break;
-      case Kind.UNION_TYPE_DEFINITION:
-        handleUnion(node, page);
-        //uni.types as links
-        break;
-      case Kind.ENUM_TYPE_DEFINITION:
-        handleEnumeration(node, page);
-        break;
-
-      default:
-        throw new Error(`Unexpected node kind in ${(node as GraphQLNamedType).name}`);
-    }
-  }
-
-  return page;
-}
-
-function handleUnion(node: UnionTypeDefinitionNode, page: DocumentPage) {
-  if (node.description) DocumentPageHelper.pushComment(page, node.description?.value);
-  DocumentPageHelper.pushText(page, node.name.value);
-}
-
-function handleEnumeration(node: EnumTypeDefinitionNode, page: DocumentPage) {
-  if (node.description) DocumentPageHelper.pushComment(page, node.description?.value);
-  DocumentPageHelper.pushText(page, `${node.name.value} enum`, true);
-  node.values?.forEach((val, i) => {
-    if (val.description) DocumentPageHelper.pushComment(page, val.description?.value);
-    if (i > 0) DocumentPageHelper.pushText(page, ' | ');
-    DocumentPageHelper.pushText(page, val.name.value);
-  });
-}
-
-function pushTypeText(page: DocumentPage, f: FieldDefinitionNode | InputValueDefinitionNode) {
-  DocumentPageHelper.pushArg(page, f.name.value, getTypeName(f.type)[0], getTypeName(f.type)[1]);
-  DocumentPageHelper.pushBreak(page);
 }
 
 function Add404Page() {
@@ -162,46 +110,73 @@ function prepQueryPage(queryType: Maybe<GraphQLObjectType>) {
   return page;
 }
 
-function processFunction(f: FieldDefinitionNode, root: DocumentPage) {
-  DocumentPageHelper.pushPart(root, {
-    kind: DocumentPartKind.Regular,
-    text: () => <div></div>,
-  });
+function processFunction(f: FieldDefinitionNode, rooxt: DocumentPage) {
+  const inner: DocumentPage = {
+    uuid: rooxt.uuid,
+    parts: [],
+  };
 
   const desc = f.description?.value;
-  if (desc) DocumentPageHelper.pushComment(root, desc);
+  if (desc) DocumentPageHelper.pushComment(inner, desc);
   const name = f.name.value;
 
-  DocumentPageHelper.pushFunction(root, name);
-  DocumentPageHelper.pushOpenArg(root);
+  DocumentPageHelper.pushFunction(inner, name);
+
+  const args = describeArguments(f, inner);
+
+  DocumentPageHelper.pushPart(inner, {
+    kind: DocumentPartKind.Regular,
+    text: (onClick: RenderOnClick) => (
+      <>
+        {'('}
+        <Box data-testid="doc_function_args" pl={2}>
+          {args.render(onClick)}
+        </Box>
+        {')'}
+      </>
+    ),
+  });
+
+  if (f.type) {
+    const typeInfo = getTypeName(f.type);
+    DocumentPageHelper.pushRetType(inner, typeInfo[0], typeInfo[1]);
+  }
+
+  DocumentPageHelper.pushBreak(inner);
+
+  const doc = renderParts(rooxt, inner);
+
+  DocumentPageHelper.pushPart(rooxt, {
+    kind: DocumentPartKind.Regular,
+    text: (onClick: RenderOnClick) => <div data-testid="doc_function">{doc.render(onClick)}</div>,
+  });
+}
+function describeArguments(f: FieldDefinitionNode, parent: DocumentPage): DocumentContent {
+  const args: DocumentPage = {
+    uuid: parent.uuid,
+    parts: [],
+  };
 
   if (f.arguments && f.arguments.length > 0) {
     const multiple = f.arguments.length > 1;
 
     f.arguments.forEach((a) => {
       if (a.description) {
-        DocumentPageHelper.pushComment(root, a.description.value);
+        DocumentPageHelper.pushComment(args, a.description.value);
       }
 
       const typeInfo = getTypeName(a.type);
       DocumentPageHelper.pushArg(
-        root,
+        args,
         a.name.value,
         typeInfo[0],
         typeInfo[1],
         a.defaultValue ? getConstValue(a.defaultValue) : undefined
       );
 
-      if (multiple) DocumentPageHelper.pushBreak(root);
+      if (multiple) DocumentPageHelper.pushBreak(args);
     });
   }
 
-  DocumentPageHelper.pushCloseArg(root);
-
-  if (f.type) {
-    const typeInfo = getTypeName(f.type);
-    DocumentPageHelper.pushRetType(root, typeInfo[0], typeInfo[1]);
-  }
-
-  DocumentPageHelper.pushBreak(root);
+  return renderParts(parent, args);
 }

@@ -1,4 +1,4 @@
-import { DocumentPage, DocumentPart, DocumentPartKind } from '@/core/docs/sdl-docs';
+import { DocumentPage, DocumentPart, DocumentPartKind, RenderOnClick } from '@/core/docs/sdl-docs';
 import React from 'react';
 
 export class DocumentContent {
@@ -19,7 +19,7 @@ export class DocumentContent {
     this._page.parts = parts;
   }
 
-  public render(linkClick: (uuid: string) => void): JSX.Element {
+  public render(linkClick: RenderOnClick): JSX.Element {
     const eles: JSX.Element[] = [];
 
     this._page.parts.forEach((p, i) => {
@@ -32,13 +32,13 @@ export class DocumentContent {
                 onClick={() => linkClick(p.link_uuid ?? '')}
                 key={`${this._page.uuid}${i.toString()}`}
               >
-                {p.text && p.text()}
+                {p.text && p.text(linkClick)}
               </a>
             );
           } else
             eles.push(
               <React.Fragment key={`${this._page.uuid}${i.toString()}`}>
-                {p.text && p.text()}
+                {p.text && p.text(linkClick)}
               </React.Fragment>
             );
 

@@ -1,7 +1,9 @@
 import { DocumentBook } from '@/core/docs/sdl-docs';
+import { Box } from '@mui/material';
 import React, { useMemo, useState } from 'react';
 import { DocumentContent, SDLDocument } from '../sdl-document/sdl-document';
-import { Box } from '@mui/material';
+
+
 
 interface Props {
   book: DocumentBook;
@@ -10,6 +12,7 @@ interface Props {
 
 export const SDLDocumentBrowser = (props: Props) => {
   const [state, setState] = useState<string[]>([props.root]);
+
 
   if (state.length == 0) setState([props.root]);
 
@@ -37,9 +40,7 @@ export const SDLDocumentBrowser = (props: Props) => {
       sx={{
         alignItems: 'left',
         justifyContent: 'left',
-        textAlign: 'left',
-        height: '100%',
-        overflowY: 'scroll',
+        textAlign: 'left'
       }}
     >
       <button disabled={!backAvailable} onClick={goBack}>
