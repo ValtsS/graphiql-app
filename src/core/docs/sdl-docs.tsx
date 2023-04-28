@@ -55,32 +55,6 @@ export class DocumentPageHelper {
     DocumentPageHelper.pushPart(page, part);
   }
 
-  static pushOpenBrace(page: DocumentPage) {
-    const part: DocumentPart = {
-      kind: DocumentPartKind.Regular,
-      text: (
-        <>
-          {'{'}
-          <p />
-        </>
-      ),
-    };
-    DocumentPageHelper.pushPart(page, part);
-  }
-
-  static pushCloseBrace(page: DocumentPage) {
-    const part: DocumentPart = {
-      kind: DocumentPartKind.Regular,
-      text: (
-        <>
-          {'}'}
-          <p />
-        </>
-      ),
-    };
-    DocumentPageHelper.pushPart(page, part);
-  }
-
   static pushText(page: DocumentPage, text: string, BreakLine = false) {
     const partName: DocumentPart = {
       kind: DocumentPartKind.Regular,
@@ -101,6 +75,20 @@ export class DocumentPageHelper {
       ),
     };
     DocumentPageHelper.pushPart(page, partName);
+  }
+  static pushRetType(page: DocumentPage, typename: string, link?: string) {
+    const partCol: DocumentPart = {
+      kind: DocumentPartKind.Regular,
+      text: <>:</>,
+    };
+    DocumentPageHelper.pushPart(page, partCol);
+
+    const parType: DocumentPart = {
+      kind: DocumentPartKind.Regular,
+      link_uuid: link,
+      text: <>{typename}</>,
+    };
+    DocumentPageHelper.pushPart(page, parType);
   }
 
   static pushArg(

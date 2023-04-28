@@ -10,7 +10,7 @@ export function getTypeName(type: TypeNode): [string, string?] {
       return [`[${listType}]`, listTypeName];
     case Kind.NON_NULL_TYPE:
       const [nonNullType, nonNullTypeName] = getTypeName(type.type);
-      return [nonNullType, nonNullTypeName];
+      return [nonNullType + '!', nonNullTypeName];
     default:
       throw new Error(`Unsupported TypeNode kind: ${(type as TypeNode)?.kind}`);
   }

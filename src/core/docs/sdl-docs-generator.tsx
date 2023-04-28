@@ -151,15 +151,11 @@ function prepQueryPage(queryType: Maybe<GraphQLObjectType>) {
   if (queryType?.astNode) {
     const fields = queryType.astNode.fields;
     if (fields && fields.length > 0) {
-      DocumentPageHelper.pushOpenBrace(page);
-
       fields.forEach((field) => {
         if (field.kind == Kind.FIELD_DEFINITION) {
           processFunction(field, page);
         }
       });
-
-      DocumentPageHelper.pushCloseBrace(page);
     }
   }
   return page;
@@ -168,11 +164,9 @@ function prepQueryPage(queryType: Maybe<GraphQLObjectType>) {
 function processFunction(f: FieldDefinitionNode, root: DocumentPage) {
   const desc = f.description?.value;
   if (desc) DocumentPageHelper.pushComment(root, desc);
-
   const name = f.name.value;
 
   DocumentPageHelper.pushFunction(root, name);
-
   DocumentPageHelper.pushOpenArg(root);
 
   if (f.arguments && f.arguments.length > 0) {
@@ -197,5 +191,11 @@ function processFunction(f: FieldDefinitionNode, root: DocumentPage) {
   }
 
   DocumentPageHelper.pushCloseArg(root);
+
+  if (f.type) {
+    const typeInfo = getTypeName(f.type);
+    DocumentPageHelper.pushRetType(root, typeInfo[0], typeInfo[1]);
+  }
+
   DocumentPageHelper.pushBreak(root);
 }
