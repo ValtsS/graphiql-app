@@ -33,7 +33,7 @@ describe('Book generator test', () => {
   it('should render query page', () => {
     renderPage('/query');
     const funcs = screen.getAllByTestId('doc_function');
-    expect(funcs.length).toBe(18);
+    expect(funcs.length).toBe(19);
   });
 
   it.each([
@@ -54,10 +54,10 @@ describe('Book generator test', () => {
     'getUnionType():UnionType',
     'getUnionTypes():[ObjectType]',
     'getDirectives():[Directive]',
+    'getDefaults(a:Int=4b:Float=3.3c:String="TestValue"d:Boolean=falsee:Boolean=truef:Int=NULL):Int',
   ])('check query function %s', (expected: string) => {
     renderPage('/query');
     const funcs = screen.getAllByTestId('doc_function');
-    expect(funcs.length).toBe(18);
     expect(funcs.some((val) => val.textContent == expected)).toBe(true);
   });
 
@@ -182,8 +182,6 @@ describe('Book generator test', () => {
     ],
   ])('check type presence %s', (typeName: string, expected: string) => {
     renderPage(typeName);
-
-    console.log(screen.getByTestId('doc_type').textContent);
     expect(
       fuzzball.ratio(screen.getByTestId('doc_type').textContent ?? '', expected, {
         collapseWhitespace: true,

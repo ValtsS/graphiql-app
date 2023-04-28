@@ -20,10 +20,11 @@ export function getConstValue(value: ConstValueNode): string {
   switch (value.kind) {
     case Kind.INT:
     case Kind.FLOAT:
-    case Kind.STRING:
     case Kind.BOOLEAN:
     case Kind.ENUM:
       return value.value.toString();
+    case Kind.STRING:
+      return `"${value.value.toString()}"`;
     case Kind.NULL:
       return 'NULL';
     case Kind.LIST:

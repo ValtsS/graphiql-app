@@ -32,6 +32,8 @@ type Query {
 
   # Directives
   getDirectives: [Directive]
+  
+  getDefaults( a:Int = 4, b:Float = 3.3, c: String = "TestValue", d:Boolean = false, e:Boolean = true, f:Int=NULL ): Int
 
 
 }
@@ -127,3 +129,4 @@ type GraphQLSchema {
   types: [Type]
   directives: [Directive]
 }
+
