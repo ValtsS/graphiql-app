@@ -85,13 +85,8 @@ export class DocumentPageHelper {
     };
     DocumentPageHelper.pushPart(page, partName);
   }
-  static pushRetType(page: DocumentPage, typename: string, link?: string) {
-    const partCol: DocumentPart = {
-      kind: DocumentPartKind.Regular,
-      text: () => <>:</>,
-    };
-    DocumentPageHelper.pushPart(page, partCol);
 
+  static pushType(page: DocumentPage, typename: string, link?: string) {
     const parType: DocumentPart = {
       kind: DocumentPartKind.Regular,
       link_uuid: link,
@@ -102,6 +97,15 @@ export class DocumentPageHelper {
       ),
     };
     DocumentPageHelper.pushPart(page, parType);
+  }
+
+  static pushRetType(page: DocumentPage, typename: string, link?: string) {
+    const partCol: DocumentPart = {
+      kind: DocumentPartKind.Regular,
+      text: () => <>:</>,
+    };
+    DocumentPageHelper.pushPart(page, partCol);
+    DocumentPageHelper.pushType(page, typename, link);
   }
 
   static pushArg(

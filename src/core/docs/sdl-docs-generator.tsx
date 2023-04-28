@@ -53,13 +53,6 @@ export function generateBook(schema: string): DocumentBook {
   return book;
 }
 
-function generateTypePages(ast: GraphQLSchema, book: DocumentBook) {
-  const typeMap = ast.getTypeMap();
-  for (const typeKey in typeMap) {
-    book[typeKey] = prepareTypePage(typeMap[typeKey], typeKey);
-  }
-}
-
 function Add404Page() {
   const NotFoundPage: DocumentPage = {
     uuid: '/404',
@@ -89,6 +82,13 @@ function generateRootPage(ast: GraphQLSchema, book: DocumentBook) {
   DocumentPageHelper.pushLinkToPage(root, 'Subscriptions', '/subscribe');
 
   book['/'] = root;
+}
+
+function generateTypePages(ast: GraphQLSchema, book: DocumentBook) {
+  const typeMap = ast.getTypeMap();
+  for (const typeKey in typeMap) {
+    book[typeKey] = prepareTypePage(typeMap[typeKey], typeKey);
+  }
 }
 
 function prepQueryPage(queryType: Maybe<GraphQLObjectType>) {

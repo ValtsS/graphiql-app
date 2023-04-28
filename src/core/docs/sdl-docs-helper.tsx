@@ -6,13 +6,20 @@ import {
   GraphQLNamedType,
   Kind,
 } from 'graphql';
-import { DocumentPage, DocumentPageHelper } from './sdl-docs';
+import { DocumentPage, DocumentPageHelper, DocumentPartKind, RenderOnClick } from './sdl-docs';
 import { getTypeName } from './sdl-type-helper';
 import { DocumentContent } from '@/components/sdl-document/sdl-document';
+import React from 'react';
 
 export function handleUnion(node: UnionTypeDefinitionNode, page: DocumentPage) {
   if (node.description) DocumentPageHelper.pushComment(page, node.description?.value);
   DocumentPageHelper.pushText(page, node.name.value);
+  DocumentPageHelper.pushBreak(page);
+
+  node.types?.forEach((t, i) => {
+    if (i > 0) DocumentPageHelper.pushText(page, ' | ');
+    DocumentPageHelper.pushType(page, getTypeName(t)[0], getTypeName(t)[1]);
+  });
 }
 
 export function handleEnumeration(node: EnumTypeDefinitionNode, page: DocumentPage) {
@@ -62,7 +69,6 @@ export function prepareTypePage(namedType: GraphQLNamedType, uuid: string): Docu
         break;
       case Kind.UNION_TYPE_DEFINITION:
         handleUnion(node, page);
-        //uni.types as links
         break;
       case Kind.ENUM_TYPE_DEFINITION:
         handleEnumeration(node, page);
@@ -73,5 +79,16 @@ export function prepareTypePage(namedType: GraphQLNamedType, uuid: string): Docu
     }
   }
 
-  return page;
+  const wrapper: DocumentPage = {
+    uuid,
+    parts: [],
+  };
+  const doc = renderParts(wrapper, page);
+
+  DocumentPageHelper.pushPart(wrapper, {
+    kind: DocumentPartKind.Regular,
+    text: (onClick: RenderOnClick) => <div data-testid="doc_type">{doc.render(onClick)}</div>,
+  });
+
+  return wrapper;
 }
