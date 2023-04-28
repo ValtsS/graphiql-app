@@ -9,6 +9,7 @@ const COLOR_VAR = '#1F377F';
 export const enum DocumentPartKind {
   Regular = 'Regular',
   Break = 'BR',
+  Unknown = 'Unknown', // Should not happen
 }
 
 export type RenderOnClick = (uuid: string) => void;

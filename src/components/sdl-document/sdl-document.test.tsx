@@ -1,7 +1,8 @@
 import { DocumentPartKind } from '@/core/docs/sdl-docs';
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
-import { DocumentContent, SDLDocument } from './sdl-document';
+import { DocumentContent, SDLDocument, UNKNOWNDOCUMENTPARTERROR } from './sdl-document';
+import App from '@/App';
 
 describe('Document', () => {
   const content = new DocumentContent('123');
@@ -23,6 +24,20 @@ describe('Document', () => {
 
   it('test that get works', () => {
     expect(content.parts.length).toBe(3);
+  });
+
+  it('renders the document content', () => {
+    const spiedOnError = jest.spyOn(console, 'error').mockImplementation(() => {});
+    content.parts = [{ kind: DocumentPartKind.Unknown }];
+    render(
+      <App>
+        <SDLDocument content={content} onClick={jest.fn()} />
+      </App>
+    );
+    expect(spiedOnError).toHaveBeenCalledWith(
+      'error caught: ',
+      new Error(UNKNOWNDOCUMENTPARTERROR)
+    );
   });
 
   it('calls the onClick handler when a link is clicked', () => {

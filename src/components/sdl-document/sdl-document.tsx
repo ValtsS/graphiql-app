@@ -1,6 +1,7 @@
 import { DocumentPage, DocumentPart, DocumentPartKind, RenderOnClick } from '@/core/docs/sdl-docs';
 import React from 'react';
 
+export const UNKNOWNDOCUMENTPARTERROR = 'Unrecognized document part kind';
 export class DocumentContent {
   private _page: DocumentPage;
 
@@ -45,7 +46,7 @@ export class DocumentContent {
           eles.push(<p key={`${this._page.uuid}${i.toString()}`} />);
           break;
         default:
-          throw new Error('Unrecognized document part kind');
+          throw new Error(UNKNOWNDOCUMENTPARTERROR);
       }
     });
 
