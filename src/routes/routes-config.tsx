@@ -36,8 +36,8 @@ export const defaultRoutes: RouteConfig[] = [
     menuText: 'About',
   },
   {
-    path: '/doc',
-    element: <DocumentPage url="http://localhost:5002/graphql/" />,
+    path: '/graphql',
+    element: <DocumentPage url="https://rickandmortyapi.com/graphql/" />,
     displayInMenu: true,
     menuText: 'DocTest',
   },

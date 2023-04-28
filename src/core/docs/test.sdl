@@ -1,0 +1,129 @@
+type Query {
+  # Query types
+  getLanguageSpecification: LanguageSpecification
+  getGraphQLSchema: GraphQLSchema
+
+  # Scalar types
+  getString: String
+  getInt: Int
+  getFloat: Float
+  getBoolean: Boolean
+  getID: ID
+
+  # Object types
+  getObjectType: ObjectType
+  getFields: [Field]
+
+  # Input types
+  getInputType: InputType
+  getInputFields: [InputField]
+
+  # Enum types
+  getEnumType: EnumType
+  getEnumValues: [EnumValue]
+
+  # Interface types
+  getInterfaceType: InterfaceType
+  getInterfaceFields: [Field]
+
+  # Union types
+  getUnionType: UnionType
+  getUnionTypes: [ObjectType]
+
+  # Directives
+  getDirectives: [Directive]
+
+
+}
+
+type LanguageSpecification {
+  # Language features
+  schemaDefinition: String
+  scalarTypes: [ScalarType]
+  objectTypes: [ObjectType]
+  inputTypes: [InputType]
+  enumTypes: [EnumType]
+  interfaceTypes: [InterfaceType]
+  unionTypes: [UnionType]
+  directives: [Directive]
+}
+
+type ScalarType {
+  name: String
+  description: String
+}
+
+type ObjectType {
+  name: String
+  description: String
+  fields: [Field]
+  interfaces: [InterfaceType]
+}
+
+type Field {
+  name: String
+  description: String
+  args: [InputField]
+  type: Type
+  isDeprecated: Boolean
+  deprecationReason: String
+}
+
+type InputType {
+  name: String
+  description: String
+  inputFields: [InputField]
+}
+
+type InputField {
+  name: String
+  description: String
+  type: Type
+  defaultValue: String
+}
+
+type EnumType {
+  name: String
+  description: String
+  enumValues: [EnumValue]
+}
+
+type EnumValue {
+  name: String
+  description: String
+  isDeprecated: Boolean
+  deprecationReason: String
+}
+
+type InterfaceType {
+  name: String
+  description: String
+  fields: [Field]
+}
+
+type UnionType {
+  name: String
+  description: String
+  possibleTypes: [ObjectType]
+}
+
+type Directive {
+  name: String
+  description: String
+  locations: [String]
+  args: [InputField]
+}
+
+union Type = ScalarType | ObjectType | InputType | EnumType | InterfaceType | UnionType | ListType
+
+type ListType {
+  ofType: Type
+}
+
+type GraphQLSchema {
+  queryType: ObjectType
+  mutationType: ObjectType
+  subscriptionType: ObjectType
+  types: [Type]
+  directives: [Directive]
+}

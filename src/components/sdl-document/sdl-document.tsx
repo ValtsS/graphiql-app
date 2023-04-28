@@ -32,12 +32,14 @@ export class DocumentContent {
                 onClick={() => linkClick(p.link_uuid ?? '')}
                 key={`${this._page.uuid}${i.toString()}`}
               >
-                {p.text}
+                {p.text && p.text()}
               </a>
             );
           } else
             eles.push(
-              <React.Fragment key={`${this._page.uuid}${i.toString()}`}>{p.text}</React.Fragment>
+              <React.Fragment key={`${this._page.uuid}${i.toString()}`}>
+                {p.text && p.text()}
+              </React.Fragment>
             );
 
           break;

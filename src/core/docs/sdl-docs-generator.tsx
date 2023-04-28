@@ -14,8 +14,9 @@ import {
   printSchema,
 } from 'graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { DocumentBook, DocumentPage, DocumentPageHelper } from './sdl-docs';
+import { DocumentBook, DocumentPage, DocumentPageHelper, DocumentPartKind } from './sdl-docs';
 import { getConstValue, getTypeName } from './sdl-type-helper';
+import React from 'react';
 
 export async function getremoteSchema(url: string) {
   const { data, errors } = await fetch(url, {
@@ -162,6 +163,11 @@ function prepQueryPage(queryType: Maybe<GraphQLObjectType>) {
 }
 
 function processFunction(f: FieldDefinitionNode, root: DocumentPage) {
+  DocumentPageHelper.pushPart(root, {
+    kind: DocumentPartKind.Regular,
+    text: () => <div></div>,
+  });
+
   const desc = f.description?.value;
   if (desc) DocumentPageHelper.pushComment(root, desc);
   const name = f.name.value;

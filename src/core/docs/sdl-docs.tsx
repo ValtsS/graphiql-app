@@ -5,9 +5,11 @@ export const enum DocumentPartKind {
   Break = 'BR',
 }
 
+type JSXCallback = () => JSX.Element;
+
 export type DocumentPart = {
   kind: DocumentPartKind;
-  text?: JSX.Element;
+  text?: JSXCallback;
   link_uuid?: string;
 };
 
@@ -29,7 +31,7 @@ export class DocumentPageHelper {
     const part: DocumentPart = {
       kind: DocumentPartKind.Regular,
       link_uuid,
-      text: (
+      text: () => (
         <>
           {text}
           <br />
@@ -42,7 +44,7 @@ export class DocumentPageHelper {
   static pushBreak(page: DocumentPage) {
     const part: DocumentPart = {
       kind: DocumentPartKind.Regular,
-      text: <br />,
+      text: () => <br />,
     };
     DocumentPageHelper.pushPart(page, part);
   }
@@ -50,7 +52,7 @@ export class DocumentPageHelper {
   static pushFunction(page: DocumentPage, name: string) {
     const part: DocumentPart = {
       kind: DocumentPartKind.Regular,
-      text: <>{name}</>,
+      text: () => <>{name}</>,
     };
     DocumentPageHelper.pushPart(page, part);
   }
@@ -58,7 +60,7 @@ export class DocumentPageHelper {
   static pushText(page: DocumentPage, text: string, BreakLine = false) {
     const partName: DocumentPart = {
       kind: DocumentPartKind.Regular,
-      text: <>{text}</>,
+      text: () => <>{text}</>,
     };
     DocumentPageHelper.pushPart(page, partName);
     if (BreakLine) DocumentPageHelper.pushBreak(page);
@@ -67,7 +69,7 @@ export class DocumentPageHelper {
   static pushComment(page: DocumentPage, comment: string) {
     const partName: DocumentPart = {
       kind: DocumentPartKind.Regular,
-      text: (
+      text: () => (
         <p>
           {'//'}
           {comment}:
@@ -79,14 +81,14 @@ export class DocumentPageHelper {
   static pushRetType(page: DocumentPage, typename: string, link?: string) {
     const partCol: DocumentPart = {
       kind: DocumentPartKind.Regular,
-      text: <>:</>,
+      text: () => <>:</>,
     };
     DocumentPageHelper.pushPart(page, partCol);
 
     const parType: DocumentPart = {
       kind: DocumentPartKind.Regular,
       link_uuid: link,
-      text: <>{typename}</>,
+      text: () => <>{typename}</>,
     };
     DocumentPageHelper.pushPart(page, parType);
   }
@@ -100,21 +102,21 @@ export class DocumentPageHelper {
   ) {
     const partName: DocumentPart = {
       kind: DocumentPartKind.Regular,
-      text: <>{name}:</>,
+      text: () => <>{name}:</>,
     };
     DocumentPageHelper.pushPart(page, partName);
 
     const partType: DocumentPart = {
       kind: DocumentPartKind.Regular,
       link_uuid: link,
-      text: <>{typename}</>,
+      text: () => <>{typename}</>,
     };
     DocumentPageHelper.pushPart(page, partType);
 
     if (defaultval) {
       const defaultVal: DocumentPart = {
         kind: DocumentPartKind.Regular,
-        text: (
+        text: () => (
           <>
             {'='}
             {defaultval}
@@ -128,7 +130,7 @@ export class DocumentPageHelper {
   static pushOpenArg(page: DocumentPage) {
     const part: DocumentPart = {
       kind: DocumentPartKind.Regular,
-      text: <>{'('}</>,
+      text: () => <>{'('}</>,
     };
     DocumentPageHelper.pushPart(page, part);
   }
@@ -136,7 +138,7 @@ export class DocumentPageHelper {
   static pushCloseArg(page: DocumentPage) {
     const part: DocumentPart = {
       kind: DocumentPartKind.Regular,
-      text: <>{')'}</>,
+      text: () => <>{')'}</>,
     };
     DocumentPageHelper.pushPart(page, part);
   }

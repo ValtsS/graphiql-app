@@ -8,8 +8,8 @@ describe('Document', () => {
 
   beforeEach(() => {
     content.parts = [
-      { kind: DocumentPartKind.Regular, text: <>Hello</> },
-      { kind: DocumentPartKind.Regular, text: <>world</>, link_uuid: '456' },
+      { kind: DocumentPartKind.Regular, text: () => <>Hello</> },
+      { kind: DocumentPartKind.Regular, text: () => <>world</>, link_uuid: '456' },
       { kind: DocumentPartKind.Break },
     ];
   });
