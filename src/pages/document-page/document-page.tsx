@@ -13,7 +13,7 @@ export const DocumentPage = ({ url }: { url: string }) => {
         const book = generateBook(schema);
         setBook(book);
       } catch (e) {
-        console.error('Add error handling');
+        console.error('Add error handling', e);
       }
     },
 
