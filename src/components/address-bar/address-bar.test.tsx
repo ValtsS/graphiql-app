@@ -1,9 +1,8 @@
+import { setupStore } from '@/store';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import { render, fireEvent, screen, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { AddressBar } from './address-bar';
-import { setupStore } from '@/store';
-import { waitRender } from '@/../__mocks__/test-utils';
 
 describe('AddressBar component', () => {
   const testURL = 'https://new.endpoint.com';
