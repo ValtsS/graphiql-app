@@ -1,9 +1,11 @@
+import { mainReducer } from '@/slices/main/mainSlice';
 import { notificationsReducer } from '@/slices/notifications';
 import { schemaReducer } from '@/slices/schema/schema';
 import { PreloadedState, combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 const rootReducer = combineReducers({
+  main: mainReducer,
   notifications: notificationsReducer,
   schema: schemaReducer,
 });

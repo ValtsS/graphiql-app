@@ -1,6 +1,5 @@
-import { Main, Authorization, Registration } from '@/pages';
+import { Authorization, Main, Registration } from '@/pages';
 import { AboutPage } from '@/pages/about-page/about-page';
-import { DocumentPage } from '@/pages/document-page/document-page';
 import React from 'react';
 
 export interface RouteConfig {
@@ -34,11 +33,5 @@ export const defaultRoutes: RouteConfig[] = [
     element: <AboutPage />,
     displayInMenu: true,
     menuText: 'About',
-  },
-  {
-    path: '/graphql',
-    element: <DocumentPage url="http://lyra.velns.org:8000/graphql/" />,
-    displayInMenu: true,
-    menuText: 'DocTest',
   },
 ];

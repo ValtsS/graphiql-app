@@ -8,14 +8,24 @@ export type fetchParams = {
   endpoint: string;
 };
 
+type failData = {
+  error: string;
+  endpoint: string;
+};
+
 export const fetchSchema = createAsyncThunk(
   'schema/fetch',
   async (params: fetchParams, { rejectWithValue }) => {
+    const endpoint = params.endpoint;
     try {
-      const schema = await getremoteSchema(params.client, params.endpoint);
-      return { schema };
+      const schema = await getremoteSchema(params.client, endpoint);
+      return { schema, endpoint };
     } catch (error) {
-      return rejectWithValue((error as Error).message);
+      const fail: failData = {
+        endpoint,
+        error: (error as Error).message,
+      };
+      return rejectWithValue(fail);
     }
   }
 );
@@ -32,12 +42,14 @@ export interface SchemaStore {
   schema: string;
   error?: string;
   errorcounter: number;
+  endpoint: string;
 }
 
 const initialState: SchemaStore = {
   errorcounter: 0,
   schema: '',
   status: StoreStatus.idle,
+  endpoint: '',
 };
 
 export const schemaSlice = createSlice({
@@ -50,14 +62,17 @@ export const schemaSlice = createSlice({
         state.status = StoreStatus.loading;
       })
       .addCase(fetchSchema.fulfilled, (state, action) => {
+        state.endpoint = action.payload.endpoint;
         state.status = StoreStatus.succeeded;
         state.schema = action.payload.schema;
         state.error = undefined;
         state.errorcounter = 0;
       })
       .addCase(fetchSchema.rejected, (state, action) => {
+        const fail = action.payload as failData;
+        state.endpoint = fail.endpoint;
         state.status = StoreStatus.failed;
-        state.error = action.payload as string;
+        state.error = fail.error;
         state.errorcounter++;
       });
   },
