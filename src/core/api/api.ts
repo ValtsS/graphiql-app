@@ -1,18 +1,16 @@
-import { getIntrospectionQuery, printSchema, buildClientSchema } from 'graphql';
+import { getIntrospectionQuery, printSchema, buildClientSchema, IntrospectionQuery } from 'graphql';
+import { ApiClient } from './api-client';
 
-export async function getremoteSchema(url: string) {
-  const { data, errors } = await fetch(url, {
-    method: 'post',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      operationName: 'IntrospectionQuery',
-      query: getIntrospectionQuery(),
-    }),
-  }).then((res) => res.json());
+type ResponseData = {
+  data: IntrospectionQuery;
+};
 
-  if (errors) {
-    throw new Error('Error fetching remote schema!');
-  }
+export async function getremoteSchema(client: ApiClient, url: string) {
+  const body = JSON.stringify({
+    operationName: 'IntrospectionQuery',
+    query: getIntrospectionQuery(),
+  });
 
+  const { data } = await client.post<ResponseData>(url, body);
   return printSchema(buildClientSchema(data));
 }

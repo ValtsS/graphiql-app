@@ -1,32 +1,40 @@
 import { SDLDocumentBrowser } from '@/components/sdl-document-browser/sdl-document-browser';
-import { getremoteSchema } from '@/core/api/api';
+import { DefaultApiClient } from '@/core/api/api-client';
 import { DocumentBook, generateBook } from '@/core/docs';
-import React, { useCallback, useEffect, useState } from 'react';
+import { StoreStatus, fetchSchema, selectSchemaData } from '@/slices/schema/schema';
+import { useAppDispatch } from '@/store';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 export const DocumentPage = ({ url }: { url: string }) => {
   const [book, setBook] = useState<DocumentBook | undefined>();
 
-  const loadBook = useCallback(
-    async (url: string) => {
-      try {
-        const schema = await getremoteSchema(url);
-        const book = generateBook(schema);
-        setBook(book);
-      } catch (e) {
-        console.error('Add error handling', e);
-      }
-    },
+  const schemaState = useSelector(selectSchemaData);
 
-    [setBook]
-  );
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    loadBook(url);
-  }, [loadBook, url]);
+    dispatch(
+      fetchSchema({
+        client: new DefaultApiClient(),
+        endpoint: url,
+      })
+    )
+      .unwrap()
+      .catch((rejectedValueOrSerializedError) => {
+        console.error(rejectedValueOrSerializedError);
+      });
+  }, [url, dispatch]);
+
+  useEffect(() => {
+    if (schemaState.status == StoreStatus.succeeded) {
+      setBook(generateBook(schemaState.schema));
+    }
+  }, [schemaState]);
 
   return (
     <>
-      Test page
+      {schemaState.error}
       {book && <SDLDocumentBrowser book={book} root={'/'}></SDLDocumentBrowser>}
     </>
   );
