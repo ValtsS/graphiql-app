@@ -1,5 +1,5 @@
 import { ApiClient } from '@/core/api/api-client';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 type AppContextValue = {
   apiClient: ApiClient | null;
@@ -15,15 +15,11 @@ type AppContextProviderProps = {
 };
 
 export const AppContextProvider = ({ children, apiClient }: AppContextProviderProps) => {
-  return (
-    <AppContext.Provider
-      value={{
-        apiClient,
-      }}
-    >
-      {children}
-    </AppContext.Provider>
-  );
+  const clients = useMemo(() => {
+    return { apiClient };
+  }, [apiClient]);
+
+  return <AppContext.Provider value={clients}>{children}</AppContext.Provider>;
 };
 
 export function useAppContext() {
