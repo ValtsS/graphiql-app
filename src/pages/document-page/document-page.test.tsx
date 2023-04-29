@@ -1,4 +1,4 @@
-import { setupMockIntrospection } from '@/core/api/api-mock-helper';
+import { setupMockIntrospection } from '@/../__mocks__/api-mock-helper';
 import { fetchSchema } from '@/slices/schema/schema';
 import { setupStore } from '@/store';
 import { act, render, screen } from '@testing-library/react';

@@ -1,6 +1,6 @@
 import { SimpleMockApiClient } from '@/../__mocks__/SimpleMockApiClient';
 import { IntrospectionResponseData } from '@/core/api/api';
-import { MOCK_QUERY_EXPECTED, setupMockIntrospection } from '@/core/api/api-mock-helper';
+import { MOCK_QUERY_EXPECTED, setupMockIntrospection } from '@/../__mocks__/api-mock-helper';
 import { AppStore, setupStore } from '@/store';
 import fuzzball from 'fuzzball';
 import { StoreStatus, fetchSchema } from './schema';

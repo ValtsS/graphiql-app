@@ -6,7 +6,7 @@ import {
   graphql,
   getIntrospectionQuery,
 } from 'graphql';
-import { IntrospectionResponseData } from './api';
+import { IntrospectionResponseData } from '../src/core/api/api';
 
 export const MOCK_QUERY_EXPECTED = `type Query { myNumber: Int }`;
 

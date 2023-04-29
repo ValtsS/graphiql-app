@@ -1,4 +1,4 @@
-import { setupMockIntrospection } from '@/core/api/api-mock-helper';
+import { setupMockIntrospection } from '@/../__mocks__/api-mock-helper';
 import { renderHook } from '@testing-library/react';
 import React from 'react';
 import { AppContextProvider, useAppContext } from './app-context-provider';

@@ -1,4 +1,4 @@
-import { MOCK_QUERY_EXPECTED } from '@/core/api/api-mock-helper';
+import { MOCK_QUERY_EXPECTED } from '@/../__mocks__/api-mock-helper';
 import { DocumentBook, DocumentPage, DocumentPageHelper, generateBook } from '@/core/docs';
 import { act, render, screen } from '@testing-library/react';
 import React from 'react';
