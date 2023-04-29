@@ -33,7 +33,7 @@ describe('Book generator test', () => {
   it('should render query page', () => {
     renderPage('/query');
     const funcs = screen.getAllByTestId('doc_function');
-    expect(funcs.length).toBe(22);
+    expect(funcs.length).toBe(23);
   });
 
   it.each([
@@ -58,6 +58,7 @@ describe('Book generator test', () => {
     'getDefaults(//$$2##a:Int=4//$$3##b:Float=3.3//$$4##c:String="TestValue"//$$5##d:Boolean=false//$$6##e:Boolean=true//$$7##f:Int=NULL//$$8##g:UserRole=ADMIN):Int',
     'getDefaultsList(g:[UserRole]=[USER, GUEST]):Int',
     'getDefaultsObject(h:InputObject={name: "12345" , description: "5678"}):Int',
+    'getCurrentTime():DateTime',
   ])('check query function %s', (expected: string) => {
     renderPage('/query');
     const funcs = screen.getAllByTestId('doc_function');
@@ -199,6 +200,12 @@ describe('Book generator test', () => {
       ADMIN
       ////$$IJK##
       | USER | GUEST
+    `,
+    ],
+    [
+      'DateTime',
+      `//The \`DateTime\` scalar represents an ISO-8601 compliant date time type.
+      DateTime DateTime
     `,
     ],
   ])('check type presence %s', (typeName: string, expected: string) => {

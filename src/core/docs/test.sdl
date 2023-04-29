@@ -68,6 +68,7 @@ TestComment1
   getDefaultsObject( h:InputObject = { name: "12345", description: "5678" } ):Int
   getRoles: UserRole
 
+  getCurrentTime: DateTime
 }
 
 type LanguageSpecification {
@@ -185,3 +186,8 @@ input InputObject {
   name: String
   description: String
 }
+
+"""
+The `DateTime` scalar represents an ISO-8601 compliant date time type.
+"""
+scalar DateTime
