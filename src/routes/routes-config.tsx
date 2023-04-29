@@ -37,7 +37,7 @@ export const defaultRoutes: RouteConfig[] = [
   },
   {
     path: '/graphql',
-    element: <DocumentPage url="https://rickandmortyapi.com/graphql/" />,
+    element: <DocumentPage url="http://lyra.velns.org:8000/graphql/" />,
     displayInMenu: true,
     menuText: 'DocTest',
   },

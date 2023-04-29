@@ -196,3 +196,13 @@ scalar DateTime
 type Mutation {
   setMessage(message: String): String
 }
+
+type Subscription {
+  newComment(postId: ID!): Comment
+}
+
+type Comment {
+  id: ID!
+  text: String!
+  author: String!
+}

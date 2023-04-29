@@ -33,7 +33,7 @@ describe('Book generator test', () => {
     it.each([
       ['/query', 23],
       ['/mutate', 1],
-      ['/subscribe', 0],
+      ['/subscribe', 1],
     ])('should render %s page with correct functions', (path, expectedFuncCount) => {
       renderPage(path);
       const funcs = screen.queryAllByTestId('doc_function');
