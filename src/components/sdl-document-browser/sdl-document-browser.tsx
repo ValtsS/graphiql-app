@@ -10,9 +10,6 @@ interface Props {
 
 export const SDLDocumentBrowser = (props: Props) => {
   const [state, setState] = useState<string[]>([props.root]);
-
-  if (state.length == 0) setState([props.root]);
-
   const page = props.book[state[state.length - 1]];
 
   const content = useMemo(() => {
