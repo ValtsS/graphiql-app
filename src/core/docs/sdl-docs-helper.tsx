@@ -98,9 +98,6 @@ export function prepareTypePage(namedType: GraphQLNamedType, uuid: string): Docu
         DocumentPageHelper.pushLinkToPage(page, node.name.value, node.name.value);
         break;
       case Kind.OBJECT_TYPE_DEFINITION:
-        DocumentPageHelper.pushText(page, node.name.value, true);
-        node.fields?.forEach((f) => pushTypeText(page, f));
-        break;
       case Kind.INTERFACE_TYPE_DEFINITION:
       case Kind.INPUT_OBJECT_TYPE_DEFINITION:
         DocumentPageHelper.pushText(page, node.name.value, true);
