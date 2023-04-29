@@ -16,6 +16,7 @@ export const SDLDocumentBrowser = (props: Props) => {
   const page = props.book[state[state.length - 1]];
 
   const content = useMemo(() => {
+    if (!page?.uuid) return null;
     const c = new DocumentContent(page.uuid);
     c.parts = page.parts;
     return c;
@@ -43,7 +44,8 @@ export const SDLDocumentBrowser = (props: Props) => {
       <button disabled={!backAvailable} onClick={goBack}>
         Back
       </button>
-      <SDLDocument content={content} onClick={navigate}></SDLDocument>
+      {content && <SDLDocument content={content} onClick={navigate}></SDLDocument>}
+      {!content && <>Content not found</>}
     </Box>
   );
 };

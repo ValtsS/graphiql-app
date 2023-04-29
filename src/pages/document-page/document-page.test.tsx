@@ -4,7 +4,7 @@ import { setupStore } from '@/store';
 import { act, render, screen } from '@testing-library/react';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { DocumentPage } from './document-page';
+import { DocumentPageComponent } from './document-page';
 
 describe('Document page component', () => {
   it('should display root page and back button', async () => {
@@ -14,7 +14,7 @@ describe('Document page component', () => {
 
     render(
       <Provider store={store}>
-        <DocumentPage />
+        <DocumentPageComponent />
       </Provider>
     );
 
@@ -32,7 +32,7 @@ describe('Document page component', () => {
 
     render(
       <Provider store={store}>
-        <DocumentPage />
+        <DocumentPageComponent />
       </Provider>
     );
 
@@ -52,7 +52,7 @@ describe('Document page component', () => {
 
     render(
       <Provider store={store}>
-        <DocumentPage />
+        <DocumentPageComponent />
       </Provider>
     );
 

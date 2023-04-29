@@ -6,7 +6,7 @@ import { useAppDispatch } from '@/store';
 import { Container, Grid } from '@mui/material';
 import React, { ReactElement, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { DocumentPage } from '../document-page/document-page';
+import { DocumentPageComponent } from '../document-page/document-page';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
@@ -35,7 +35,7 @@ export const Main = (): ReactElement => {
       </Grid>
       <Grid item xs={12}>
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-          <DocumentPage />
+          <DocumentPageComponent />
         </Grid>
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
           Query

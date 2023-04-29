@@ -1,9 +1,8 @@
 import { MOCK_QUERY_EXPECTED } from '@/core/api/api-mock-helper';
-import { generateBook } from '@/core/docs';
-import { render, screen } from '@testing-library/react';
+import { DocumentBook, DocumentPage, DocumentPageHelper, generateBook } from '@/core/docs';
+import { act, render, screen } from '@testing-library/react';
 import React from 'react';
 import { SDLDocumentBrowser } from './sdl-document-browser';
-import { scryRenderedComponentsWithType } from 'react-dom/test-utils';
 
 describe('Document browser', () => {
   it('should render / ', () => {
@@ -20,6 +19,23 @@ describe('Document browser', () => {
     expect(
       functions.filter((e) => e.textContent?.trim() == 'myNumber():Int').length
     ).toBeGreaterThan(0);
+  });
+
+  it('should not fail with bad links', () => {
+    const book: DocumentBook = {};
+    const badpage: DocumentPage = {
+      uuid: '/',
+      parts: [],
+    };
+
+    DocumentPageHelper.pushLinkToPage(badpage, 'AAAA', 'BadLink');
+    book['/'] = badpage;
+    render(<SDLDocumentBrowser book={book} root={'/'}></SDLDocumentBrowser>);
+
+    const link = screen.getByRole('link');
+    expect(link).toBeVisible();
+    act(() => link.click());
+    expect(screen.getByText('Content not found')).toBeVisible();
   });
 
   function renderPage(root: string) {

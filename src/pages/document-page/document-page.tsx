@@ -4,7 +4,7 @@ import { StoreStatus, selectSchemaData } from '@/slices/schema/schema';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-export const DocumentPage = () => {
+export const DocumentPageComponent = () => {
   const [book, setBook] = useState<DocumentBook | undefined>();
 
   const schemaState = useSelector(selectSchemaData);
