@@ -29,11 +29,16 @@ describe('Book generator test', () => {
     expect(screen.getByText('Mutations')).toHaveAttribute('href');
     expect(screen.getByText('Subscriptions')).toHaveAttribute('href');
   });
-
-  it('should render query page', () => {
-    renderPage('/query');
-    const funcs = screen.getAllByTestId('doc_function');
-    expect(funcs.length).toBe(23);
+  describe('API documentation pages', () => {
+    it.each([
+      ['/query', 23],
+      ['/mutate', 1],
+      ['/subscribe', 0],
+    ])('should render %s page with correct functions', (path, expectedFuncCount) => {
+      renderPage(path);
+      const funcs = screen.queryAllByTestId('doc_function');
+      expect(funcs.length).toBe(expectedFuncCount);
+    });
   });
 
   it.each([
