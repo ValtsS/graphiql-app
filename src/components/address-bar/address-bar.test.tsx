@@ -1,19 +1,15 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent, screen, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { AddressBar } from './address-bar';
 import { setupStore } from '@/store';
+import { waitRender } from '@/../__mocks__/test-utils';
 
 describe('AddressBar component', () => {
   const testURL = 'https://new.endpoint.com';
 
   it('should change the endpoint when the Load button is clicked', () => {
-    const store = setupStore();
-    render(
-      <Provider store={store}>
-        <AddressBar />
-      </Provider>
-    );
+    const store = renderDefault();
 
     const endpointInput = screen.getByRole('textbox');
     fireEvent.change(endpointInput, { target: { value: testURL } });
@@ -24,12 +20,7 @@ describe('AddressBar component', () => {
   });
 
   it('should change the endpoint when Enter key is pressed', () => {
-    const store = setupStore();
-    render(
-      <Provider store={store}>
-        <AddressBar />
-      </Provider>
-    );
+    const store = renderDefault();
 
     const endpointInput = screen.getByRole('textbox');
     fireEvent.change(endpointInput, { target: { value: testURL } });
@@ -38,4 +29,14 @@ describe('AddressBar component', () => {
 
     expect(store.getState().main.endpoint).toBe(testURL);
   });
+
+  function renderDefault() {
+    const store = setupStore();
+    render(
+      <Provider store={store}>
+        <AddressBar />
+      </Provider>
+    );
+    return store;
+  }
 });
