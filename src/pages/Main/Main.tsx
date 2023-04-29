@@ -1,5 +1,5 @@
 import { AddressBar } from '@/components/address-bar/address-bar';
-import { DefaultApiClient } from '@/core/api/api-client';
+import { useAppContext } from '@/provider/app-context-provider/app-context-provider';
 import { selectMainData } from '@/slices/main/mainSlice';
 import { fetchSchema } from '@/slices/schema/schema';
 import { useAppDispatch } from '@/store';
@@ -12,12 +12,13 @@ export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
 
   const mainState = useSelector(selectMainData);
+  const { apiClient } = useAppContext();
 
   useEffect(() => {
-    if (mainState.endpoint.length > 0)
+    if (mainState.endpoint.length > 0 && apiClient)
       dispatch(
         fetchSchema({
-          client: new DefaultApiClient(),
+          client: apiClient,
           endpoint: mainState.endpoint,
         })
       )
@@ -25,7 +26,7 @@ export const Main = (): ReactElement => {
         .catch((rejectedValueOrSerializedError) => {
           console.error('caughtrejected=', rejectedValueOrSerializedError);
         });
-  }, [mainState, dispatch]);
+  }, [mainState, dispatch, apiClient]);
 
   return (
     <Container>

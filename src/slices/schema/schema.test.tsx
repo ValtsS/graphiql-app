@@ -1,17 +1,9 @@
-import { AppStore, setupStore } from '@/store';
-import { waitFor } from '@testing-library/react';
-import { StoreStatus, fetchSchema } from './schema';
 import { SimpleMockApiClient } from '@/../__mocks__/SimpleMockApiClient';
 import { IntrospectionResponseData } from '@/core/api/api';
-import {
-  GraphQLSchema,
-  GraphQLObjectType,
-  graphql,
-  getIntrospectionQuery,
-  GraphQLInt,
-} from 'graphql';
 import { MOCK_QUERY_EXPECTED, setupMockIntrospection } from '@/core/api/api-mock-helper';
+import { AppStore, setupStore } from '@/store';
 import fuzzball from 'fuzzball';
+import { StoreStatus, fetchSchema } from './schema';
 
 describe('schemaSlice', () => {
   let store: AppStore;
