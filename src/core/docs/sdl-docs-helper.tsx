@@ -13,7 +13,6 @@ import React from 'react';
 import { Box } from '@mui/material';
 
 export function handleUnion(node: UnionTypeDefinitionNode, page: DocumentPage) {
-  if (node.description) DocumentPageHelper.pushComment(page, node.description?.value);
   DocumentPageHelper.pushText(page, node.name.value);
   DocumentPageHelper.pushBreak(page);
 
@@ -24,7 +23,6 @@ export function handleUnion(node: UnionTypeDefinitionNode, page: DocumentPage) {
 }
 
 export function handleEnumeration(node: EnumTypeDefinitionNode, page: DocumentPage) {
-  if (node.description) DocumentPageHelper.pushComment(page, node.description?.value);
   DocumentPageHelper.pushText(page, `${node.name.value} enum`, true);
   node.values?.forEach((val, i) => {
     if (val.description) DocumentPageHelper.pushComment(page, val.description?.value);
@@ -87,7 +85,7 @@ export function prepareTypePage(namedType: GraphQLNamedType, uuid: string): Docu
     parts: [],
   };
 
-  if (namedType.description) DocumentPageHelper.pushText(page, namedType.description, true);
+  if (namedType.description) DocumentPageHelper.pushComment(page, namedType.description);
 
   if (namedType?.astNode) {
     const node = namedType?.astNode;

@@ -55,7 +55,7 @@ describe('Book generator test', () => {
     'getUnionTypes():[ObjectType]',
     'getDirectives():[Directive]',
     'getRoles():UserRole',
-    'getDefaults(a:Int=4b:Float=3.3c:String="TestValue"d:Boolean=falsee:Boolean=truef:Int=NULLg:UserRole=ADMIN):Int',
+    'getDefaults(//$$2##a:Int=4//$$3##b:Float=3.3//$$4##c:String="TestValue"//$$5##d:Boolean=false//$$6##e:Boolean=true//$$7##f:Int=NULL//$$8##g:UserRole=ADMIN):Int',
     'getDefaultsList(g:[UserRole]=[USER, GUEST]):Int',
     'getDefaultsObject(h:InputObject={name: "12345" , description: "5678"}):Int',
   ])('check query function %s', (expected: string) => {
@@ -67,7 +67,7 @@ describe('Book generator test', () => {
   it('should render comments in query', () => {
     renderPage('/query');
     const funcs = screen.getAllByTestId('doc_comment');
-    expect(funcs.length).toBe(1);
+    expect(funcs.length).toBe(8);
   });
 
   it.each([
@@ -172,7 +172,8 @@ describe('Book generator test', () => {
     ],
     [
       'Type',
-      `Type
+      `//$$11TESTCOMMENT##
+      Type
       ScalarType | ObjectType | InputType | EnumType | InterfaceType | UnionType | ListType`,
     ],
     [
@@ -192,8 +193,12 @@ describe('Book generator test', () => {
     ],
     [
       'UserRole',
-      `UserRole enum
-      ADMIN |USER | GUEST
+      `////$$ABC##
+      UserRole enum
+      ////$$FGH##
+      ADMIN
+      ////$$IJK##
+      | USER | GUEST
     `,
     ],
   ])('check type presence %s', (typeName: string, expected: string) => {
