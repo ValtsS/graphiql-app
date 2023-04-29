@@ -12,7 +12,7 @@ describe('Book generator test', () => {
 
   beforeAll(() => {
     const currentPath = path.resolve(__dirname);
-    const testSchema = fs.readFileSync(path.join(currentPath, 'test.sdl'));
+    const testSchema = fs.readFileSync(path.join(currentPath, '../../../__mocks__', 'test.sdl'));
     book = generateBook(testSchema.toString());
   });
 
