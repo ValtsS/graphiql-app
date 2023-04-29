@@ -1,5 +1,8 @@
 type Query {
   # Query types
+"""
+TestComment1
+"""
   getLanguageSpecification: LanguageSpecification
   getGraphQLSchema: GraphQLSchema
 

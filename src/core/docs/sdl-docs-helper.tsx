@@ -138,8 +138,6 @@ export function processFunction(f: FieldDefinitionNode, parent: DocumentPage) {
     parts: [],
   };
 
-  const desc = f.description?.value;
-  if (desc) DocumentPageHelper.pushComment(inner, desc);
   const name = f.name.value;
 
   DocumentPageHelper.pushFunction(inner, name);
@@ -167,6 +165,9 @@ export function processFunction(f: FieldDefinitionNode, parent: DocumentPage) {
   DocumentPageHelper.pushBreak(inner);
 
   const doc = renderParts(parent, inner);
+
+  const desc = f.description?.value;
+  if (desc) DocumentPageHelper.pushComment(parent, desc);
 
   DocumentPageHelper.pushPart(parent, {
     kind: DocumentPartKind.Regular,

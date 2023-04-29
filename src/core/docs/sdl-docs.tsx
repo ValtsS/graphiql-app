@@ -78,7 +78,7 @@ export class DocumentPageHelper {
     const partName: DocumentPart = {
       kind: DocumentPartKind.Regular,
       text: () => (
-        <Typography sx={{ color: COLOR_COMMENT }}>
+        <Typography sx={{ color: COLOR_COMMENT }} data-testid={'doc_comment'}>
           {'//'}
           {comment}
         </Typography>

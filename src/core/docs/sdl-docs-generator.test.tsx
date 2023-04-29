@@ -64,6 +64,12 @@ describe('Book generator test', () => {
     expect(funcs.some((val) => val.textContent == expected)).toBe(true);
   });
 
+  it('should render comments in query', () => {
+    renderPage('/query');
+    const funcs = screen.getAllByTestId('doc_comment');
+    expect(funcs.length).toBe(1);
+  });
+
   it.each([
     [
       'LanguageSpecification',
