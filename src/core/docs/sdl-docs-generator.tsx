@@ -1,33 +1,7 @@
-import {
-  GraphQLObjectType,
-  GraphQLSchema,
-  Kind,
-  buildASTSchema,
-  buildClientSchema,
-  getIntrospectionQuery,
-  parse,
-  printSchema,
-} from 'graphql';
+import { GraphQLObjectType, GraphQLSchema, Kind, buildASTSchema, parse } from 'graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { DocumentBook, DocumentPage, DocumentPageHelper } from './sdl-docs';
 import { prepareTypePage, processFunction } from './sdl-docs-helper';
-
-export async function getremoteSchema(url: string) {
-  const { data, errors } = await fetch(url, {
-    method: 'post',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      operationName: 'IntrospectionQuery',
-      query: getIntrospectionQuery(),
-    }),
-  }).then((res) => res.json());
-
-  if (errors) {
-    throw new Error('Error fetching remote schema!');
-  }
-
-  return printSchema(buildClientSchema(data));
-}
 
 export function generateBook(schema: string): DocumentBook {
   const book: DocumentBook = {};
