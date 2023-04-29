@@ -1,4 +1,4 @@
-import React, { FormEvent, ReactElement } from 'react';
+import React, { FormEvent, ReactElement, useEffect, useState } from 'react';
 import {
   Button,
   Checkbox,
@@ -10,18 +10,40 @@ import {
   TextField,
   Link,
 } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import style from '../Registration/Registration.module.css';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, signInWithGoogle } from '../../firebase';
+import { signInWithEmailAndPassword } from '@firebase/auth';
 
 export const Authorization = (): ReactElement => {
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => e.preventDefault();
-  const handleSignUp = () => console.log('handleSignUp');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [user, loading, error] = useAuthState(auth);
+  const navigate = useNavigate();
+
+  // const handleSubmit = (e: FormEvent<HTMLFormElement>) => e.preventDefault();
+  // const handleSignUp = () => console.log('handleSignUp');
+
+  useEffect(() => {
+    if (loading) {
+      // maybe trigger a loading screen
+      return;
+    }
+    if (user) navigate('/');
+  }, [user, loading]);
+
   return (
     <>
       <Paper elevation={6} className={style.paper}>
         <Grid container>
           <Grid item md={6} xs={12} order={{ xs: 2, md: 1 }}>
-            <Box component="form" noValidate onSubmit={(e) => handleSubmit(e)} sx={{ p: '50px' }}>
+            <Box
+              component="form"
+              noValidate
+              // onSubmit={(e) => handleSubmit(e)}
+              sx={{ p: '50px' }}
+            >
               <Typography
                 variant="h4"
                 component="h1"
@@ -39,6 +61,8 @@ export const Authorization = (): ReactElement => {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
                 margin="normal"
@@ -49,6 +73,8 @@ export const Authorization = (): ReactElement => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
@@ -60,6 +86,8 @@ export const Authorization = (): ReactElement => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2, color: '#fff' }}
+                //add auth
+                onClick={() => signInWithEmailAndPassword(auth, email, password)}
               >
                 Sign in
               </Button>
@@ -114,7 +142,7 @@ export const Authorization = (): ReactElement => {
                   variant="outlined"
                   sx={{ color: 'white', border: '1px solid white', m: '50px 0' }}
                   fullWidth
-                  onClick={handleSignUp}
+                  // onClick={handleSignUp}
                 >
                   Sign Up
                 </Button>

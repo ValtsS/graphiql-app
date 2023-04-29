@@ -1,4 +1,4 @@
-import { AboutPage } from '@/pages/about-page/about-page';
+import { AboutPage } from '@/pages/About-page/About-page';
 import { Registration } from '@/pages/Registration/Registration';
 import { Authorization } from '@/pages/Authorization/Authorization';
 import { Main } from '@/pages';

@@ -1,13 +1,33 @@
-import React, { FormEvent, ReactElement } from 'react';
+import React, { FormEvent, ReactElement, useEffect, useState } from 'react';
 import { Button, Grid, Typography, Paper, Box, TextField, Link } from '@mui/material';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import { Link as RouterLink } from 'react-router-dom';
 import style from './Registration.module.css';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useNavigate } from 'react-router-dom';
+import { auth, registerWithEmailAndPassword } from '../../firebase';
 
 export const Registration = (): ReactElement => {
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => e.preventDefault();
+  // const handleSubmit = (e: FormEvent<HTMLFormElement>) => e.preventDefault();
   // const handleSubmit = (e: FormEvent<HTMLFormElement>) => console.log('handleSignUp');
-  const handleSignUp = () => console.log('handleSignUp');
+  // const handleSignUp = () => console.log('handleSignUp');
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [user, loading, error] = useAuthState(auth);
+  const navigate = useNavigate();
+  const register = () => {
+    if (!name) alert('Please enter name');
+    registerWithEmailAndPassword(name, email, password);
+  };
+  useEffect(() => {
+    if (loading) return;
+    if (user) navigate('/', { replace: true });
+    console.log('userReg', user);
+    // replace("/dashboard");
+  }, [user, loading]);
+
   return (
     <>
       <Paper className={style.paper} elevation={6}>
@@ -46,7 +66,7 @@ export const Registration = (): ReactElement => {
                   variant="outlined"
                   sx={{ color: 'white', border: '1px solid white', m: '50px 0' }}
                   fullWidth
-                  onClick={handleSignUp}
+                  // onClick={handleSignUp}
                 >
                   Sign In
                 </Button>
@@ -55,7 +75,12 @@ export const Registration = (): ReactElement => {
           </Grid>
 
           <Grid item md={6} xs={12} order={{ xs: 2, md: 2 }}>
-            <Box component="form" onSubmit={(e) => handleSubmit(e)} sx={{ p: '50px' }} aria-label="form">
+            <Box
+              component="form"
+              // onSubmit={(e) => handleSubmit(e)}
+              sx={{ p: '50px' }}
+              aria-label="form"
+            >
               <Typography
                 variant="h4"
                 component="h1"
@@ -72,6 +97,8 @@ export const Registration = (): ReactElement => {
                 label={'Name'}
                 name="userName"
                 aria-label="textbox-name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
               <input
                 accept="image/*"
@@ -82,7 +109,8 @@ export const Registration = (): ReactElement => {
               />
               <label htmlFor="raised-button-file">
                 <Button component="span" variant="outlined">
-                  Upload your avatar&nbsp;&nbsp;<CloudUploadOutlinedIcon />
+                  Upload your avatar&nbsp;&nbsp;
+                  <CloudUploadOutlinedIcon />
                 </Button>
               </label>
               <TextField
@@ -93,6 +121,8 @@ export const Registration = (): ReactElement => {
                 label={'Email Address'}
                 name="email"
                 aria-label="textbox-email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
                 margin="normal"
@@ -103,12 +133,15 @@ export const Registration = (): ReactElement => {
                 type="password"
                 id="password"
                 aria-label="textbox-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2, color: '#fff' }}
+                onClick={register}
               >
                 Sign Up
               </Button>

@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { ErrorPage, unkErrorText } from './error-page';
+import { ErrorPage, unkErrorText } from './Error-page';
 
 describe('Error page component', () => {
   it('should render without crash', async () => {
