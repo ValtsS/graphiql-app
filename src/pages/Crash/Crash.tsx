@@ -7,7 +7,7 @@ interface ErrorPageProps {
 
 export const unkErrorText = 'Unknown error';
 
-export const Error = (props: ErrorPageProps): ReactElement => {
+export const Crash = (props: ErrorPageProps): ReactElement => {
   return (
     <>
       <div>
