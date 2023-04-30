@@ -1,7 +1,5 @@
+import { Authorization, Main, Registration } from '@/pages';
 import { AboutPage } from '@/pages/about-page/about-page';
-import { Registration } from '@/pages/Registration/Registration';
-import { Authorization } from '@/pages/Authorization/Authorization';
-import { Main } from '@/pages';
 import React from 'react';
 
 export interface RouteConfig {
