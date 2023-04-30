@@ -134,6 +134,7 @@ export const Registration = (): ReactElement => {
                 id="password"
                 aria-label="textbox-password"
                 value={password}
+                inputProps={{ pattern: '(?=.*d)(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}' }}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <Button
