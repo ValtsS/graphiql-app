@@ -12,13 +12,13 @@
   flex-direction: column;
 }
 .query {
-  flex: 1 1 auto;
+  flex: 1 1 70%;
   resize: vertical;
   overflow: hidden;
   width: 100%;
 }
 .variable {
-  flex: 1 1 auto;
+  flex: 1 1 30%;
   width: 100%;
 }
 

@@ -32,41 +32,37 @@ export const Main = (): ReactElement => {
   }, [mainState, dispatch, apiClient]);
 
   return (
-    <>
-      {/* <Container>
-        <Grid item xs={12}>
-          <AddressBar />
+    <Container>
+      <Grid item xs={12}>
+        <AddressBar />
+      </Grid>
+      <Grid item xs={12}>
+        <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
+          <DocumentPageComponent />
         </Grid>
-        <Grid item xs={12}>
-          <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-            <DocumentPageComponent />
-          </Grid>
-          <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-            Query
-          </Grid>
-          <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-            result
-          </Grid>
+        <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
+          Query
         </Grid>
-      </Container> */}
-      <Container>
-        <div className={styles.editorsContainer}>
-          <div className={styles.editors}>
-            <div className={styles.mainEditor}>
-              <div className={styles.query}>
-                <QueryEditor />
-              </div>
-              <div className={styles.variable}>
-                <QueryEditor />
-              </div>
-            </div>
-            <div className={styles.response}>
+        <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
+          result
+        </Grid>
+      </Grid>
+      <div className={styles.editorsContainer}>
+        <div className={styles.editors}>
+          <div className={styles.mainEditor}>
+            <div className={styles.query}>
               <QueryEditor />
             </div>
+            <div className={styles.variable}>
+              <VariablesEditor />
+            </div>
+          </div>
+          <div className={styles.response}>
+            <ResponseEditor />
           </div>
         </div>
-      </Container>
-    </>
+      </div>
+    </Container>
   );
 };
 {
