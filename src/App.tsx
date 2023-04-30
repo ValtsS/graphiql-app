@@ -1,4 +1,4 @@
-import { ErrorPage } from '@/pages';
+import { Error } from '@/pages';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';
@@ -35,7 +35,7 @@ class App extends React.Component<AppProps, AppState> {
       return (
         <>
           <BrowserRouter>
-            <ErrorPage error={this.state.error} />
+            <Error error={this.state.error} />
           </BrowserRouter>
         </>
       );

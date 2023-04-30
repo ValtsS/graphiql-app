@@ -1,17 +1,17 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { ErrorPage, unkErrorText } from './error-page';
+import { Error, unkErrorText } from './Error';
 
 describe('Error page component', () => {
   it('should render without crash', async () => {
     const text = 'Test error 78123';
 
-    const testError = new Error(text);
+    const testError = new global.Error(text);
 
     render(
       <BrowserRouter>
-        <ErrorPage error={testError} />
+        <Error error={testError} />
       </BrowserRouter>
     );
 
@@ -23,7 +23,7 @@ describe('Error page component', () => {
   it('should render with undefined error', async () => {
     render(
       <BrowserRouter>
-        <ErrorPage error={null} />
+        <Error error={null} />
       </BrowserRouter>
     );
 

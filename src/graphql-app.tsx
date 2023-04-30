@@ -1,7 +1,7 @@
 import { RouteConfig } from '@/routes';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { ErrorPage } from '@/pages';
+import { Error } from '@/pages';
 import { RootLayout } from './routes/root-layout';
 import {
   Experimental_CssVarsProvider as CssVarsProvider,
@@ -40,7 +40,7 @@ export const GraphQLApp = (props: Props) => {
               />
             ))}
 
-            <Route path="*" element={<ErrorPage error={new Error('Error 404')} />} />
+            <Route path="*" element={<Error error={new Error('Error 404')} />} />
           </Routes>
         </BrowserRouter>
       </CssVarsProvider>
