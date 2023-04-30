@@ -1,8 +1,5 @@
+import { Authorization, Main, Registration } from '@/pages';
 import { AboutPage } from '@/pages/about-page/about-page';
-import { Registration } from '@/pages/Registration/Registration';
-import { Authorization } from '@/pages/Authorization/Authorization';
-import { GraphqlPage } from '@/pages/graphql-page/graphql-page';
-import { Main } from '@/pages';
 import React from 'react';
 
 export interface RouteConfig {
@@ -36,11 +33,5 @@ export const defaultRoutes: RouteConfig[] = [
     element: <AboutPage />,
     displayInMenu: true,
     menuText: 'About',
-  },
-  {
-    path: '/graphql',
-    element: <GraphqlPage />,
-    displayInMenu: true,
-    menuText: 'GraphqlPage',
   },
 ];

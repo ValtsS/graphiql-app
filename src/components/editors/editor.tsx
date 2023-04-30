@@ -13,6 +13,7 @@ export const CustomEditor = () => {
   return (
     <Editor
       height="100%"
+      width="100%"
       theme="vs-dark"
       defaultLanguage="graphql"
       defaultValue="// some comment"
