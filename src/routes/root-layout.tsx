@@ -1,5 +1,4 @@
-import { Header } from '@/components';
-import { useNotifications } from '@/provider/notifications-provider';
+import { Header, Toaster } from '@/components';
 import React, { ReactElement } from 'react';
 
 interface RootLayoutProps {
@@ -7,17 +6,10 @@ interface RootLayoutProps {
 }
 
 export const RootLayout = (props: RootLayoutProps): ReactElement => {
-  const { state: notify } = useNotifications();
-
   return (
     <>
       <Header />
-      {notify && (
-        <>
-          {notify.message}
-          <>{notify.error}</>
-        </>
-      )}
+      <Toaster />
       <main>{props.children}</main>
       <footer></footer>
     </>
