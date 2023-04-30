@@ -1,7 +1,4 @@
-import { AboutPage } from '@/pages/About-page/About-page';
-import { Registration } from '@/pages/Registration/Registration';
-import { Authorization } from '@/pages/Authorization/Authorization';
-import { Main } from '@/pages';
+import { AboutPage, Authorization, Main, Registration } from '@/pages';
 import React from 'react';
 
 export interface RouteConfig {
