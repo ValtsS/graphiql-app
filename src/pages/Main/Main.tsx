@@ -49,14 +49,14 @@ export const Main = (): ReactElement => {
       </Grid>
       <div className={styles.editorsContainer}>
         <div className={styles.editors}>
-          <div className={styles.mainEditor}>
+          {/* <div className={styles.mainEditor}>
             <div className={styles.query}>
               <QueryEditor />
             </div>
             <div className={styles.variable}>
               <VariablesEditor />
             </div>
-          </div>
+          </div> */}
           <div className={styles.response}>
             <ResponseEditor />
           </div>
