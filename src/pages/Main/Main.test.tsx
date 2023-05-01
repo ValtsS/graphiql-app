@@ -11,7 +11,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Main } from './Main';
 
 describe('Main page component', () => {
-  const testURL = 'http://dummy/';
+  const testURL = 'https://dummy/';
 
   it('should render and have change button', async () => {
     const store = await defaultRender();
