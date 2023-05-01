@@ -39,7 +39,7 @@ export const Main = (): ReactElement => {
   };
 
   const changeEndpointClick = () => {
-    showDialog(<AddressBar onChanged={onEndPointChange} />, {});
+    showDialog(<AddressBar onChanged={onEndPointChange} initialAddress={mainState.endpoint} />, {});
   };
 
   return (
