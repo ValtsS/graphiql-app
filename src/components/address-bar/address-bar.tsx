@@ -31,6 +31,7 @@ export const AddressBar = (props: AddressBarProps) => {
         fullWidth={true}
         onChange={onAddrChange}
         onKeyDown={handleKeyPress}
+        inputProps={{ 'data-testid': 'addressbar-input' }}
       />
       <Button variant="contained" size="medium" onClick={() => change()}>
         Apply
