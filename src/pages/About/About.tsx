@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const AboutPage = () => {
+export const About = () => {
   return <>About page</>;
 };
