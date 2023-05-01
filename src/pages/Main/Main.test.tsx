@@ -44,6 +44,8 @@ describe('Main page component', () => {
 
     const state = store.getState();
     expect(state.main.endpoint).toBe(testURL);
+    expect(screen.getByText(state.main.endpoint));
+
   });
 
   async function defaultRender() {
