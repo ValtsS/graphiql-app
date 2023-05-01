@@ -1,5 +1,4 @@
-import { mainReducer } from '@/slices/main/mainSlice';
-import { schemaReducer } from '@/slices/schema/schema';
+import { mainReducer, schemaReducer } from '@/slices';
 import { PreloadedState, combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 

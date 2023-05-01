@@ -1,11 +1,11 @@
 import { AddressBar } from '@/components';
 import { useModalDialog } from '@/provider/modal-dialog';
-import { changeEndpoint, selectMainData } from '@/slices/main/mainSlice';
 import { useAppDispatch } from '@/store';
 import { Button, Container, Grid, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { DocumentPageComponent } from '../document-page/document-page';
+import { changeEndpoint, selectMainData } from '@/slices';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();

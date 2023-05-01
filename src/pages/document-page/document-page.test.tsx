@@ -1,10 +1,10 @@
 import { setupMockIntrospection } from '@/../__mocks__/api-mock-helper';
-import { fetchSchema } from '@/slices/schema/schema';
 import { setupStore } from '@/store';
 import { act, render, screen } from '@testing-library/react';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { DocumentPageComponent } from './document-page';
+import { fetchSchema } from '@/slices';
 
 describe('Document page component', () => {
   it('should display root page and back button', async () => {

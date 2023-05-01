@@ -10,9 +10,8 @@ import {
 import { useAppContext } from '@/provider';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { selectMainData } from './slices/main/mainSlice';
 import { useAppDispatch } from './store';
-import { fetchSchema } from './slices/schema/schema';
+import { selectMainData, fetchSchema } from './slices';
 
 interface Props {
   routesConfig: RouteConfig[];
