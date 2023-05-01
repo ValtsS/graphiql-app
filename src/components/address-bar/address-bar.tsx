@@ -1,18 +1,15 @@
-import { changeEndpoint, selectMainData } from '@/slices/main/mainSlice';
-import { useAppDispatch } from '@/store';
+import { selectMainData } from '@/slices/main/mainSlice';
 import { Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-export const AddressBar = ({ onChanged }: { onChanged?: () => void }) => {
-  const dispatch = useAppDispatch();
+export const AddressBar = ({ onChanged }: { onChanged?: (newendpoint: string) => void }) => {
   const mainState = useSelector(selectMainData);
 
   const [currentAddr, setAddr] = useState<string>(mainState.endpoint);
 
   function change() {
-    dispatch(changeEndpoint({ endpoint: currentAddr }));
-    if (onChanged) onChanged();
+    if (onChanged) onChanged(currentAddr);
   }
 
   const onAddrChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +32,7 @@ export const AddressBar = ({ onChanged }: { onChanged?: () => void }) => {
         onKeyDown={handleKeyPress}
       />
       <Button variant="contained" size="medium" onClick={() => change()}>
-        Load
+        Change
       </Button>
     </>
   );

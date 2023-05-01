@@ -1,6 +1,6 @@
 import { useAppContext } from '@/provider/app-context-provider/app-context-provider';
 import { useModalDialog } from '@/provider/modal-dialog';
-import { selectMainData } from '@/slices/main/mainSlice';
+import { changeEndpoint, selectMainData } from '@/slices/main/mainSlice';
 import { fetchSchema } from '@/slices/schema/schema';
 import { useAppDispatch } from '@/store';
 import { Button, Container, Grid, Typography } from '@mui/material';
@@ -33,14 +33,19 @@ export const Main = (): ReactElement => {
         });
   }, [mainState, dispatch, apiClient]);
 
-  const changeEndpoint = () => {
-    showDialog(<AddressBar onChanged={hide} />, {});
+  const onEndPointChange = (newendpoint: string) => {
+    hide();
+    dispatch(changeEndpoint({ endpoint: newendpoint }));
+  };
+
+  const changeEndpointClick = () => {
+    showDialog(<AddressBar onChanged={onEndPointChange} />, {});
   };
 
   return (
     <Container>
       <Grid item xs={12}>
-        <Button variant="contained" size="medium" onClick={changeEndpoint}>
+        <Button variant="contained" size="medium" onClick={changeEndpointClick}>
           Change Endpoint
         </Button>
       </Grid>
