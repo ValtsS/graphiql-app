@@ -1,37 +1,17 @@
-import { useAppContext } from '@/provider/app-context-provider/app-context-provider';
+import { AddressBar } from '@/components';
 import { useModalDialog } from '@/provider/modal-dialog';
 import { changeEndpoint, selectMainData } from '@/slices/main/mainSlice';
-import { fetchSchema } from '@/slices/schema/schema';
 import { useAppDispatch } from '@/store';
 import { Button, Container, Grid, Typography } from '@mui/material';
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { DocumentPageComponent } from '../document-page/document-page';
-import { AddressBar } from '@/components';
-import { toast } from 'react-toastify';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
   const { hide, showDialog } = useModalDialog();
 
   const mainState = useSelector(selectMainData);
-  const { apiClient } = useAppContext();
-
-  const notifyError = (message: string) => toast(message, { type: 'error' });
-
-  useEffect(() => {
-    if (mainState.endpoint.length > 0 && apiClient)
-      dispatch(
-        fetchSchema({
-          client: apiClient,
-          endpoint: mainState.endpoint,
-        })
-      )
-        .unwrap()
-        .catch((rejectedValueOrSerializedError) => {
-          notifyError(rejectedValueOrSerializedError);
-        });
-  }, [mainState, dispatch, apiClient]);
 
   const onEndPointChange = (newendpoint: string) => {
     hide();
