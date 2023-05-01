@@ -8,6 +8,7 @@ export interface ApiClient {
 export class DefaultApiClient implements ApiClient {
   async get<T>(url: string, options?: RequestInit): Promise<T> {
     const response = await fetch(url, options);
+    this.checkForErrors(response);
     const data = await response.json();
     return data as T;
   }
@@ -19,6 +20,7 @@ export class DefaultApiClient implements ApiClient {
       headers: { 'Content-Type': 'application/json' },
       ...options,
     });
+    this.checkForErrors(response);
     const data = await response.json();
     return data as T;
   }
@@ -30,6 +32,7 @@ export class DefaultApiClient implements ApiClient {
       headers: { 'Content-Type': 'application/json' },
       ...options,
     });
+    this.checkForErrors(response);
     const data = await response.json();
     return data as T;
   }
@@ -40,7 +43,13 @@ export class DefaultApiClient implements ApiClient {
       headers: { 'Content-Type': 'application/json' },
       ...options,
     });
+    this.checkForErrors(response);
     const data = await response.json();
     return data as T;
+  }
+  private checkForErrors(response: Response) {
+    if (!response.ok) {
+      throw new Error(`POST failed: ${response.statusText}`);
+    }
   }
 }

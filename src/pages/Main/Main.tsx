@@ -1,4 +1,3 @@
-import { AddressBar } from '@/components/address-bar/address-bar';
 import { useAppContext } from '@/provider/app-context-provider/app-context-provider';
 import { selectMainData } from '@/slices/main/mainSlice';
 import { fetchSchema } from '@/slices/schema/schema';
@@ -7,12 +6,16 @@ import { Container, Grid } from '@mui/material';
 import React, { ReactElement, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { DocumentPageComponent } from '../document-page/document-page';
+import { AddressBar } from '@/components';
+import { toast } from 'react-toastify';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
 
   const mainState = useSelector(selectMainData);
   const { apiClient } = useAppContext();
+
+  const notifyError = (message: string) => toast(message, { type: 'error' });
 
   useEffect(() => {
     if (mainState.endpoint.length > 0 && apiClient)
@@ -24,7 +27,7 @@ export const Main = (): ReactElement => {
       )
         .unwrap()
         .catch((rejectedValueOrSerializedError) => {
-          console.error('caughtrejected=', rejectedValueOrSerializedError);
+          notifyError(rejectedValueOrSerializedError);
         });
   }, [mainState, dispatch, apiClient]);
 
