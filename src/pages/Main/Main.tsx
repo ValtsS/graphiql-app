@@ -1,8 +1,9 @@
 import { useAppContext } from '@/provider/app-context-provider/app-context-provider';
+import { useModalDialog } from '@/provider/modal-dialog';
 import { selectMainData } from '@/slices/main/mainSlice';
 import { fetchSchema } from '@/slices/schema/schema';
 import { useAppDispatch } from '@/store';
-import { Container, Grid } from '@mui/material';
+import { Button, Container, Grid, Typography } from '@mui/material';
 import React, { ReactElement, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { DocumentPageComponent } from '../document-page/document-page';
@@ -11,6 +12,7 @@ import { toast } from 'react-toastify';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
+  const { hide, showDialog } = useModalDialog();
 
   const mainState = useSelector(selectMainData);
   const { apiClient } = useAppContext();
@@ -31,13 +33,20 @@ export const Main = (): ReactElement => {
         });
   }, [mainState, dispatch, apiClient]);
 
+  const changeEndpoint = () => {
+    showDialog(<AddressBar onChanged={hide} />, {});
+  };
+
   return (
     <Container>
       <Grid item xs={12}>
-        <AddressBar />
+        <Button variant="contained" size="medium" onClick={changeEndpoint}>
+          Change Endpoint
+        </Button>
       </Grid>
       <Grid item xs={12}>
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
+          <Typography variant="h6">{mainState.endpoint}</Typography>
           <DocumentPageComponent />
         </Grid>
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
