@@ -8,8 +8,7 @@ import React, { ReactElement, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { DocumentPageComponent } from '../document-page/document-page';
 import Grid from '@mui/material/Grid';
-import { QueryEditor, VariablesEditor, ResponseEditor } from '@/components/editors';
-import styles from './main.module.css';
+import EditorsBlock from '@/components/editorsBlock/editorsBlock';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
@@ -33,7 +32,7 @@ export const Main = (): ReactElement => {
 
   return (
     <Container>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <AddressBar />
       </Grid>
       <Grid item xs={12}>
@@ -46,37 +45,10 @@ export const Main = (): ReactElement => {
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
           result
         </Grid>
-      </Grid>
-      <div className={styles.editorsContainer}>
-        <div className={styles.editors}>
-          {/* <div className={styles.mainEditor}>
-            <div className={styles.query}>
-              <QueryEditor />
-            </div>
-            <div className={styles.variable}>
-              <VariablesEditor />
-            </div>
-          </div> */}
-          <div className={styles.response}>
-            <ResponseEditor />
-          </div>
-        </div>
-      </div>
+      </Grid> */}
+      <EditorsBlock />
     </Container>
   );
 };
 {
-  /* <Grid container>
-          <Grid item xs={12} md={6}>
-            <Grid item xs={12} md={6}>
-              <QueryEditor />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <QueryEditor />
-            </Grid>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <QueryEditor />
-          </Grid>
-        </Grid> */
 }

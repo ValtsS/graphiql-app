@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-import Editor from '@monaco-editor/react';
+import Editor, { loader } from '@monaco-editor/react';
 import * as monacoType from 'monaco-editor';
-import { customTheme } from './editorTheme';
-import { loader } from '@monaco-editor/react';
+import customTheme from './editorTheme';
 import autocomplete from './showAutocompletion';
 
 export const CustomEditor = () => {
@@ -19,38 +18,38 @@ export const CustomEditor = () => {
     //console.log('here is the current model value:', value);
   }
 
-  function handleEditorWillMount(monaco) {
-    autocomplete(monaco, {
-      query: {
-        character: { id: '' },
-        characters: {
-          page: '',
-          filter: '',
-        },
-        locations: {
-          page: '',
-          filter: '',
-        },
-        locationsByIds: {
-          ids: '',
-        },
-        episode: {
-          id: '',
-        },
-        episodes: {},
-      },
-      mutation: {},
-      subscription: {},
-    });
-  }
+  // function handleEditorWillMount(monaco) {
+  //   autocomplete(monaco, {
+  //     query: {
+  //       character: { id: '' },
+  //       characters: {
+  //         page: '',
+  //         filter: '',
+  //       },
+  //       locations: {
+  //         page: '',
+  //         filter: '',
+  //       },
+  //       locationsByIds: {
+  //         ids: '',
+  //       },
+  //       episode: {
+  //         id: '',
+  //       },
+  //       episodes: {},
+  //     },
+  //     mutation: {},
+  //     subscription: {},
+  //   });
+  // }
 
-  function handleEditorMount(editor) {
-    editor.onDidFocusEditorText(() => {
-      if (editor.getValue() === '') {
-        editor.trigger('', 'editor.action.triggerSuggest', {});
-      }
-    });
-  }
+  // function handleEditorMount(editor) {
+  //   editor.onDidFocusEditorText(() => {
+  //     if (editor.getValue() === '') {
+  //       editor.trigger('', 'editor.action.triggerSuggest', {});
+  //     }
+  //   });
+  // }
 
   return (
     <Editor
@@ -60,12 +59,13 @@ export const CustomEditor = () => {
       options={{
         minimap: { enabled: false },
         automaticLayout: true,
+        fontSize: 12,
       }}
       defaultLanguage="graphql"
       defaultValue=""
       onChange={handleEditorChange}
-      beforeMount={handleEditorWillMount}
-      onMount={handleEditorMount}
+      // beforeMount={handleEditorWillMount}
+      // onMount={handleEditorMount}
     />
   );
 };
