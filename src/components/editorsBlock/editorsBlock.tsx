@@ -1,12 +1,11 @@
-import React from 'react';
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { QueryEditor, VariablesEditor, ResponseEditor } from '@/components/editors';
 import styles from './editorsBlock.module.css';
 import Resizer from './resizer';
 
 const EditorsBlock = () => {
-  const leftSideRef = useRef(null);
-  const topSideRef = useRef(null);
+  const leftSideRef = useRef<HTMLDivElement>(null);
+  const topSideRef = useRef<HTMLDivElement>(null);
 
   const [leftSideWidth, setleftSideWidth] = useState('60%');
   const [topSideHeight, setTopSideHeight] = useState('70%');
