@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { QueryEditor, VariablesEditor, ResponseEditor } from '@/components/editors';
 import styles from './editorsBlock.module.css';
 import Resizer from './resizer';
+import CustomEditor from '../editor/editor';
 
 const EditorsBlock = () => {
   const leftSideRef = useRef<HTMLDivElement>(null);
@@ -15,7 +15,7 @@ const EditorsBlock = () => {
       <div className={styles.editors}>
         <div ref={leftSideRef} className={styles.mainEditor} style={{ width: leftSideWidth }}>
           <div ref={topSideRef} className={styles.editor} style={{ height: topSideHeight }}>
-            <QueryEditor />
+            <CustomEditor />
           </div>
           <Resizer
             changeSideRef={topSideRef}
@@ -23,12 +23,12 @@ const EditorsBlock = () => {
             axisVector={'height'}
           />
           <div className={`${styles.editor} ${styles.variable}`}>
-            <VariablesEditor />
+            <CustomEditor />
           </div>
         </div>
         <Resizer changeSideRef={leftSideRef} setSideSize={setleftSideWidth} axisVector={'width'} />
         <div className={`${styles.editor} ${styles.response}`}>
-          <ResponseEditor />
+          <CustomEditor />
         </div>
       </div>
     </div>

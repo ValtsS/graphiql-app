@@ -3,7 +3,7 @@ import Editor, { loader } from '@monaco-editor/react';
 import * as monacoType from 'monaco-editor';
 import customTheme from './editorTheme';
 
-export const CustomEditor = () => {
+const CustomEditor = () => {
   useEffect(() => {
     loader.init().then((monaco) => {
       monaco.editor.defineTheme('myTheme', customTheme as never);
@@ -19,7 +19,7 @@ export const CustomEditor = () => {
 
   return (
     <Editor
-      height="100%"
+      height="80%"
       width="100%"
       theme="myTheme"
       options={{
@@ -33,3 +33,5 @@ export const CustomEditor = () => {
     />
   );
 };
+
+export default CustomEditor;
