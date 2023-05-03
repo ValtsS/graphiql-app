@@ -1,5 +1,4 @@
 export * from './Main';
-export * from './About-page';
-export * from './Error-page';
+export * from './Crash';
 export * from './Authorization';
 export * from './Registration';

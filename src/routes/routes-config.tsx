@@ -1,4 +1,5 @@
-import { AboutPage, Authorization, Main, Registration } from '@/pages';
+import { Authorization, Main, Registration } from '@/pages';
+import { About } from '@/pages/About/About';
 import React from 'react';
 
 export interface RouteConfig {
@@ -29,7 +30,7 @@ export const defaultRoutes: RouteConfig[] = [
   },
   {
     path: '/about',
-    element: <AboutPage />,
+    element: <About />,
     displayInMenu: true,
     menuText: 'About',
   },

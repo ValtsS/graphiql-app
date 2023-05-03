@@ -1,40 +1,37 @@
-import { AddressBar } from '@/components/address-bar/address-bar';
-import { useAppContext } from '@/provider/app-context-provider/app-context-provider';
-import { selectMainData } from '@/slices/main/mainSlice';
-import { fetchSchema } from '@/slices/schema/schema';
+import { AddressBar } from '@/components';
+import { useModalDialog } from '@/provider/modal-dialog';
 import { useAppDispatch } from '@/store';
-import { Container, Grid } from '@mui/material';
-import React, { ReactElement, useEffect } from 'react';
+import { Button, Container, Grid, Typography } from '@mui/material';
+import React, { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { DocumentPageComponent } from '../document-page/document-page';
+import { changeEndpoint, selectMainData } from '@/slices';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
+  const { hide, showDialog } = useModalDialog();
 
   const mainState = useSelector(selectMainData);
-  const { apiClient } = useAppContext();
 
-  useEffect(() => {
-    if (mainState.endpoint.length > 0 && apiClient)
-      dispatch(
-        fetchSchema({
-          client: apiClient,
-          endpoint: mainState.endpoint,
-        })
-      )
-        .unwrap()
-        .catch((rejectedValueOrSerializedError) => {
-          console.error('caughtrejected=', rejectedValueOrSerializedError);
-        });
-  }, [mainState, dispatch, apiClient]);
+  const onEndPointChange = (newendpoint: string) => {
+    hide();
+    dispatch(changeEndpoint({ endpoint: newendpoint }));
+  };
+
+  const changeEndpointClick = () => {
+    showDialog(<AddressBar onChanged={onEndPointChange} initialAddress={mainState.endpoint} />, {});
+  };
 
   return (
     <Container>
       <Grid item xs={12}>
-        <AddressBar />
+        <Button variant="contained" size="medium" onClick={changeEndpointClick}>
+          Change Endpoint
+        </Button>
       </Grid>
       <Grid item xs={12}>
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
+          <Typography variant="h6">{mainState.endpoint}</Typography>
           <DocumentPageComponent />
         </Grid>
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
