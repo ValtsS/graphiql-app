@@ -1,15 +1,17 @@
 import { initializeApp } from 'firebase/app';
 import {
-  GoogleAuthProvider,
   getAuth,
-  signInWithPopup,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
+  updateProfile,
 } from 'firebase/auth';
-import { getFirestore, query, getDocs, collection, where, addDoc } from 'firebase/firestore';
+import { getFirestore, setDoc, doc } from 'firebase/firestore';
 // import { getAnalytics } from 'firebase/analytics';
+import { getStorage } from 'firebase/storage';
+import { toast } from 'react-toastify';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAqXNxgNCBXB6EOojJMMmH7AN_87bCyrjU',
@@ -25,27 +27,27 @@ const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const googleProvider = new GoogleAuthProvider();
+const storage = getStorage(app);
 
-const signInWithGoogle = async () => {
-  try {
-    const res = await signInWithPopup(auth, googleProvider);
-    const user = res.user;
-    const q = query(collection(db, 'users'), where('uid', '==', user.uid));
-    const docs = await getDocs(q);
-    if (docs.docs.length === 0) {
-      await addDoc(collection(db, 'users'), {
-        uid: user.uid,
-        name: user.displayName,
-        authProvider: 'google',
-        email: user.email,
-      });
-    }
-  } catch (err) {
-    console.error(err);
-    // alert(err.message);
-  }
-};
+// const signInWithGoogle = async () => {
+//   try {
+//     const res = await signInWithPopup(auth, googleProvider);
+//     const user = res.user;
+//     const q = query(collection(db, 'users'), where('uid', '==', user.uid));
+//     const docs = await getDocs(q);
+//     if (docs.docs.length === 0) {
+//       await addDoc(collection(db, 'users'), {
+//         uid: user.uid,
+//         name: user.displayName,
+//         authProvider: 'google',
+//         email: user.email,
+//       });
+//     }
+//   } catch (err) {
+//     console.error(err);
+//     // alert(err.message);
+//   }
+// };
 
 const logInWithEmailAndPassword = async (email: string, password: string) => {
   try {
@@ -55,19 +57,55 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
     // alert(err.message);
   }
 };
+// const navigate = useNavigate();
 
-const registerWithEmailAndPassword = async (name: string, email: string, password: string) => {
+const registerWithEmailAndPassword = async (
+  name: string,
+  email: string,
+  password: string,
+  file: File | null
+) => {
+  console.log(name, email, password);
+
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
-    await addDoc(collection(db, 'users'), {
-      uid: user.uid,
-      name,
-      authProvider: 'local',
-      email,
-    });
+    // await addDoc(collection(db, 'users'), {
+    //   uid: user.uid,
+    //   name,
+    //   authProvider: 'local',
+    //   email,
+    // });
+    const storageRef = ref(storage, `images/${Date.now() + name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file as File);
+    uploadTask.on(
+      'state_changed',
+      () => {},
+      (error: Error) => {
+        toast.error(error.message);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+          // update user profile
+          await updateProfile(user, {
+            displayName: name,
+            photoURL: downloadURL,
+          });
+
+          // store user data im firistore
+          await setDoc(doc(db, 'users', user.uid), {
+            uid: user.uid,
+            displayName: name,
+            email,
+            photoURL: downloadURL,
+          });
+        });
+      }
+    );
+    toast.success('Account created');
   } catch (err) {
-    console.error(err);
+    toast.error('something went wrong');
+    // console.error(err);
     // alert(err.message);
   }
 };
@@ -83,14 +121,27 @@ const sendPasswordReset = async (email: string) => {
   }
 };
 
+// const logout = () => {
+//   signOut(auth);
+// };
+
 const logout = () => {
-  signOut(auth);
+  signOut(auth)
+    .then(() => {
+      toast.success('Logged out');
+      // navigate('/');
+    })
+    .catch((err) => {
+      toast.error(err.message);
+    });
 };
 
 export {
+  app,
   auth,
   db,
-  signInWithGoogle,
+  storage,
+  // signInWithGoogle,
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
   sendPasswordReset,

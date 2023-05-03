@@ -1,4 +1,4 @@
-import React, { FormEvent, ReactElement, useEffect, useState } from 'react';
+import React, { MouseEvent, ReactElement, useEffect, useState } from 'react';
 import { Button, Grid, Typography, Paper, Box, TextField, Link } from '@mui/material';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import { Link as RouterLink } from 'react-router-dom';
@@ -13,20 +13,22 @@ export const Registration = (): ReactElement => {
   // const handleSignUp = () => console.log('handleSignUp');
 
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [user, loading, error] = useAuthState(auth);
+  const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [file, setFile] = useState<File | null>(null);
+  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
-  const register = () => {
-    if (!name) alert('Please enter name');
-    registerWithEmailAndPassword(name, email, password);
+  const register = (e: MouseEvent) => {
+    e.preventDefault();
+    // if (!name) alert('Please enter name');
+    registerWithEmailAndPassword(name, email, password, file);
   };
   useEffect(() => {
     if (loading) return;
     if (user) navigate('/', { replace: true });
     console.log('userReg', user);
     // replace("/dashboard");
-  }, [user, loading]);
+  }, [user, loading, navigate]);
 
   return (
     <>
@@ -106,6 +108,7 @@ export const Registration = (): ReactElement => {
                 id="raised-button-file"
                 multiple
                 type="file"
+                onChange={(e) => setFile((e.target.files as FileList)[0])}
               />
               <label htmlFor="raised-button-file">
                 <Button component="span" variant="outlined">
@@ -134,7 +137,12 @@ export const Registration = (): ReactElement => {
                 id="password"
                 aria-label="textbox-password"
                 value={password}
-                inputProps={{ pattern: '(?=.*d)(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}' }}
+                inputProps={
+                  {
+                    // pattern: '(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,}/g',
+                  }
+                }
+                // (?=.*d)(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,}' }}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <Button
@@ -142,7 +150,7 @@ export const Registration = (): ReactElement => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2, color: '#fff' }}
-                onClick={register}
+                onClick={(e) => register(e)}
               >
                 Sign Up
               </Button>

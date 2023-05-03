@@ -1,4 +1,4 @@
-import React, { ReactElement, MouseEvent, useState, useEffect } from 'react';
+import React, { ReactElement, MouseEvent, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import HiveIcon from '@mui/icons-material/Hive';
@@ -18,11 +18,8 @@ import {
   MenuItem,
   Link,
 } from '@mui/material';
-
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
-import { auth, db, logout } from '../../firebase';
-import { query, collection, getDocs, where } from 'firebase/firestore';
+import { logout } from '../../firebase';
+import useAuth from '../../custom-hooks/useAuth';
 
 const pages = [
   {
@@ -80,28 +77,31 @@ export const Header = (): ReactElement => {
     setAnchorElUser(null);
   };
 
-  const [user, loading, error] = useAuthState(auth);
+  // const [user, loading, error] = useAuthState(auth);
   const [name, setName] = useState('');
-  const navigate = useNavigate();
-  const fetchUserName = async () => {
-    try {
-      const q = query(collection(db, 'users'), where('uid', '==', user?.uid));
-      const doc = await getDocs(q);
-      const data = doc.docs[0].data();
-      setName(data.name);
-    } catch (err) {
-      console.error(err);
-      // alert('An error occured while fetching user data');
-    }
-  };
-  useEffect(() => {
-    if (loading) return;
-    // remove navigate
-    if (!user) return;
-    fetchUserName();
-  }, [user, loading]);
+  // const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
-  console.log('user', user);
+  // const fetchUserName = async () => {
+  //   try {
+  //     const q = query(collection(db, 'users'), where('uid', '==', user?.uid));
+  //     const doc = await getDocs(q);
+  //     const data = doc.docs[0].data();
+  //     setName(data.name);
+  //   } catch (err) {
+  //     console.error(err);
+  //     // alert('An error occured while fetching user data');
+  //   }
+  // };
+  // useEffect(() => {
+  //   if (loading) return;
+  //   // remove navigate
+  //   if (!user) return;
+  //   fetchUserName();
+  // }, [user, loading]);
+
+  // console.log('user', user);
+
   return (
     <>
       <CssBaseline />
@@ -204,7 +204,7 @@ export const Header = (): ReactElement => {
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar
                       alt="Remy Sharp"
-                      // src="/static/images/avatar/2.jpg"
+                      src={currentUser ? (currentUser.photoURL as string) : ''}
                     />
                   </IconButton>
                 </Tooltip>

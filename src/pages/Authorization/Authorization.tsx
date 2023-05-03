@@ -1,4 +1,4 @@
-import React, { FormEvent, ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import {
   Button,
   Checkbox,
@@ -13,13 +13,13 @@ import {
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import style from '../Registration/Registration.module.css';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, signInWithGoogle } from '../../firebase';
+import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from '@firebase/auth';
 
 export const Authorization = (): ReactElement => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
 
   // const handleSubmit = (e: FormEvent<HTMLFormElement>) => e.preventDefault();
@@ -31,7 +31,7 @@ export const Authorization = (): ReactElement => {
       return;
     }
     if (user) navigate('/');
-  }, [user, loading]);
+  }, [user, loading, navigate]);
 
   return (
     <>
