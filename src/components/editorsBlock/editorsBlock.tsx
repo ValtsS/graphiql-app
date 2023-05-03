@@ -1,89 +1,92 @@
 import { QueryEditor, VariablesEditor, ResponseEditor } from '@/components/editors';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './editorsBlock.module.css';
 import React from 'react';
+import Resizer from './resizer';
 
 const EditorsBlock = () => {
   const resizerRef = useRef(null);
+  const resizerRefGoriz = useRef(null);
   const leftSideRef = useRef(null);
   const rightSideRef = useRef(null);
+  const bottomSideRef = useRef(null);
+
+  const [leftSideWidth, setleftSideWidth] = useState('60%');
+
+  const updateCurrentLeftSide = () => {
+    if (leftSideRef.current) {
+      const leftSide = leftSideRef.current as HTMLElement;
+      setleftSideWidth(leftSide.getBoundingClientRect().width.toString());
+    }
+  };
 
   let x = 0;
   let y = 0;
-
   let leftWidth = 0;
-  const mouseDownHandler = (e) => {
-    if (leftSideRef.current) {
-      const leftSide = leftSideRef.current as HTMLElement;
 
-      // Get the current mouse position
+  const mouseDownHandler = (e, block) => {
+    if (leftSideRef.current) {
+      const leftSide = block.current as HTMLElement;
+
       x = e.clientX;
       y = e.clientY;
       leftWidth = leftSide.getBoundingClientRect().width;
 
-      const mouseMoveHandler = function (e) {
-        if (leftSideRef.current && resizerRef.current && rightSideRef.current) {
-          const leftSide = leftSideRef.current as HTMLElement;
-          const rightSide = rightSideRef.current as HTMLElement;
-          const resizer = resizerRef.current as HTMLElement;
-          // How far the mouse has been moved
-          const dx = e.clientX - x;
-          const dy = e.clientY - y;
-          if (resizer.parentNode) {
-            const parentResizer = resizer.parentNode as HTMLElement;
-            const newLeftWidth =
-              ((leftWidth + dx) * 100) / parentResizer.getBoundingClientRect().width;
-            leftSide.style.width = `${newLeftWidth}%`;
-          }
-          document.body.style.cursor = 'col-resize';
-          leftSide.style.userSelect = 'none';
-          leftSide.style.pointerEvents = 'none';
-
-          rightSide.style.userSelect = 'none';
-          rightSide.style.pointerEvents = 'none';
-        }
-      };
-
-      const mouseUpHandler = function () {
-        if (leftSideRef.current && resizerRef.current && rightSideRef.current) {
-          const leftSide = leftSideRef.current as HTMLElement;
-          const rightSide = rightSideRef.current as HTMLElement;
-          const resizer = resizerRef.current as HTMLElement;
-
-          resizer.style.removeProperty('cursor');
-          document.body.style.removeProperty('cursor');
-
-          leftSide.style.removeProperty('user-select');
-          leftSide.style.removeProperty('pointer-events');
-
-          rightSide.style.removeProperty('user-select');
-          rightSide.style.removeProperty('pointer-events');
-
-          // Remove the handlers of `mousemove` and `mouseup`
-          document.removeEventListener('mousemove', mouseMoveHandler);
-          document.removeEventListener('mouseup', mouseUpHandler);
-        }
-      };
-
-      // Attach the listeners to `document`
       document.addEventListener('mousemove', mouseMoveHandler);
       document.addEventListener('mouseup', mouseUpHandler);
+    }
+  };
+
+  const mouseUpHandler = function () {
+    document.body.style.removeProperty('cursor');
+
+    document.removeEventListener('mousemove', mouseMoveHandler);
+    document.removeEventListener('mouseup', mouseUpHandler);
+  };
+
+  const mouseMoveHandler = function (e) {
+    if (leftSideRef.current && resizerRef.current && rightSideRef.current) {
+      const resizer = resizerRef.current as HTMLElement;
+
+      const dx = e.clientX - x;
+      const dy = e.clientY - y;
+      if (resizer.parentNode) {
+        const parentResizer = resizer.parentNode as HTMLElement;
+
+        setleftSideWidth(
+          `${(((leftWidth + dx) * 100) / parentResizer.getBoundingClientRect().width).toString()}%`
+        );
+      }
+      document.body.style.cursor = 'col-resize';
     }
   };
 
   return (
     <div className={styles.editorsContainer}>
       <div className={styles.editors}>
-        <div ref={leftSideRef} className={styles.mainEditor}>
+        <div ref={leftSideRef} className={styles.mainEditor} style={{ width: leftSideWidth }}>
           <div className={styles.query}>{/* <QueryEditor /> */}</div>
-          <div className={styles.variable}>{/* <VariablesEditor /> */}</div>
+          <div
+            ref={resizerRefGoriz}
+            onMouseDown={(e) => mouseDownHandler(e, bottomSideRef)}
+            className={styles.resizer}
+            id="dragMe"
+          ></div>
+          <div ref={bottomSideRef} className={styles.variable}>
+            {/* <VariablesEditor /> */}
+          </div>
         </div>
         <div
           ref={resizerRef}
-          onMouseDown={mouseDownHandler}
+          onMouseDown={(e) => mouseDownHandler(e, leftSideRef)}
           className={styles.resizer}
           id="dragMe"
         ></div>
+        {/* <Resizer
+          leftSideWidth={leftSideWidth}
+          setleftSideWidth={setleftSideWidth}
+          updateCurrentLeftSide={updateCurrentLeftSide}
+        /> */}
         <div ref={rightSideRef} className={styles.response}>
           {/* <ResponseEditor /> */}
         </div>
