@@ -1,54 +1,58 @@
-import React from 'react';
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 
 const Resizer = (props) => {
   const resizerRef = useRef(null);
-  const { leftSideWidth, setleftSideWidth, updateCurrentLeftSide } = props;
+  const { changeSideRef, setSideSize, axisVector } = props;
 
   let x = 0;
   let y = 0;
+  let leftWidth = 0;
 
-  // const mouseDownHandler = (e) => {
-  //   updateCurrentLeftSide();
+  const mouseDownHandler = (e) => {
+    if (changeSideRef.current) {
+      const leftSide = changeSideRef.current as HTMLElement;
 
-  //   document.addEventListener('mousemove', mouseMoveHandler);
-  //   document.addEventListener('mouseup', mouseUpHandler);
-  // };
+      x = e.clientX;
+      y = e.clientY;
+      leftWidth = leftSide.getBoundingClientRect()[axisVector];
 
-  // const mouseUpHandler = function () {
-  //   document.body.style.removeProperty('cursor');
+      document.addEventListener('mousemove', mouseMoveHandler);
+      document.addEventListener('mouseup', mouseUpHandler);
+    }
+  };
 
-  //   document.removeEventListener('mousemove', mouseMoveHandler);
-  //   document.removeEventListener('mouseup', mouseUpHandler);
-  // };
+  const mouseUpHandler = function () {
+    document.body.style.removeProperty('cursor');
 
-  // const mouseMoveHandler = function (e) {
-  //   if (resizerRef.current) {
-  //     const resizer = resizerRef.current as HTMLElement;
+    document.removeEventListener('mousemove', mouseMoveHandler);
+    document.removeEventListener('mouseup', mouseUpHandler);
+  };
 
-  //     const dx = e.clientX - x;
-  //     const dy = e.clientY - y;
-  //     if (resizer.parentNode) {
-  //       const parentResizer = resizer.parentNode as HTMLElement;
-  //       console.log(leftSideWidth);
+  const mouseMoveHandler = function (e) {
+    if (changeSideRef.current && resizerRef.current) {
+      const resizer = resizerRef.current as HTMLElement;
 
-  //       setleftSideWidth(
-  //         `${(
-  //           ((leftSideWidth + dx) * 100) /
-  //           parentResizer.getBoundingClientRect().width
-  //         ).toString()}%`
-  //       );
-  //     }
-  //     document.body.style.cursor = 'col-resize';
-  //   }
-  // };
+      const currentSizeChanges = axisVector === 'height' ? e.clientY - y : e.clientX - x;
+      if (resizer.parentNode) {
+        const parentResizer = resizer.parentNode as HTMLElement;
+
+        setSideSize(
+          `${(
+            ((leftWidth + currentSizeChanges) * 100) /
+            parentResizer.getBoundingClientRect()[axisVector]
+          ).toString()}%`
+        );
+      }
+      document.body.style.cursor = axisVector === 'height' ? 'row-resize' : 'col-resize';
+    }
+  };
 
   return (
     <div
-      style={{ width: 10, backgroundColor: 'red' }}
+      style={{ [axisVector]: 10, backgroundColor: '#D3D3D3' }}
       ref={resizerRef}
-      onMouseDown={mouseDownHandler}
       id="dragMe"
+      onMouseDown={mouseDownHandler}
     ></div>
   );
 };
