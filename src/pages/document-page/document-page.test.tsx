@@ -1,6 +1,6 @@
 import { setupMockIntrospection } from '@/../__mocks__/api-mock-helper';
 import { setupStore } from '@/store';
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { DocumentPageComponent } from './document-page';
@@ -18,7 +18,7 @@ describe('Document page component', () => {
       </Provider>
     );
 
-    expect(screen.getByRole('button', { name: 'Back' })).toBeInTheDocument();
+    await waitFor(() => screen.getByRole('button', { name: 'Back' }));
     expect(screen.getByText('Queries')).toBeInTheDocument();
     expect(screen.getByText('Mutations')).toBeInTheDocument();
     expect(screen.getByText('Subscriptions')).toBeInTheDocument();
@@ -35,7 +35,7 @@ describe('Document page component', () => {
         <DocumentPageComponent />
       </Provider>
     );
-
+    await waitFor(() => screen.getByRole('button', { name: 'Back' }));
     act(() => screen.getByText('Queries').click());
     const functions = screen.queryAllByTestId('doc_function');
     expect(functions.length).toBeGreaterThan(0);
@@ -55,7 +55,7 @@ describe('Document page component', () => {
         <DocumentPageComponent />
       </Provider>
     );
-
+    await waitFor(() => screen.getByRole('button', { name: 'Back' }));
     act(() => screen.getByText('Queries').click());
     const back = screen.getByRole('button', { name: 'Back' });
     expect(back).toBeEnabled();

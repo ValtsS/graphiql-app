@@ -8,7 +8,7 @@ interface Props {
   root: string;
 }
 
-export const SDLDocumentBrowser = (props: Props) => {
+const SDLDocumentBrowser = (props: Props) => {
   const [state, setState] = useState<string[]>([props.root]);
   const page = props.book[state[state.length - 1]];
 
@@ -46,3 +46,5 @@ export const SDLDocumentBrowser = (props: Props) => {
     </Box>
   );
 };
+
+export default SDLDocumentBrowser;
