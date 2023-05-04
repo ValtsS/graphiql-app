@@ -6,14 +6,14 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { DocumentContent, SDLDocument } from '@/components/sdl-document/sdl-document';
 import fuzzball from 'fuzzball';
-import { typeTestCases } from '@/../__mocks__/test-types';
+import { typeTestCases } from '@/../specs/test-types';
 
 describe('Book generator test', () => {
   let book: DocumentBook;
 
   beforeAll(() => {
     const currentPath = path.resolve(__dirname);
-    const testSchema = fs.readFileSync(path.join(currentPath, '../../../__mocks__', 'test.sdl'));
+    const testSchema = fs.readFileSync(path.join(currentPath, '../../../specs', 'test.sdl'));
     book = generateBook(testSchema.toString());
   });
 
