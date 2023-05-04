@@ -54,13 +54,11 @@ export const GraphQLApp = (props: Props) => {
       <CssVarsProvider theme={theme}>
         <BrowserRouter>
           <Routes>
-            {routesConfig.map((c, index) => (
+            {routesConfig.map((c) => (
               <Route
                 path={c.path}
-                element={
-                  <RootLayout key={'rootlayout_ca_' + index.toString()}>{c.element}</RootLayout>
-                }
-                key={'route_ca_' + index.toString()}
+                element={<RootLayout key={c.uuid}>{c.element}</RootLayout>}
+                key={c.uuid}
               />
             ))}
 
