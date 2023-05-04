@@ -20,6 +20,17 @@ describe('DefaultApiClient', () => {
     expect(result.data).toEqual('some data');
   });
 
+  test('test network error', async () => {
+    fetchMock.mockRejectOnce(new Error('Fetch error'));
+    await expect(apiClient.get(dummyURL)).rejects.toThrowError('Fetch error');
+  });
+
+
+  test('should throw an error when server returns 500', async () => {
+    fetchMock.mockOnce(dummyURL, { status: 500 });
+    await expect(apiClient.get(dummyURL)).rejects.toThrowError('GET failed: Internal Server Error');
+  });
+
   test('post method should send data to the server', async () => {
     fetchMock.mockResponseOnce(JSON.stringify({ data: 'some data' }));
     await apiClient.post<{ message: string }>(dummyURL, JSON.stringify({ message: 'hello' }));
