@@ -121,12 +121,12 @@ const EditorsBlock = () => {
         localStorage.setItem('variables', variablesModel.getValue());
       })
     );
-  }, []);
+  }, [queryEditor, resultsViewer, variablesEditor]);
 
   useEffect(() => {
     queryEditor?.addAction(queryAction);
     variablesEditor?.addAction(queryAction);
-  }, [variablesEditor]);
+  }, [variablesEditor, queryEditor]);
 
   useEffect(() => {
     const fetchData = async () => {

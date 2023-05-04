@@ -6,6 +6,7 @@ import path from 'path';
 export default defineConfig({
   plugins: [
     react(),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (monacoEditorPlugin as any).default({
       languageWorkers: ['json', 'editorWorkerService'],
       customWorkers: [
