@@ -32,7 +32,7 @@ export const Main = (): ReactElement => {
 
   return (
     <Container>
-      {/* <Grid item xs={12}>
+      <Grid item xs={12}>
         <AddressBar />
       </Grid>
       <Grid item xs={12}>
@@ -45,7 +45,7 @@ export const Main = (): ReactElement => {
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
           result
         </Grid>
-      </Grid> */}
+      </Grid>
       <EditorsBlock />
     </Container>
   );

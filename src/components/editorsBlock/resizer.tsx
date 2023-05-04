@@ -50,7 +50,11 @@ const Resizer = (props: Props) => {
 
   return (
     <div
-      style={{ [axisVector]: 10, backgroundColor: '#D3D3D3' }}
+      style={{
+        [axisVector]: 30,
+        cursor: axisVector === 'height' ? 'row-resize' : 'col-resize',
+        backgroundColor: '#fff',
+      }}
       ref={resizerRef}
       onMouseDown={mouseDownHandler}
     ></div>

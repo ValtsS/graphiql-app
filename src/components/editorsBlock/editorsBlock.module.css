@@ -5,15 +5,18 @@
 .editors {
   display: flex;
   height: 90vh;
+  border: 1px solid gray;
 }
 
 .mainEditor {
   display: flex;
   flex-direction: column;
+  border-right: 1px solid gray;
 }
 
 .variable {
   flex: 1 1 auto;
+  border-top: 1px solid gray;
 }
 
 .response {
@@ -22,7 +25,6 @@
 
 .editor {
   border-radius: 3px;
-  border: 1px solid gray;
 }
 
 .monaco {

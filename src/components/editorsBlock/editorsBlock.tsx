@@ -1,13 +1,26 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styles from './editorsBlock.module.css';
 import Resizer from './resizer';
-
 import { IntrospectionQuery } from 'graphql';
 import { Uri, editor, KeyMod, KeyCode, languages } from 'monaco-editor';
 import { initializeMode } from 'monaco-graphql/esm/initializeMode';
 import { debounce } from '@/utils/debounce';
 import schemaJson from './schema.json';
 import customTheme from '../editor/editorTheme';
+
+const MONACO_OPTIONS = {
+  theme: 'customTheme',
+  minimap: { enabled: false },
+  automaticLayout: true,
+  fontSize: 12,
+  lineNumbersMinChars: 2,
+  lineDecorationsWidth: 0,
+  scrollbar: {
+    vertical: 'hidden' as const,
+    horizontal: 'hidden' as const,
+  },
+  overviewRulerBorder: false,
+};
 
 const defaultOperations = localStorage.getItem('operations') ?? ``;
 
@@ -22,9 +35,9 @@ const getOrCreateModel = (uri: string, value: string) => {
 };
 
 const execOperation = async function () {
-  const variables = editor.getModel(Uri.file('variables.json'))!.getValue();
-  const operations = editor.getModel(Uri.file('operation.graphql'))!.getValue();
-  const resultsModel = editor.getModel(Uri.file('results.json'));
+  // const variables = editor.getModel(Uri.file('variables.json'))!.getValue();
+  // const operations = editor.getModel(Uri.file('operation.graphql'))!.getValue();
+  // const resultsModel = editor.getModel(Uri.file('results.json'));
   // HERE request to server
 };
 
@@ -67,6 +80,10 @@ const EditorsBlock = () => {
   const [loading, setLoading] = React.useState(false);
 
   useEffect(() => {
+    editor.defineTheme('customTheme', customTheme as never);
+  }, []);
+
+  useEffect(() => {
     const queryModel = getOrCreateModel('operation.graphql', defaultOperations);
     const variablesModel = getOrCreateModel('variables.json', defaultVariables);
     const resultsModel = getOrCreateModel('results.json', '');
@@ -74,40 +91,25 @@ const EditorsBlock = () => {
     queryEditor ??
       setQueryEditor(
         createEditor(opsRef, {
-          theme: 'customTheme',
           model: queryModel,
           language: 'graphql',
-          minimap: { enabled: false },
-          automaticLayout: true,
-          fontSize: 12,
-          lineNumbersMinChars: 2,
-          lineDecorationsWidth: 0,
+          ...MONACO_OPTIONS,
         })
       );
     variablesEditor ??
       setVariablesEditor(
         createEditor(varsRef, {
-          theme: 'customTheme',
           model: variablesModel,
-          minimap: { enabled: false },
-          automaticLayout: true,
-          fontSize: 12,
-          lineNumbersMinChars: 2,
-          lineDecorationsWidth: 0,
+          ...MONACO_OPTIONS,
         })
       );
     resultsViewer ??
       setResultsViewer(
         createEditor(resultsRef, {
-          theme: 'customTheme',
           model: resultsModel,
           readOnly: true,
           smoothScrolling: true,
-          minimap: { enabled: false },
-          automaticLayout: true,
-          fontSize: 12,
-          lineNumbersMinChars: 2,
-          lineDecorationsWidth: 0,
+          ...MONACO_OPTIONS,
         })
       );
 

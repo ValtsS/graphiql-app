@@ -1,6 +1,6 @@
-export function debounce<F extends (...args: any[]) => any>(duration: number, fn: F) {
+export function debounce<F extends (...args: unknown[]) => unknown>(duration: number, fn: F) {
   let timeout: number | null;
-  return function (this: any, ...args: Parameters<F>) {
+  return function (this: unknown, ...args: Parameters<F>) {
     if (timeout) {
       window.clearTimeout(timeout);
     }
