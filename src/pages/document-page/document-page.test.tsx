@@ -7,7 +7,6 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { DocumentPageComponent } from './document-page';
 import { IntrospectionResponseData } from '@/core/api/api';
-import { waitRender } from '@/../__mocks__/test-utils';
 
 describe('Document page component', () => {
   it('should display root page and back button', async () => {
