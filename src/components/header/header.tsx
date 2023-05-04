@@ -73,7 +73,6 @@ export const Header = (): ReactElement => {
   };
 
   const { currentUser } = useAuth();
-  console.log(currentUser);
 
   return (
     <>

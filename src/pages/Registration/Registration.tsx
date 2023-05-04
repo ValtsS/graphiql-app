@@ -27,9 +27,7 @@ export const Registration = (): ReactElement => {
   useEffect(() => {
     if (loading) return;
     if (user) navigate('/', { replace: true });
-    console.log('userReg', user);
   }, [user, loading, navigate]);
-  console.log('user', user);
   return (
     <>
       <Paper className={style.paper} elevation={6}>
