@@ -1,7 +1,22 @@
-import { CardMedia, Container } from '@mui/material';
+import { Box, Button, CardMedia, Container } from '@mui/material';
 import React, { ReactElement } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import useAuth from '@/custom-hooks/useAuth';
+
+const reg = [
+  {
+    page: 'Sing in',
+    link: '/auth',
+  },
+  {
+    page: 'Sing up',
+    link: '/reg',
+  },
+];
 
 export const Welcome = (): ReactElement => {
+  const { currentUser } = useAuth();
+
   return (
     <Container>
       <CardMedia
@@ -11,6 +26,26 @@ export const Welcome = (): ReactElement => {
         title="Paella dish"
       />
       Welcome
+      <Box sx={{ display: 'flex', gap: 5, justifyContent: 'center' }}>
+        {currentUser ? (
+          <Button variant="contained" component={RouterLink} to="/">
+            Main page
+          </Button>
+        ) : (
+          reg.map((page) => (
+            <Button
+              variant="contained"
+              key={page.page}
+              // sx={{ my: 2, color: 'white', display: 'block' }}
+              component={RouterLink}
+              to={page.link}
+              size="large"
+            >
+              {page.page}
+            </Button>
+          ))
+        )}
+      </Box>
     </Container>
   );
 };

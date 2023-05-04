@@ -199,21 +199,20 @@ export const Header = (): ReactElement => {
                       Sign Out
                     </Button>
                   </Box>
-                ) : (
-                  <Box sx={{ flexGrow: 1, display: { md: 'flex' } }}>
-                    {reg.map((page) => (
-                      <Button
-                        variant="outlined"
-                        key={page.page}
-                        sx={{ my: 2, color: 'white', display: 'block' }}
-                        component={RouterLink}
-                        to={page.link}
-                      >
-                        {page.page}
-                      </Button>
-                    ))}
-                  </Box>
-                )}
+                ) : // <Box sx={{ flexGrow: 1, display: { md: 'flex' } }}>
+                //   {reg.map((page) => (
+                //     <Button
+                //       variant="outlined"
+                //       key={page.page}
+                //       sx={{ my: 2, color: 'white', display: 'block' }}
+                //       component={RouterLink}
+                //       to={page.link}
+                //     >
+                //       {page.page}
+                //     </Button>
+                //   ))}
+                // </Box>
+                null}
 
                 {currentUser ? (
                   <Box sx={{ flexGrow: 0 }}>

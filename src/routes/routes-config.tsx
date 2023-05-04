@@ -1,6 +1,6 @@
-import { Authorization, Main, Registration, Welcome } from '@/pages';
-import { About } from '@/pages/About/About';
+import { Authorization, Main, Registration, Welcome, About } from '@/pages';
 import React from 'react';
+import { ProtectedRoute } from './protected-route';
 
 export interface RouteConfig {
   path: string;
@@ -18,13 +18,21 @@ export const defaultRoutes: RouteConfig[] = [
   },
   {
     path: '/auth',
-    element: <Authorization />,
+    element: (
+      <ProtectedRoute>
+        <Authorization />
+      </ProtectedRoute>
+    ),
     displayInMenu: true,
     menuText: 'Authorization',
   },
   {
     path: '/reg',
-    element: <Registration />,
+    element: (
+      <ProtectedRoute>
+        <Registration />
+      </ProtectedRoute>
+    ),
     displayInMenu: true,
     menuText: 'Registration',
   },
