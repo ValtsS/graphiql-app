@@ -1,35 +1,35 @@
 import React, { MouseEvent, ReactElement, useEffect, useState } from 'react';
-import { Button, Grid, Typography, Paper, Box, TextField, Link } from '@mui/material';
+import { Button, Grid, Typography, Paper, Box, TextField } from '@mui/material';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import { Link as RouterLink } from 'react-router-dom';
 import style from './Registration.module.css';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
-import { auth, registerWithEmailAndPassword } from '../../firebase';
+import { auth, registerWithEmailAndPassword } from '@/firebase';
+import { toast } from 'react-toastify';
 
 export const Registration = (): ReactElement => {
-  // const handleSubmit = (e: FormEvent<HTMLFormElement>) => e.preventDefault();
-  // const handleSubmit = (e: FormEvent<HTMLFormElement>) => console.log('handleSignUp');
-  // const handleSignUp = () => console.log('handleSignUp');
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
-  const register = (e: MouseEvent) => {
+  const register = async (e: MouseEvent) => {
     e.preventDefault();
-    // if (!name) alert('Please enter name');
-    registerWithEmailAndPassword(name, email, password, file);
+    try {
+      await registerWithEmailAndPassword(name, email, password, file);
+      toast.success('Sign up');
+    } catch {
+      toast.error('Something went wrong');
+    }
   };
   useEffect(() => {
     if (loading) return;
     if (user) navigate('/', { replace: true });
     console.log('userReg', user);
-    // replace("/dashboard");
   }, [user, loading, navigate]);
-
+  console.log('user', user);
   return (
     <>
       <Paper className={style.paper} elevation={6}>
@@ -58,31 +58,20 @@ export const Registration = (): ReactElement => {
               <Typography color={'white'}>
                 To keep connected with us please login with your personal info
               </Typography>
-              <Link
-                variant="body2"
+              <Button
+                variant="outlined"
+                sx={{ color: 'white', border: '1px solid white', m: '50px 0' }}
+                fullWidth
                 component={RouterLink}
-                to="/auth"
-                sx={{ textDecoration: 'none' }}
+                to={'/auth'}
               >
-                <Button
-                  variant="outlined"
-                  sx={{ color: 'white', border: '1px solid white', m: '50px 0' }}
-                  fullWidth
-                  // onClick={handleSignUp}
-                >
-                  Sign In
-                </Button>
-              </Link>
+                Sign In
+              </Button>
             </Box>
           </Grid>
 
           <Grid item md={6} xs={12} order={{ xs: 2, md: 2 }}>
-            <Box
-              component="form"
-              // onSubmit={(e) => handleSubmit(e)}
-              sx={{ p: '50px' }}
-              aria-label="form"
-            >
+            <Box component="form" sx={{ p: '50px' }} aria-label="form">
               <Typography
                 variant="h4"
                 component="h1"
@@ -137,12 +126,9 @@ export const Registration = (): ReactElement => {
                 id="password"
                 aria-label="textbox-password"
                 value={password}
-                inputProps={
-                  {
-                    // pattern: '(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,}/g',
-                  }
-                }
-                // (?=.*d)(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,}' }}
+                inputProps={{
+                  pattern: '(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{8,}',
+                }}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <Button

@@ -1,4 +1,4 @@
-import { Authorization, Main, Registration } from '@/pages';
+import { Authorization, Main, Registration, Welcome } from '@/pages';
 import { About } from '@/pages/About/About';
 import React from 'react';
 
@@ -33,5 +33,11 @@ export const defaultRoutes: RouteConfig[] = [
     element: <About />,
     displayInMenu: true,
     menuText: 'About',
+  },
+  {
+    path: '/welcome',
+    element: <Welcome />,
+    displayInMenu: true,
+    menuText: 'Welcome',
   },
 ];

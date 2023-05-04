@@ -18,8 +18,8 @@ import {
   MenuItem,
   Link,
 } from '@mui/material';
-import { logout } from '../../firebase';
-import useAuth from '../../custom-hooks/useAuth';
+import { logout } from '@/firebase';
+import useAuth from '@/custom-hooks/useAuth';
 
 const pages = [
   {
@@ -27,15 +27,18 @@ const pages = [
     link: '/about',
   },
   {
-    page: 'graphql',
-    link: '/graphql',
+    page: 'Welcome',
+    link: '/welcome',
   },
+];
+
+const reg = [
   {
-    page: 'auth',
+    page: 'Sing in',
     link: '/auth',
   },
   {
-    page: 'reg',
+    page: 'Sing up',
     link: '/reg',
   },
 ];
@@ -60,47 +63,17 @@ function ElevationScroll(props: Props) {
 
 export const Header = (): ReactElement => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  // const [user, loading, error] = useAuthState(auth);
-  const [name, setName] = useState('');
-  // const navigate = useNavigate();
   const { currentUser } = useAuth();
-
-  // const fetchUserName = async () => {
-  //   try {
-  //     const q = query(collection(db, 'users'), where('uid', '==', user?.uid));
-  //     const doc = await getDocs(q);
-  //     const data = doc.docs[0].data();
-  //     setName(data.name);
-  //   } catch (err) {
-  //     console.error(err);
-  //     // alert('An error occured while fetching user data');
-  //   }
-  // };
-  // useEffect(() => {
-  //   if (loading) return;
-  //   // remove navigate
-  //   if (!user) return;
-  //   fetchUserName();
-  // }, [user, loading]);
-
-  // console.log('user', user);
+  console.log(currentUser);
 
   return (
     <>
@@ -159,11 +132,26 @@ export const Header = (): ReactElement => {
                 >
                   {pages.map((page) => (
                     <MenuItem key={page.page} onClick={handleCloseNavMenu}>
-                      <Link to={page.link} component={RouterLink}>
+                      <Link to={page.link} component={RouterLink} sx={{ textDecoration: 'none' }}>
                         <Typography textAlign="center">{page.page}</Typography>
                       </Link>
                     </MenuItem>
                   ))}
+                  {!currentUser ? (
+                    reg.map((page) => (
+                      <MenuItem key={page.page} onClick={handleCloseNavMenu}>
+                        <Link to={page.link} component={RouterLink} sx={{ textDecoration: 'none' }}>
+                          <Typography textAlign="center">{page.page}</Typography>
+                        </Link>
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem onClick={handleCloseNavMenu}>
+                      <Link to="/" component={RouterLink} sx={{ textDecoration: 'none' }}>
+                        <Typography textAlign="center">Sign Out</Typography>
+                      </Link>
+                    </MenuItem>
+                  )}
                 </Menu>
               </Box>
               <HiveIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -185,61 +173,60 @@ export const Header = (): ReactElement => {
               >
                 GraphQL
               </Typography>
+
               <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                 {pages.map((page) => (
-                  <Link to={page.link} component={RouterLink} key={page.page}>
-                    <Button
-                      // key={page.page}
-                      onClick={handleCloseNavMenu}
-                      sx={{ my: 2, color: 'white', display: 'block' }}
-                    >
-                      {page.page}
-                    </Button>
-                  </Link>
+                  <Button
+                    key={page.page}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                    component={RouterLink}
+                    to={page.link}
+                  >
+                    {page.page}
+                  </Button>
                 ))}
               </Box>
 
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={currentUser ? (currentUser.photoURL as string) : ''}
-                    />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: '45px' }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  {/* {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
-                  ))} */}
+              <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+                {currentUser ? (
+                  <Box sx={{ flexGrow: 1 }}>
+                    <Button
+                      variant="outlined"
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                      onClick={logout}
+                    >
+                      Sign Out
+                    </Button>
+                  </Box>
+                ) : (
+                  <Box sx={{ flexGrow: 1, display: { md: 'flex' } }}>
+                    {reg.map((page) => (
+                      <Button
+                        variant="outlined"
+                        key={page.page}
+                        sx={{ my: 2, color: 'white', display: 'block' }}
+                        component={RouterLink}
+                        to={page.link}
+                      >
+                        {page.page}
+                      </Button>
+                    ))}
+                  </Box>
+                )}
 
-                  <MenuItem>
-                    <Typography textAlign="center">{name}</Typography>
-                  </MenuItem>
-
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center" onClick={logout}>
-                      Logout
-                    </Typography>
-                  </MenuItem>
-                </Menu>
+                {currentUser ? (
+                  <Box sx={{ flexGrow: 0 }}>
+                    <Tooltip title={currentUser?.displayName}>
+                      <IconButton sx={{ p: 0 }}>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={currentUser ? (currentUser.photoURL as string) : ''}
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                ) : null}
               </Box>
             </Toolbar>
           </Container>
