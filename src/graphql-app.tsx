@@ -33,7 +33,7 @@ export const GraphQLApp = (props: Props) => {
         })
       )
         .unwrap()
-        .catch((rejectedValueOrSerializedError) => {
+        .catch((rejectedValueOrSerializedError: string) => {
           notifyError(rejectedValueOrSerializedError);
         });
   }, [mainState, dispatch, apiClient]);
