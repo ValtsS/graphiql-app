@@ -1,12 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styles from './editorsBlock.module.css';
-import Resizer from './resizer';
+import Resizer from '../resizer/resizer';
 import { IntrospectionQuery } from 'graphql';
 import { Uri, editor, KeyMod, KeyCode, languages } from 'monaco-editor';
 import { initializeMode } from 'monaco-graphql/esm/initializeMode';
 import { debounce } from '@/utils/debounce';
 import schemaJson from './schema.json';
-import customTheme from '../editor/editorTheme';
+import customTheme from './editorTheme';
 
 const MONACO_OPTIONS = {
   theme: 'customTheme',
