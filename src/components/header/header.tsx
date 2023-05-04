@@ -1,4 +1,4 @@
-import React, { ReactElement, MouseEvent, useState } from 'react';
+import React, { ReactElement, MouseEvent, useState, useRef, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import HiveIcon from '@mui/icons-material/Hive';
@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 import { logout } from '@/firebase';
 import useAuth from '@/custom-hooks/useAuth';
+import './header.css';
 
 const pages = [
   {
@@ -74,15 +75,36 @@ export const Header = (): ReactElement => {
 
   const { currentUser } = useAuth();
 
+  const headerRef = useRef(null);
+
+  const stickyHeader = () => {
+    window.addEventListener('scroll', () => {
+      if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+        if (headerRef.current) {
+          (headerRef.current as HTMLElement).classList.add('sticky');
+        }
+      } else {
+        if (headerRef.current) {
+          (headerRef.current as HTMLElement).classList.remove('sticky');
+        }
+      }
+    });
+  };
+
+  useEffect(() => {
+    stickyHeader();
+    return () => window.addEventListener('scroll', stickyHeader);
+  });
+
   return (
     <>
       <CssBaseline />
       <ElevationScroll>
-        <AppBar>
+        <AppBar ref={headerRef}>
           <Container maxWidth="xl">
             <Toolbar disableGutters>
               <HiveIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-              <Link to="/" component={RouterLink}>
+              <Link to="/" component={RouterLink} sx={{ textDecoration: 'none' }}>
                 <Typography
                   variant="h6"
                   noWrap
