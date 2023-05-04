@@ -1,9 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
 import { getFirestore, setDoc, doc } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
 import { toast } from 'react-toastify';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytesResumable, getDownloadURL, getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAqXNxgNCBXB6EOojJMMmH7AN_87bCyrjU',

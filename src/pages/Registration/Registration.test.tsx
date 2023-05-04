@@ -23,7 +23,6 @@ describe('Registration', () => {
   });
 
   it('Registration submited', async () => {
-    // const onSubmit = jest.fn();
     render(
       <BrowserRouter>
         <Registration />
@@ -49,6 +48,5 @@ describe('Registration', () => {
 
     fireEvent.submit(form);
 
-    // expect(onSubmit).toHaveBeenCalled();
   });
 });

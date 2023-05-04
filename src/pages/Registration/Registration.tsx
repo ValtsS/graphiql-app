@@ -1,10 +1,9 @@
 import React, { MouseEvent, ReactElement, useEffect, useState } from 'react';
 import { Button, Grid, Typography, Paper, Box, TextField } from '@mui/material';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import style from './Registration.module.css';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
 import { auth, registerWithEmailAndPassword } from '@/firebase';
 import { toast } from 'react-toastify';
 
