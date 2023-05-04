@@ -1,9 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styles from './editorsBlock.module.css';
 import Resizer from './resizer';
-//import CustomEditor from '../editor/editor';
 
-import { getIntrospectionQuery, IntrospectionQuery } from 'graphql';
+import { IntrospectionQuery } from 'graphql';
 import { Uri, editor, KeyMod, KeyCode, languages } from 'monaco-editor';
 import { initializeMode } from 'monaco-graphql/esm/initializeMode';
 import { debounce } from '@/utils/debounce';
@@ -130,38 +129,42 @@ const EditorsBlock = () => {
   }, [variablesEditor]);
 
   useEffect(() => {
-    if (!schema && !loading) {
-      setLoading(true);
-      getSchema()
-        .then((data) => {
-          if (!('data' in data)) {
-            throw Error('Incorrect request. This app does not support subscriptions yet');
-          }
-          initializeMode({
-            diagnosticSettings: {
-              validateVariablesJSON: {
-                [Uri.file('operation.graphql').toString()]: [Uri.file('variables.json').toString()],
-              },
-              jsonDiagnosticSettings: {
-                validate: true,
-                schemaValidation: 'error',
-                allowComments: true,
-                trailingCommas: 'ignore',
-              },
-            },
-            schemas: [
-              {
-                introspectionJSON: data.data as unknown as IntrospectionQuery,
-                uri: 'myschema.graphql',
-              },
-            ],
-          });
+    const fetchData = async () => {
+      if (!schema && !loading) {
+        setLoading(true);
 
-          setSchema(data.data);
-          return;
-        })
-        .then(() => setLoading(false));
-    }
+        const schema = await getSchema();
+
+        if (!schema.data) {
+          throw Error('Incorrect request. This app does not support subscriptions yet');
+        }
+
+        initializeMode({
+          diagnosticSettings: {
+            validateVariablesJSON: {
+              [Uri.file('operation.graphql').toString()]: [Uri.file('variables.json').toString()],
+            },
+            jsonDiagnosticSettings: {
+              validate: true,
+              schemaValidation: 'error',
+              allowComments: true,
+              trailingCommas: 'ignore',
+            },
+          },
+          schemas: [
+            {
+              introspectionJSON: schema.data as unknown as IntrospectionQuery,
+              uri: 'myschema.graphql',
+            },
+          ],
+        });
+
+        setSchema(schema.data);
+        setLoading(false);
+      }
+    };
+
+    fetchData().catch(console.error);
   }, [schema, loading]);
 
   return (
