@@ -1,5 +1,5 @@
 import { DocumentBook } from '@/core/docs/sdl-docs';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import React, { useMemo, useState } from 'react';
 import { DocumentContent, SDLDocument } from '../sdl-document/sdl-document';
 
@@ -8,7 +8,7 @@ interface Props {
   root: string;
 }
 
-export const SDLDocumentBrowser = (props: Props) => {
+const SDLDocumentBrowser = (props: Props) => {
   const [state, setState] = useState<string[]>([props.root]);
   const page = props.book[state[state.length - 1]];
 
@@ -38,11 +38,13 @@ export const SDLDocumentBrowser = (props: Props) => {
         textAlign: 'left',
       }}
     >
-      <button disabled={!backAvailable} onClick={goBack}>
+      <Button variant="contained" size="small" disabled={!backAvailable} onClick={goBack}>
         Back
-      </button>
+      </Button>
       {content && <SDLDocument content={content} onClick={navigate}></SDLDocument>}
       {!content && <>Content not found</>}
     </Box>
   );
 };
+
+export default SDLDocumentBrowser;

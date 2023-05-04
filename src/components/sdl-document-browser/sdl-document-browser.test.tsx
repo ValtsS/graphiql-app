@@ -2,7 +2,7 @@ import { MOCK_QUERY_EXPECTED } from '@/../__mocks__/api-mock-helper';
 import { DocumentBook, DocumentPage, DocumentPageHelper, generateBook } from '@/core/docs';
 import { act, render, screen } from '@testing-library/react';
 import React from 'react';
-import { SDLDocumentBrowser } from './sdl-document-browser';
+import SDLDocumentBrowser from './sdl-document-browser';
 
 describe('Document browser', () => {
   it('should render / ', () => {
