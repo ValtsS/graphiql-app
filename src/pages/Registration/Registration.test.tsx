@@ -47,6 +47,5 @@ describe('Registration', () => {
     const form = screen.getByRole('form');
 
     fireEvent.submit(form);
-
   });
 });
