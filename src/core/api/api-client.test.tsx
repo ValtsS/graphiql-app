@@ -25,7 +25,6 @@ describe('DefaultApiClient', () => {
     await expect(apiClient.get(dummyURL)).rejects.toThrowError('Fetch error');
   });
 
-
   test('should throw an error when server returns 500', async () => {
     fetchMock.mockOnce(dummyURL, { status: 500 });
     await expect(apiClient.get(dummyURL)).rejects.toThrowError('GET failed: Internal Server Error');
