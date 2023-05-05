@@ -63,6 +63,7 @@ const createEditor = (
 const EditorsBlock = () => {
   const leftSideRef = useRef<HTMLDivElement>(null);
   const topSideRef = useRef<HTMLDivElement>(null);
+  const effectRan = useRef(false);
   const [leftSideWidth, setleftSideWidth] = useState('60%');
   const [topSideHeight, setTopSideHeight] = useState('70%');
 
@@ -88,41 +89,51 @@ const EditorsBlock = () => {
     const variablesModel = getOrCreateModel('variables.json', defaultVariables);
     const resultsModel = getOrCreateModel('results.json', '');
 
-    queryEditor ??
-      setQueryEditor(
-        createEditor(opsRef, {
-          model: queryModel,
-          language: 'graphql',
-          ...MONACO_OPTIONS,
-        })
-      );
-    variablesEditor ??
-      setVariablesEditor(
-        createEditor(varsRef, {
-          model: variablesModel,
-          ...MONACO_OPTIONS,
-        })
-      );
-    resultsViewer ??
-      setResultsViewer(
-        createEditor(resultsRef, {
-          model: resultsModel,
-          readOnly: true,
-          smoothScrolling: true,
-          ...MONACO_OPTIONS,
-        })
-      );
+    const createEditors = () => {
+      if (effectRan.current === false) {
+        queryEditor ??
+          setQueryEditor(
+            createEditor(opsRef, {
+              model: queryModel,
+              language: 'graphql',
+              ...MONACO_OPTIONS,
+            })
+          );
+        variablesEditor ??
+          setVariablesEditor(
+            createEditor(varsRef, {
+              model: variablesModel,
+              ...MONACO_OPTIONS,
+            })
+          );
+        resultsViewer ??
+          setResultsViewer(
+            createEditor(resultsRef, {
+              model: resultsModel,
+              readOnly: true,
+              smoothScrolling: true,
+              ...MONACO_OPTIONS,
+            })
+          );
 
-    queryModel.onDidChangeContent(
-      debounce(300, () => {
-        localStorage.setItem('operations', queryModel.getValue());
-      })
-    );
-    variablesModel.onDidChangeContent(
-      debounce(300, () => {
-        localStorage.setItem('variables', variablesModel.getValue());
-      })
-    );
+        queryModel.onDidChangeContent(
+          debounce(300, () => {
+            localStorage.setItem('operations', queryModel.getValue());
+          })
+        );
+        variablesModel.onDidChangeContent(
+          debounce(300, () => {
+            localStorage.setItem('variables', variablesModel.getValue());
+          })
+        );
+      }
+    };
+
+    createEditors();
+
+    return () => {
+      effectRan.current = true;
+    };
   }, [queryEditor, resultsViewer, variablesEditor]);
 
   useEffect(() => {

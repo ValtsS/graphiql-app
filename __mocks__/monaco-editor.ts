@@ -4,6 +4,9 @@ export const languages = {
       setDiagnosticsOptions: function () {},
     },
   },
+  editor: {
+    defineTheme: function () {},
+  },
 };
 export const KeyMod = { CtrlCmd: '' };
 export const KeyCode = { Enter: '' };
