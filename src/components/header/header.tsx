@@ -55,8 +55,8 @@ export const Header = (props: Props): ReactElement => {
     return () => window.addEventListener('scroll', stickyHeader);
   }, [isSticky]);
 
-  const headerMenu = routesConfig.slice(0, 2);
-  const signMenu = routesConfig.slice(2, 4);
+  const headerMenu = routesConfig.filter((el) => !el.reg);
+  const signMenu = routesConfig.filter((el) => el.reg);
 
   return (
     <>

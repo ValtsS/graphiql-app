@@ -9,6 +9,7 @@ export interface RouteConfig {
   element: React.ReactNode;
   displayInMenu?: boolean;
   menuText?: string;
+  reg: boolean;
 }
 
 export const defaultRoutes: RouteConfig[] = [
@@ -18,6 +19,7 @@ export const defaultRoutes: RouteConfig[] = [
     element: <Welcome />,
     displayInMenu: true,
     menuText: 'Welcome',
+    reg: false,
   },
   {
     uuid: uuidv4(),
@@ -25,6 +27,7 @@ export const defaultRoutes: RouteConfig[] = [
     element: <Main />,
     displayInMenu: true,
     menuText: 'Main',
+    reg: false,
   },
   {
     uuid: uuidv4(),
@@ -36,6 +39,7 @@ export const defaultRoutes: RouteConfig[] = [
     ),
     displayInMenu: true,
     menuText: 'Sign in',
+    reg: true,
   },
   {
     uuid: uuidv4(),
@@ -47,5 +51,6 @@ export const defaultRoutes: RouteConfig[] = [
     ),
     displayInMenu: true,
     menuText: 'Sign up',
+    reg: true,
   },
 ];

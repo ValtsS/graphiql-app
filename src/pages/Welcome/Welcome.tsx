@@ -6,7 +6,8 @@ import { defaultRoutes } from '@/routes';
 
 export const Welcome = (): ReactElement => {
   const { currentUser } = useAuth();
-  const signMenu = defaultRoutes.slice(2, 4);
+  const signMenu = defaultRoutes.filter((el) => el.reg);
+
   return (
     <Container>
       Welcome
