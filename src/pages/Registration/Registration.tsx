@@ -1,11 +1,12 @@
 import React, { MouseEvent, ReactElement, useEffect, useState } from 'react';
 import { Button, Grid, Typography, Paper, Box, TextField } from '@mui/material';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import style from './Registration.module.css';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, registerWithEmailAndPassword } from '@/firebase';
+import { auth, registerWithEmailAndPassword } from '@/core/firebase';
 import { toast } from 'react-toastify';
+import { SideBar } from '../../components';
 
 export const Registration = (): ReactElement => {
   const [email, setEmail] = useState('');
@@ -19,53 +20,28 @@ export const Registration = (): ReactElement => {
     try {
       await registerWithEmailAndPassword(name, email, password, file);
       toast.success('Sign up');
-    } catch {
+    } catch (err) {
       toast.error('Something went wrong');
+      console.log(err);
     }
   };
   useEffect(() => {
     if (loading) return;
     if (user) navigate('/', { replace: true });
   }, [user, loading, navigate]);
+
+  const data = {
+    greet: 'Welcome Back!',
+    desc: 'To keep connected with us please login with your personal info',
+    path: '/auth',
+    btn: 'Sign In',
+  };
+
   return (
     <>
       <Paper className={style.paper} elevation={6}>
         <Grid container>
-          <Grid item md={6} xs={12} order={{ xs: 1, md: 1 }}>
-            <Box
-              sx={{
-                background: 'linear-gradient(to right, #009999, #007195)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'column',
-                padding: '0 40px',
-                height: '100%',
-              }}
-            >
-              <Typography
-                variant="h4"
-                component="h2"
-                color={'white'}
-                mt={5}
-                sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', md: '2rem' } }}
-              >
-                Welcome Back!
-              </Typography>
-              <Typography color={'white'}>
-                To keep connected with us please login with your personal info
-              </Typography>
-              <Button
-                variant="outlined"
-                sx={{ color: 'white', border: '1px solid white', m: '50px 0' }}
-                fullWidth
-                component={RouterLink}
-                to={'/auth'}
-              >
-                Sign In
-              </Button>
-            </Box>
-          </Grid>
+          <SideBar data={data} />
 
           <Grid item md={6} xs={12} order={{ xs: 2, md: 2 }}>
             <Box component="form" sx={{ p: '50px' }} aria-label="form">

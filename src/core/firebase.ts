@@ -38,13 +38,11 @@ const registerWithEmailAndPassword = async (
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-          // update user profile
           await updateProfile(user, {
             displayName: name,
             photoURL: downloadURL,
           });
 
-          // store user data im firistore
           await setDoc(doc(db, 'users', user.uid), {
             uid: user.uid,
             displayName: name,
@@ -67,6 +65,7 @@ const logout = () => {
     })
     .catch((err) => {
       toast.error(err.message);
+      console.log(err);
     });
 };
 

@@ -7,7 +7,7 @@ describe('Header', () => {
   it('renders', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
-        <Header />
+        <Header routesConfig={[]} />
       </MemoryRouter>
     );
   });
@@ -15,7 +15,7 @@ describe('Header', () => {
   it('NavMenu works', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
-        <Header />
+        <Header routesConfig={[]} />
       </MemoryRouter>
     );
   });
@@ -23,7 +23,7 @@ describe('Header', () => {
   it('UserMenu works', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
-        <Header />
+        <Header routesConfig={[]} />
       </MemoryRouter>
     );
   });

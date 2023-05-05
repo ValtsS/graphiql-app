@@ -2,6 +2,7 @@ import { Footer, Header, Toaster } from '@/components';
 import { useModalDialog } from '@/provider/modal-dialog';
 import { Box, Modal, SxProps } from '@mui/material';
 import React, { ReactElement } from 'react';
+import { defaultRoutes } from './routes-config';
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -23,7 +24,7 @@ export const RootLayout = (props: RootLayoutProps): ReactElement => {
 
   return (
     <>
-      <Header />
+      <Header routesConfig={defaultRoutes} />
       <Modal
         open={state.show}
         onClose={hide}

@@ -1,4 +1,4 @@
-import { Authorization, Main, Registration, Welcome, About } from '@/pages';
+import { Authorization, Main, Registration, Welcome } from '@/pages';
 import React from 'react';
 import { ProtectedRoute } from './protected-route';
 import { v4 as uuidv4 } from 'uuid';
@@ -12,6 +12,13 @@ export interface RouteConfig {
 }
 
 export const defaultRoutes: RouteConfig[] = [
+  {
+    uuid: uuidv4(),
+    path: '/welcome',
+    element: <Welcome />,
+    displayInMenu: true,
+    menuText: 'Welcome',
+  },
   {
     uuid: uuidv4(),
     path: '/',
@@ -28,7 +35,7 @@ export const defaultRoutes: RouteConfig[] = [
       </ProtectedRoute>
     ),
     displayInMenu: true,
-    menuText: 'Authorization',
+    menuText: 'Sign in',
   },
   {
     uuid: uuidv4(),
@@ -39,19 +46,6 @@ export const defaultRoutes: RouteConfig[] = [
       </ProtectedRoute>
     ),
     displayInMenu: true,
-    menuText: 'Registration',
-  },
-  {
-    uuid: uuidv4(),
-    path: '/about',
-    element: <About />,
-    displayInMenu: true,
-    menuText: 'About',
-  },
-  {
-    path: '/welcome',
-    element: <Welcome />,
-    displayInMenu: true,
-    menuText: 'Welcome',
+    menuText: 'Sign up',
   },
 ];

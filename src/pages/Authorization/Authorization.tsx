@@ -3,9 +3,10 @@ import { Button, Grid, Typography, Paper, Box, TextField, Link } from '@mui/mate
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import style from '../Registration/Registration.module.css';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '@/firebase';
+import { auth } from '@/core/firebase';
 import { signInWithEmailAndPassword } from '@firebase/auth';
 import { toast } from 'react-toastify';
+import { SideBar } from '@/components';
 
 export const Authorization = (): ReactElement => {
   const [email, setEmail] = useState('');
@@ -20,8 +21,9 @@ export const Authorization = (): ReactElement => {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success('Successefully logged in');
       navigate('/');
-    } catch (error) {
+    } catch (err) {
       toast.error('something went wrong');
+      console.log(err);
     }
   };
 
@@ -31,6 +33,13 @@ export const Authorization = (): ReactElement => {
     }
     if (user) navigate('/');
   }, [user, loading, navigate]);
+
+  const data = {
+    greet: 'Hello, Friend!',
+    desc: 'Enter your personal details',
+    path: '/reg',
+    btn: 'Sign Up',
+  };
 
   return (
     <>
@@ -79,58 +88,21 @@ export const Authorization = (): ReactElement => {
               >
                 Sign in
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2" sx={{ textDecoration: 'none' }}>
+              <Grid container sx={{ display: 'flex', justifyContent: 'space-around' }}>
+                <Grid item>
+                  <Link href="#" variant="body2">
                     Forgot password?
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link
-                    variant="body2"
-                    component={RouterLink}
-                    to="/reg"
-                    sx={{ textDecoration: 'none' }}
-                  >
+                  <Link variant="body2" component={RouterLink} to="/reg">
                     Don&apos;t have an account? Sign Up
                   </Link>
                 </Grid>
               </Grid>
             </Box>
           </Grid>
-          <Grid item md={6} xs={12} order={{ xs: 1, md: 2 }}>
-            <Box
-              sx={{
-                background: 'linear-gradient(to right, #009999, #007195)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'column',
-                padding: '0 40px',
-                height: '100%',
-              }}
-            >
-              <Typography
-                variant="h4"
-                component="h2"
-                color={'white'}
-                mt={5}
-                sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', md: '2rem' } }}
-              >
-                Hello, Friend!
-              </Typography>
-              <Typography color={'white'}>Enter your personal details</Typography>
-              <Button
-                variant="outlined"
-                sx={{ color: 'white', border: '1px solid white', m: '50px 0' }}
-                fullWidth
-                component={RouterLink}
-                to={'/reg'}
-              >
-                Sign Up
-              </Button>
-            </Box>
-          </Grid>
+          <SideBar data={data} />
         </Grid>
       </Paper>
     </>
