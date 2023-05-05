@@ -1,12 +1,12 @@
 import { SimpleMockApiClient } from '@/../__mocks__/SimpleMockApiClient';
 import { setupMockIntrospection } from '@/../__mocks__/api-mock-helper';
+import { IntrospectionResponseData } from '@/core/api/api';
 import { fetchSchema } from '@/slices';
 import { setupStore } from '@/store';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { DocumentPageComponent } from './document-page';
-import { IntrospectionResponseData } from '@/core/api/api';
 
 describe('Document page component', () => {
   it('should display root page and back button', async () => {
