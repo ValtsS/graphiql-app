@@ -42,8 +42,6 @@ export const Header = (props: Props): ReactElement => {
 
   const stickyHeader = () => {
     window.addEventListener('scroll', () => {
-      console.log('document.body.scrollTop', document.body.scrollTop);
-      console.log('document.documentElement.scrollTop', document.documentElement.scrollTop);
       if (document.body.scrollTop > 0 || document.documentElement.scrollTop > 0) {
         setSticky(true);
       } else {
