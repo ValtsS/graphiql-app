@@ -174,7 +174,7 @@ const EditorsBlock = () => {
       <div className={styles.editors}>
         <div ref={leftSideRef} className={styles.mainEditor} style={{ width: leftSideWidth }}>
           <div ref={topSideRef} className={styles.editor} style={{ height: topSideHeight }}>
-            <div ref={opsRef} className={styles.monaco} />
+            <div data-testid="editor" ref={opsRef} className={styles.monaco} />
           </div>
           <Resizer
             changeSideRef={topSideRef}
@@ -182,12 +182,12 @@ const EditorsBlock = () => {
             axisVector={'height'}
           />
           <div className={`${styles.editor} ${styles.variable}`}>
-            <div ref={varsRef} className={styles.monaco} />
+            <div data-testid="editor" ref={varsRef} className={styles.monaco} />
           </div>
         </div>
         <Resizer changeSideRef={leftSideRef} setSideSize={setleftSideWidth} axisVector={'width'} />
         <div className={`${styles.editor} ${styles.response}`}>
-          <div ref={resultsRef} className={styles.monaco} />
+          <div data-testid="editor" ref={resultsRef} className={styles.monaco} />
         </div>
       </div>
     </div>

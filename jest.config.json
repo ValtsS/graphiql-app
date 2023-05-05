@@ -17,8 +17,8 @@
     "\\.(css|less|scss|sass)$": "<rootDir>/__mocks__/styleMock.js",
     "^@/(.*)$": "<rootDir>/src/$1",
     "\\.(jpg|jpeg|png|svg|css)$": "<rootDir>/spec/frontend/__mocks__/file_mock.js",
-    "monaco-editor": "<rootDir>/__mocks__/monaco-editor.js",
-    "monaco-graphql/esm/initializeMode": "<rootDir>/__mocks__/monaco-editor.js"
+    "monaco-editor": "<rootDir>/__mocks__/monaco-editor.ts",
+    "monaco-graphql/esm/initializeMode": "<rootDir>/__mocks__/monaco-editor.ts"
   },
   "transformIgnorePatterns": ["/node_modules/", "^.+\\.module\\.(css|sass|scss)$"]
 }
