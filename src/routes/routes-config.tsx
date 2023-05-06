@@ -9,26 +9,10 @@ export interface RouteConfig {
   element: React.ReactNode;
   displayInMenu?: boolean;
   menuText?: string;
-  reg: boolean;
+  displayInRegistration?: boolean;
 }
 
-export const defaultRoutes: RouteConfig[] = [
-  {
-    uuid: uuidv4(),
-    path: '/welcome',
-    element: <Welcome />,
-    displayInMenu: true,
-    menuText: 'Welcome',
-    reg: false,
-  },
-  {
-    uuid: uuidv4(),
-    path: '/',
-    element: <Main />,
-    displayInMenu: true,
-    menuText: 'Main',
-    reg: false,
-  },
+const regRoutes: RouteConfig[] = [
   {
     uuid: uuidv4(),
     path: '/auth',
@@ -39,7 +23,7 @@ export const defaultRoutes: RouteConfig[] = [
     ),
     displayInMenu: true,
     menuText: 'Sign in',
-    reg: true,
+    displayInRegistration: true,
   },
   {
     uuid: uuidv4(),
@@ -51,6 +35,24 @@ export const defaultRoutes: RouteConfig[] = [
     ),
     displayInMenu: true,
     menuText: 'Sign up',
-    reg: true,
+    displayInRegistration: true,
   },
+];
+
+export const defaultRoutes: RouteConfig[] = [
+  {
+    uuid: uuidv4(),
+    path: '/welcome',
+    element: <Welcome routes={regRoutes} />,
+    displayInMenu: true,
+    menuText: 'Welcome',
+  },
+  {
+    uuid: uuidv4(),
+    path: '/',
+    element: <Main />,
+    displayInMenu: true,
+    menuText: 'Main',
+  },
+  ...regRoutes,
 ];
