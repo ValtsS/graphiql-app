@@ -1,10 +1,9 @@
-import React, { ReactElement, MouseEvent, useState } from 'react';
+import React, { ReactElement, MouseEvent, useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import HiveIcon from '@mui/icons-material/Hive';
 import {
   CssBaseline,
-  useScrollTrigger,
   AppBar,
   Box,
   Toolbar,
@@ -18,197 +17,186 @@ import {
   MenuItem,
   Link,
 } from '@mui/material';
-
-const pages = [
-  {
-    page: 'About',
-    link: '/about',
-  },
-  {
-    page: 'graphql',
-    link: '/graphql',
-  },
-  {
-    page: 'auth',
-    link: '/auth',
-  },
-  {
-    page: 'reg',
-    link: '/reg',
-  },
-];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import { logout } from '@/core/firebase';
+import useAuth from '@/custom-hooks/useAuth';
+import './header.css';
+import { RouteConfig } from '@/routes/routes-config';
 
 interface Props {
-  window?: () => Window;
-  children: ReactElement;
+  routesConfig: RouteConfig[];
 }
 
-function ElevationScroll(props: Props) {
-  const { children, window } = props;
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 0,
-    target: window ? window() : undefined,
-  });
-
-  return React.cloneElement(children, {
-    elevation: trigger ? 4 : 0,
-  });
-}
-
-export const Header = (): ReactElement => {
+export const Header = (props: Props): ReactElement => {
+  const { routesConfig } = props;
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-
+  const [isSticky, setSticky] = useState(false);
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const { currentUser } = useAuth();
+
+  const stickyHeader = () => {
+    window.addEventListener('scroll', () => {
+      if (document.body.scrollTop > 0 || document.documentElement.scrollTop > 0) {
+        setSticky(true);
+      } else {
+        setSticky(false);
+      }
+    });
   };
+
+  useEffect(() => {
+    stickyHeader();
+    return () => window.addEventListener('scroll', stickyHeader);
+  }, [isSticky]);
+
+  const headerMenu = routesConfig.filter((el) => !el.reg);
+  const signMenu = routesConfig.filter((el) => el.reg);
 
   return (
     <>
       <CssBaseline />
-      <ElevationScroll>
-        <AppBar>
-          <Container maxWidth="xl">
-            <Toolbar disableGutters>
-              <HiveIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-              <Link to="/" component={RouterLink}>
-                <Typography
-                  variant="h6"
-                  noWrap
-                  sx={{
-                    mr: 2,
-                    display: { xs: 'none', md: 'flex' },
-                    fontFamily: 'monospace',
-                    fontWeight: 700,
-                    letterSpacing: '.3rem',
-                    textDecoration: 'none',
-                    color: '#fff',
-                  }}
-                >
-                  GraphQL
-                </Typography>
-              </Link>
-
-              <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                <IconButton
-                  size="large"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleOpenNavMenu}
-                  color="inherit"
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorElNav}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                  }}
-                  open={Boolean(anchorElNav)}
-                  onClose={handleCloseNavMenu}
-                  sx={{
-                    display: { xs: 'block', md: 'none' },
-                  }}
-                >
-                  {pages.map((page) => (
-                    <MenuItem key={page.page} onClick={handleCloseNavMenu}>
-                      <Link to={page.link} component={RouterLink}>
-                        <Typography textAlign="center">{page.page}</Typography>
-                      </Link>
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </Box>
-              <HiveIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+      <AppBar className={isSticky ? 'sticky' : ''}>
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <HiveIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+            <Link to="/" component={RouterLink}>
               <Typography
-                variant="h5"
+                variant="h6"
                 noWrap
-                component="a"
-                href=""
                 sx={{
                   mr: 2,
-                  display: { xs: 'flex', md: 'none' },
-                  flexGrow: 1,
+                  display: { xs: 'none', md: 'flex' },
                   fontFamily: 'monospace',
                   fontWeight: 700,
                   letterSpacing: '.3rem',
-                  color: 'inherit',
-                  textDecoration: 'none',
+                  color: '#fff',
                 }}
               >
                 GraphQL
               </Typography>
-              <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                {pages.map((page) => (
-                  <Link to={page.link} component={RouterLink} key={page.page}>
-                    <Button
-                      // key={page.page}
-                      onClick={handleCloseNavMenu}
-                      sx={{ my: 2, color: 'white', display: 'block' }}
-                    >
-                      {page.page}
-                    </Button>
-                  </Link>
-                ))}
-              </Box>
+            </Link>
 
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar
-                      alt="Remy Sharp"
-                      // src="/static/images/avatar/2.jpg"
-                    />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: '45px' }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      <Typography textAlign="center">{setting}</Typography>
+            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: 'block', md: 'none' },
+                }}
+              >
+                {headerMenu.map((page) => (
+                  <MenuItem key={page.uuid} onClick={handleCloseNavMenu}>
+                    <Link to={page.path} component={RouterLink}>
+                      <Typography textAlign="center">{page.menuText}</Typography>
+                    </Link>
+                  </MenuItem>
+                ))}
+                {!currentUser ? (
+                  signMenu.map((page) => (
+                    <MenuItem key={page.uuid} onClick={handleCloseNavMenu}>
+                      <Link to={page.path} component={RouterLink} sx={{ textDecoration: 'none' }}>
+                        <Typography textAlign="center">{page.menuText}</Typography>
+                      </Link>
                     </MenuItem>
-                  ))}
-                </Menu>
-              </Box>
-            </Toolbar>
-          </Container>
-        </AppBar>
-      </ElevationScroll>
+                  ))
+                ) : (
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Link to="/" component={RouterLink} sx={{ textDecoration: 'none' }}>
+                      <Typography textAlign="center">Sign Out</Typography>
+                    </Link>
+                  </MenuItem>
+                )}
+              </Menu>
+            </Box>
+            <HiveIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+            <Typography
+              variant="h5"
+              noWrap
+              component="a"
+              href=""
+              sx={{
+                mr: 2,
+                display: { xs: 'flex', md: 'none' },
+                flexGrow: 1,
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+              }}
+            >
+              GraphQL
+            </Typography>
+
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+              {headerMenu.map((page) => (
+                <Button
+                  key={page.uuid}
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                  component={RouterLink}
+                  to={page.path}
+                >
+                  {page.menuText}
+                </Button>
+              ))}
+            </Box>
+
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+              {currentUser ? (
+                <Box sx={{ flexGrow: 1 }}>
+                  <Button
+                    variant="outlined"
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                    onClick={logout}
+                  >
+                    Sign Out
+                  </Button>
+                </Box>
+              ) : null}
+
+              {currentUser ? (
+                <Box sx={{ flexGrow: 0 }}>
+                  <Tooltip title={currentUser?.displayName}>
+                    <IconButton sx={{ p: 0 }}>
+                      <Avatar
+                        alt="Remy Sharp"
+                        src={currentUser ? (currentUser.photoURL as string) : ''}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              ) : null}
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
       <Toolbar />
     </>
   );
