@@ -1,4 +1,5 @@
 import React, { RefObject, useRef } from 'react';
+import styles from './resizer.module.css';
 
 interface Props {
   changeSideRef: RefObject<HTMLDivElement>;
@@ -26,8 +27,6 @@ const Resizer = (props: Props) => {
   };
 
   const mouseUpHandler = function () {
-    document.body.style.removeProperty('cursor');
-
     document.removeEventListener('mousemove', mouseMoveHandler);
     document.removeEventListener('mouseup', mouseUpHandler);
   };
@@ -38,6 +37,7 @@ const Resizer = (props: Props) => {
     const currentSizeChanges = axisVector === 'height' ? e.clientY - y : e.clientX - x;
 
     const parentResizer = resizer.parentNode as HTMLElement;
+    console.log(parentResizer);
 
     setSideSize(
       `${(
@@ -45,16 +45,14 @@ const Resizer = (props: Props) => {
         +parentResizer.getBoundingClientRect()[axisVector]
       ).toString()}%`
     );
-    document.body.style.cursor = axisVector === 'height' ? 'row-resize' : 'col-resize';
   };
 
   return (
     <div
       style={{
         [axisVector]: 30,
-        cursor: axisVector === 'height' ? 'row-resize' : 'col-resize',
-        backgroundColor: '#fff',
       }}
+      className={`${styles.resizer} ${styles[axisVector]}`}
       ref={resizerRef}
       onMouseDown={mouseDownHandler}
     ></div>

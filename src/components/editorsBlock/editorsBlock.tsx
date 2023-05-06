@@ -63,10 +63,10 @@ const createEditor = (
 const EditorsBlock = () => {
   const leftSideRef = useRef<HTMLDivElement>(null);
   const topSideRef = useRef<HTMLDivElement>(null);
-  const effectRan = useRef(false);
   const [leftSideWidth, setleftSideWidth] = useState('60%');
   const [topSideHeight, setTopSideHeight] = useState('70%');
 
+  const effectRan = useRef(false);
   const opsRef = React.useRef(null);
   const varsRef = React.useRef(null);
   const resultsRef = React.useRef(null);
