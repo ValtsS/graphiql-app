@@ -60,7 +60,7 @@ const createEditor = (
   options: editor.IStandaloneEditorConstructionOptions
 ) => editor.create(ref.current as unknown as HTMLElement, options);
 
-const EditorsBlock = () => {
+export const EditorsBlock = () => {
   const leftSideRef = useRef<HTMLDivElement>(null);
   const topSideRef = useRef<HTMLDivElement>(null);
   const [leftSideWidth, setleftSideWidth] = useState('60%');
@@ -204,5 +204,3 @@ const EditorsBlock = () => {
     </div>
   );
 };
-
-export default EditorsBlock;

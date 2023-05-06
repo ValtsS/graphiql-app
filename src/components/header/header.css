@@ -3,3 +3,8 @@
   float: left;
   font-size: 1.25rem;
 }
+
+.sticky {
+  background-color: #5bafaf !important;
+  transition: all 0.5s ease-out;
+}
