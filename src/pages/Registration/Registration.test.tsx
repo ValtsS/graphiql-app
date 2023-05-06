@@ -1,16 +1,13 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import { Registration } from './Registration';
+import { waitRender } from '@/../__mocks__/test-utils';
 
 describe('Registration', () => {
-  it('Registration renders correctly', () => {
-    render(
-      <BrowserRouter>
-        <Registration />
-      </BrowserRouter>
-    );
+  it('Registration renders correctly', async () => {
+    await defaultRender();
 
     const textboxName = screen.getByRole('textbox', { name: 'Name' });
     expect(textboxName).toBeInTheDocument;
@@ -23,11 +20,7 @@ describe('Registration', () => {
   });
 
   it('Registration submited', async () => {
-    render(
-      <BrowserRouter>
-        <Registration />
-      </BrowserRouter>
-    );
+    await defaultRender();
 
     const textboxName = screen.getByRole('textbox', { name: 'Name' });
     await userEvent.type(textboxName, 'Skave');
@@ -48,4 +41,16 @@ describe('Registration', () => {
 
     fireEvent.submit(form);
   });
+
+  async function defaultRender() {
+    act(() =>
+      render(
+        <BrowserRouter>
+          <Registration />
+        </BrowserRouter>
+      )
+    );
+
+    await waitRender();
+  }
 });
