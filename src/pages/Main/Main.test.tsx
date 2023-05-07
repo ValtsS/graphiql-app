@@ -10,7 +10,23 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { Main } from './Main';
 
-jest.mock('monaco-editor');
+jest.mock('monaco-editor', () => {
+  return {
+    KeyMod: { CtrlCmd: '' },
+    KeyCode: { Enter: '' },
+    languages: {
+      json: {
+        jsonDefaults: {
+          setDiagnosticsOptions: jest.fn(),
+        },
+      },
+    },
+    editor: {
+      defineTheme: jest.fn(),
+      create: jest.fn(),
+    },
+  };
+});
 
 describe('Main page component', () => {
   const testURL = 'https://dummy/';
