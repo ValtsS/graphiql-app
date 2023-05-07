@@ -48,7 +48,7 @@ export const EditorQueryGraphQL = () => {
 
   return (
     <div>
-      <div style={{ width: '100%', border: '2px solid red' }}>
+      <div style={{ width: '100%' }}>
         <Editor language={'graphql'} model={model} />
       </div>
     </div>

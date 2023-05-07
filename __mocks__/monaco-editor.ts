@@ -11,5 +11,12 @@ module.exports = {
   editor: {
     defineTheme: jest.fn(),
     create: jest.fn(),
+    getModel: jest.fn(),
+    createModel: jest.fn().mockReturnValue({
+      onDidChangeContent: jest.fn(),
+    }),
+  },
+  Uri: {
+    file: jest.fn(),
   },
 };
