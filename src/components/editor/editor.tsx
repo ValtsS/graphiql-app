@@ -1,6 +1,5 @@
-import { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { editor as monacoEditor } from 'monaco-editor';
-import React from 'react';
 import customTheme from './editorTheme';
 import styles from './editor.module.css';
 
