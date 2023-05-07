@@ -23,7 +23,7 @@ module.exports = {
   },
   editor: {
     defineTheme: jest.fn(),
+    create: jest.fn()
   },
-};
 
-console.log('aaaa!!!!!!!!');
+};
