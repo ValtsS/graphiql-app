@@ -1,10 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { editor } from 'monaco-editor';
+import { Uri, editor } from 'monaco-editor';
 import customTheme from './editorTheme';
 import styles from './editor.module.css';
 
 interface Props {
   language: string;
+  model?: editor.ITextModel;
 }
 
 const MONACO_OPTIONS: editor.IEditorOptions = {
@@ -35,6 +36,7 @@ export const Editor = (props: Props) => {
         const newEditor = editor.create(monacoEl.current!, {
           language: props.language,
           theme: 'customTheme',
+          model: props.model,
           ...MONACO_OPTIONS,
         });
 
@@ -43,7 +45,13 @@ export const Editor = (props: Props) => {
     }
 
     return () => editorControl?.dispose();
-  }, [props.language, editorControl]);
+  }, [props.language, props.model, editorControl]);
 
   return <div className={styles.Editor} ref={monacoEl}></div>;
 };
+
+export function getOrCreateModel(uri: string, value: string): editor.ITextModel {
+  return (
+    editor.getModel(Uri.file(uri)) ?? editor.createModel(value, uri.split('.').pop(), Uri.file(uri))
+  );
+}

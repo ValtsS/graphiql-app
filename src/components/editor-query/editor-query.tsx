@@ -1,14 +1,34 @@
-import { StoreStatus, selectSchemaData } from '@/slices';
+import { StoreStatus, selectEditorsData, selectSchemaData, setQuery } from '@/slices';
+import { useAppDispatch } from '@/store';
 import { buildASTSchema, parse } from 'graphql';
 import { initializeMode } from 'monaco-graphql/esm/initializeMode';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { Editor } from '../editor/editor';
+import { v4 as uuidv4 } from 'uuid';
+import { Editor, getOrCreateModel } from '../editor/editor';
 
 export const EditorQueryGraphQL = () => {
+  const dispatch = useAppDispatch();
   const schemaData = useSelector(selectSchemaData);
+  const editorData = useSelector(selectEditorsData);
   const notifyError = (message: string) => toast(message, { type: 'error' });
+  const [uuid] = useState<string>(uuidv4() + '.graphql');
+  const model = useMemo(() => {
+    const modelCreate = getOrCreateModel(uuid, editorData.query);
+
+    let timer: NodeJS.Timeout | null = null;
+
+    modelCreate.onDidChangeContent(() => {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        const val = modelCreate.getValue();
+        dispatch(setQuery({ queryText: val }));
+      }, 300);
+    });
+
+    return modelCreate;
+  }, [uuid, editorData, dispatch]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +49,7 @@ export const EditorQueryGraphQL = () => {
   return (
     <div>
       <div style={{ width: '100%', border: '2px solid red' }}>
-        <Editor language={'graphql'} />
+        <Editor language={'graphql'} model={model} />
       </div>
     </div>
   );
