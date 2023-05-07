@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { editor as monacoEditor } from 'monaco-editor';
+import { editor } from 'monaco-editor';
 import customTheme from './editorTheme';
 import styles from './editor.module.css';
 
@@ -7,7 +7,7 @@ interface Props {
   language: string;
 }
 
-const MONACO_OPTIONS: monacoEditor.IEditorOptions = {
+const MONACO_OPTIONS: editor.IEditorOptions = {
   minimap: { enabled: false },
   automaticLayout: true,
   fontSize: 14,
@@ -21,29 +21,31 @@ const MONACO_OPTIONS: monacoEditor.IEditorOptions = {
 };
 
 export const Editor = (props: Props) => {
-  const [editor, setEditor] = useState<monacoEditor.IStandaloneCodeEditor | null>(null);
+  const [editorControl, setEditorControl] = useState<editor.IStandaloneCodeEditor | null>(null);
   const monacoEl = useRef(null);
 
   useEffect(() => {
-    monacoEditor.defineTheme('customTheme', customTheme as never);
+    console.log(editor);
+    editor.defineTheme('customTheme', customTheme as never);
   }, []);
 
   useEffect(() => {
     if (monacoEl) {
-      setEditor((editor) => {
-        if (editor) return editor;
-        const newEditor = monacoEditor.create(monacoEl.current!, {
+      setEditorControl((editorControl) => {
+        if (editorControl) return editorControl;
+        const newEditor = editor.create(monacoEl.current!, {
           language: props.language,
           theme: 'customTheme',
           ...MONACO_OPTIONS,
         });
+        console.log('!!!!', newEditor);
 
         return newEditor;
       });
     }
 
-    return () => editor?.dispose();
-  }, [props.language, editor]);
+    return () => editorControl?.dispose();
+  }, [props.language, editorControl]);
 
   return <div className={styles.Editor} ref={monacoEl}></div>;
 };
