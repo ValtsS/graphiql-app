@@ -25,7 +25,6 @@ export const Editor = (props: Props) => {
   const monacoEl = useRef(null);
 
   useEffect(() => {
-    console.log(editor);
     editor.defineTheme('customTheme', customTheme as never);
   }, []);
 
@@ -38,7 +37,6 @@ export const Editor = (props: Props) => {
           theme: 'customTheme',
           ...MONACO_OPTIONS,
         });
-        console.log('!!!!', newEditor);
 
         return newEditor;
       });
