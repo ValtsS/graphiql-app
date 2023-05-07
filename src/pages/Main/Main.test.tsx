@@ -10,6 +10,8 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { Main } from './Main';
 
+jest.mock('monaco-editor');
+
 describe('Main page component', () => {
   const testURL = 'https://dummy/';
 

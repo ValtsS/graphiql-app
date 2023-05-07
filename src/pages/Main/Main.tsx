@@ -1,4 +1,5 @@
-import { AddressBar, EditorsBlock } from '@/components';
+import { AddressBar } from '@/components';
+import { EditorGraphQL } from '@/components/editor-gql/editor-gql';
 import { useModalDialog } from '@/provider/modal-dialog';
 import { changeEndpoint, selectMainData } from '@/slices';
 import { useAppDispatch } from '@/store';
@@ -35,13 +36,12 @@ export const Main = (): ReactElement => {
           <DocumentPageComponent />
         </Grid>
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-          Query
+          <EditorGraphQL />
         </Grid>
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
           result
         </Grid>
       </Grid>
-      <EditorsBlock />
     </Container>
   );
 };

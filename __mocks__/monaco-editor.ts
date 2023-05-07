@@ -1,12 +1,29 @@
-export const languages = {
-  json: {
-    jsonDefaults: {
-      setDiagnosticsOptions: function () {},
+// export const languages = {
+//   json: {
+//     jsonDefaults: {
+//       setDiagnosticsOptions: function () {},
+//     },
+//   },
+//   editor: {
+//     defineTheme: function () {},
+//   },
+// };
+// export const KeyMod = { CtrlCmd: '' };
+// export const KeyCode = { Enter: '' };
+
+module.exports = {
+  KeyMod: { CtrlCmd: '' },
+  KeyCode: { Enter: '' },
+  languages: {
+    json: {
+      jsonDefaults: {
+        setDiagnosticsOptions: jest.fn(),
+      },
     },
   },
   editor: {
-    defineTheme: function () {},
+    defineTheme: jest.fn(),
   },
 };
-export const KeyMod = { CtrlCmd: '' };
-export const KeyCode = { Enter: '' };
+
+console.log('aaaa!!!!!!!!');
