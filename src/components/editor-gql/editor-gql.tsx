@@ -12,10 +12,7 @@ export const EditorGraphQL = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('Schema changing', schemaData.status);
       if (schemaData.status == StoreStatus.succeeded) {
-        console.log('Schema changed and is ready');
-
         const docNode = parse(schemaData.schema);
         const ast = buildASTSchema(docNode);
 

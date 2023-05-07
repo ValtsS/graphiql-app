@@ -23,7 +23,6 @@ module.exports = {
   },
   editor: {
     defineTheme: jest.fn(),
-    create: jest.fn()
+    create: jest.fn(),
   },
-
 };
