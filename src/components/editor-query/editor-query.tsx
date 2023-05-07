@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Editor } from '../editor/editor';
 
-export const EditorGraphQL = () => {
+export const EditorQueryGraphQL = () => {
   const schemaData = useSelector(selectSchemaData);
   const notifyError = (message: string) => toast(message, { type: 'error' });
 
