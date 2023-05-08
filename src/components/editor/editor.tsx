@@ -6,6 +6,7 @@ import styles from './editor.module.css';
 interface Props {
   language: string;
   model?: editor.ITextModel;
+  readOnly?: boolean;
 }
 
 const MONACO_OPTIONS: editor.IEditorOptions = {
@@ -38,6 +39,7 @@ export const Editor = (props: Props) => {
           theme: 'customTheme',
           model: props.model,
           ...MONACO_OPTIONS,
+          readOnly: props.readOnly,
         });
 
         return newEditor;
