@@ -1,5 +1,12 @@
-import { getIntrospectionQuery, printSchema, buildClientSchema, IntrospectionQuery } from 'graphql';
+import {
+  getIntrospectionQuery,
+  printSchema,
+  buildClientSchema,
+  IntrospectionQuery,
+  assertValidSchema,
+} from 'graphql';
 import { ApiClient } from './api-client';
+import { assertValidSDL } from 'graphql/validation/validate';
 
 export type IntrospectionResponseData = {
   data: IntrospectionQuery;
@@ -12,7 +19,9 @@ export async function getremoteSchema(client: ApiClient, url: string): Promise<s
   });
 
   const { data } = await client.post<IntrospectionResponseData>(url, body);
-  return printSchema(buildClientSchema(data));
+  const schema = buildClientSchema(data);
+  assertValidSchema(schema);
+  return printSchema(schema);
 }
 
 export async function sendQuery(
