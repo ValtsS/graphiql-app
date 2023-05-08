@@ -29,7 +29,16 @@ export const EditorQueryGraphQL = () => {
         const document = parse(editorData.query);
         const errors = validate(gqlSchema, document);
         if (errors.length === 0) dispatch(setQueryError({}));
-        else dispatch(setQueryError({ error: errors[0].message + '....' }));
+        else {
+          const err = errors[0];
+          if (err.locations) {
+            dispatch(
+              setQueryError({
+                error: `${err.message} at line ${err.locations[0].line}, column ${err.locations[0].column}`,
+              })
+            );
+          } else dispatch(setQueryError({ error: err.message }));
+        }
       } catch (e) {
         if ((e as Error).message) dispatch(setQueryError({ error: (e as Error).message }));
         else dispatch(setQueryError({ error: 'Unknown error' }));
