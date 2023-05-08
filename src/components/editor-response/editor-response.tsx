@@ -8,10 +8,9 @@ export const EditorResponse = () => {
   const editorData = useSelector(selectEditorsData);
   const [uuid] = useState<string>(uuidv4() + '.json');
   const model = useMemo(() => {
-    const modelCreate = getOrCreateModel(uuid, editorData.query);
-    modelCreate.setValue(editorData.response);
+    const modelCreate = getOrCreateModel(uuid, editorData.response);
     return modelCreate;
-  }, [uuid, editorData]);
+  }, [uuid, editorData.response]);
 
   return (
     <div>
