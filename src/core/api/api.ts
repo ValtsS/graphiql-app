@@ -1,12 +1,11 @@
 import {
-  getIntrospectionQuery,
-  printSchema,
-  buildClientSchema,
   IntrospectionQuery,
   assertValidSchema,
+  buildClientSchema,
+  getIntrospectionQuery,
+  printSchema,
 } from 'graphql';
 import { ApiClient } from './api-client';
-import { assertValidSDL } from 'graphql/validation/validate';
 
 export type IntrospectionResponseData = {
   data: IntrospectionQuery;
