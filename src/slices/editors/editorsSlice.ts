@@ -64,7 +64,6 @@ export const editorsSlice = createSlice({
   reducers: {
     setQuery: (state, action: PayloadAction<{ version: number; text: string }>) => {
       if (action.payload.version > state.queryVersion) {
-        console.log('new ', action.payload.version);
         state.query = action.payload.text;
         state.queryVersion = action.payload.version;
       }
