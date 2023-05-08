@@ -47,7 +47,7 @@ export const Editor = (props: Props) => {
     }
 
     return () => editorControl?.dispose();
-  }, [props.language, props.model, editorControl]);
+  }, [props.language, props.model, props.readOnly, editorControl]);
 
   return <div className={styles.Editor} ref={monacoEl}></div>;
 };

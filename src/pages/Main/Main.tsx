@@ -52,6 +52,7 @@ export const Main = (): ReactElement => {
   }
 
   const processing = editorState.apiStatus == StoreStatus.loading;
+  const errors = !(editorState?.queryError === undefined);
 
   return (
     <Container>
@@ -59,10 +60,6 @@ export const Main = (): ReactElement => {
         <Button variant="contained" size="medium" onClick={changeEndpointClick}>
           Change Endpoint
         </Button>
-        <Button variant="contained" size="medium" onClick={sendQueryClick} disabled={processing}>
-          Send query
-        </Button>
-        {processing && <CircularProgress size={'1.5rem'} />}
       </Grid>
       <Grid item xs={12}>
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
@@ -71,6 +68,18 @@ export const Main = (): ReactElement => {
         </Grid>
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
           <EditorQueryGraphQL />
+        </Grid>
+        <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
+          {processing && <CircularProgress size={'1.5rem'} />}
+          <Typography variant="inherit">{editorState.queryError}</Typography>
+          <Button
+            variant="contained"
+            size="medium"
+            onClick={sendQueryClick}
+            disabled={processing || errors}
+          >
+            Send query
+          </Button>
         </Grid>
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
           <EditorResponse />

@@ -1,6 +1,12 @@
-import { StoreStatus, selectEditorsData, selectSchemaData, setQuery } from '@/slices';
+import {
+  StoreStatus,
+  selectEditorsData,
+  selectSchemaData,
+  setQuery,
+  setQueryError,
+} from '@/slices';
 import { useAppDispatch } from '@/store';
-import { buildASTSchema, parse } from 'graphql';
+import { GraphQLSchema, buildASTSchema, parse, validate } from 'graphql';
 import { initializeMode } from 'monaco-graphql/esm/initializeMode';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -14,16 +20,36 @@ export const EditorQueryGraphQL = () => {
   const editorData = useSelector(selectEditorsData);
   const notifyError = (message: string) => toast(message, { type: 'error' });
   const [uuid] = useState<string>(uuidv4() + '.graphql');
+
+  const [gqlSchema, setGqlSchema] = useState<GraphQLSchema | null>(null);
+
+  useEffect(() => {
+    if (gqlSchema) {
+      try {
+        const document = parse(editorData.query);
+        const errors = validate(gqlSchema, document);
+        if (errors.length === 0) dispatch(setQueryError({}));
+        else dispatch(setQueryError({ error: errors[0].message + '....' }));
+      } catch (e) {
+        if ((e as Error).message) dispatch(setQueryError({ error: (e as Error).message }));
+        else dispatch(setQueryError({ error: 'Unknown error' }));
+      }
+    }
+  }, [editorData.queryVersion, editorData.query, gqlSchema, dispatch]);
+
   const model = useMemo(() => {
     const modelCreate = getOrCreateModel(uuid, editorData.query);
-
     let timer: NodeJS.Timeout | null = null;
 
     modelCreate.onDidChangeContent(() => {
       if (timer) clearTimeout(timer);
       timer = setTimeout(() => {
-        const val = modelCreate.getValue();
-        dispatch(setQuery({ queryText: val }));
+        dispatch(
+          setQuery({
+            version: modelCreate.getVersionId(),
+            text: modelCreate.getValue(),
+          })
+        );
       }, 300);
     });
 
@@ -35,16 +61,17 @@ export const EditorQueryGraphQL = () => {
       if (schemaData.status == StoreStatus.succeeded) {
         const docNode = parse(schemaData.schema);
         const ast = buildASTSchema(docNode);
-
+        setGqlSchema(ast);
         const api = initializeMode();
         api.setSchemaConfig([{ schema: ast, uri: schemaData.endpoint }]);
       }
     };
 
+    dispatch(setQueryError({}));
     fetchData().catch((error) => {
       notifyError(error);
     });
-  }, [schemaData]);
+  }, [schemaData, dispatch]);
 
   return (
     <div>

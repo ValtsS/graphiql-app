@@ -5,7 +5,11 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { StoreStatus } from '../schema/schema';
 
 export type EditorsState = {
+  queryVersion: number;
   query: string;
+  queryError?: string;
+
+  parametersVersion: number;
   parameters: string;
   response: string;
   apiStatus: StoreStatus;
@@ -47,7 +51,9 @@ export const sendQueryGQL = createAsyncThunk(
 
 const initialState: EditorsState = {
   query: 'query { }',
+  queryVersion: -1,
   parameters: '{}',
+  parametersVersion: -1,
   response: '',
   apiStatus: StoreStatus.idle,
 };
@@ -56,9 +62,17 @@ export const editorsSlice = createSlice({
   name: 'editors',
   initialState: initialState,
   reducers: {
-    setQuery: (state, action: PayloadAction<{ queryText: string }>) => {
-      state.query = action.payload.queryText;
+    setQuery: (state, action: PayloadAction<{ version: number; text: string }>) => {
+      if (action.payload.version > state.queryVersion) {
+        console.log('new ', action.payload.version);
+        state.query = action.payload.text;
+        state.queryVersion = action.payload.version;
+      }
     },
+    setQueryError: (state, action: PayloadAction<{ error?: string }>) => {
+      state.queryError = action.payload.error;
+    },
+
     setParameters: (state, action: PayloadAction<{ parametersText: string }>) => {
       state.parameters = action.payload.parametersText;
     },
@@ -83,6 +97,6 @@ export const editorsSlice = createSlice({
   },
 });
 
-export const { setQuery, setParameters, setResponse } = editorsSlice.actions;
+export const { setQuery, setParameters, setResponse, setQueryError } = editorsSlice.actions;
 export const editorsReducer = editorsSlice.reducer;
 export const selectEditorsData = (state: RootState) => state.editors;
