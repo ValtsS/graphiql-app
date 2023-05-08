@@ -34,7 +34,7 @@ export const EditorQueryGraphQL = () => {
           if (err.locations) {
             dispatch(
               setQueryError({
-                error: `${err.message} at line ${err.locations[0].line}, column ${err.locations[0].column}`,
+                error: `${err.message} at line ${err.locations[0].line}:${err.locations[0].column}`,
               })
             );
           } else dispatch(setQueryError({ error: err.message }));
