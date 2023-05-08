@@ -15,12 +15,20 @@ export async function getremoteSchema(client: ApiClient, url: string): Promise<s
   return printSchema(buildClientSchema(data));
 }
 
-export async function sendQuery(client: ApiClient, url: string, query: string, variables: unknown):Promise<string> {
+export async function sendQuery(
+  client: ApiClient,
+  url: string,
+  query: string,
+  variables: unknown
+): Promise<string> {
   const body = JSON.stringify({
     query: query,
-    variables: variables
+    variables: variables,
   });
 
-  return  JSON.stringify(await client.post<string>(url, body, { DisableThrowOnError: true }), null, 2);
-
+  return JSON.stringify(
+    await client.post<string>(url, body, { DisableThrowOnError: true }),
+    null,
+    2
+  );
 }

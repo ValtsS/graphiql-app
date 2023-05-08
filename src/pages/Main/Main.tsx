@@ -1,15 +1,21 @@
 import { AddressBar } from '@/components';
 import { EditorQueryGraphQL } from '@/components/editor-query/editor-query';
+import { EditorResponse } from '@/components/editor-response/editor-response';
+import { useAppContext } from '@/provider';
 import { useModalDialog } from '@/provider/modal-dialog';
-import { changeEndpoint, selectEditorsData, selectMainData, setResponse } from '@/slices';
+import {
+  StoreStatus,
+  changeEndpoint,
+  selectEditorsData,
+  selectMainData,
+  sendQueryGQL,
+} from '@/slices';
 import { useAppDispatch } from '@/store';
-import { Button, Container, Grid, Typography } from '@mui/material';
+import { Button, CircularProgress, Container, Grid, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { DocumentPageComponent } from '../document-page/document-page';
-import { EditorResponse } from '@/components/editor-response/editor-response';
-import { DefaultApiClient } from '@/core/api/api-client';
-import { sendQuery } from '@/core/api/api';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
@@ -17,6 +23,8 @@ export const Main = (): ReactElement => {
 
   const mainState = useSelector(selectMainData);
   const editorState = useSelector(selectEditorsData);
+  const { apiClient } = useAppContext();
+  const notifyError = (message: string) => toast(message, { type: 'error' });
 
   const onEndPointChange = (newendpoint: string) => {
     hide();
@@ -28,19 +36,22 @@ export const Main = (): ReactElement => {
   };
 
   async function sendQueryClick() {
-    const dummy = await sendQuery(
-      new DefaultApiClient(),
-      mainState.endpoint,
-      editorState.query,
-      JSON.parse(editorState.parameters)
-    ).catch(console.error);
-
-    dispatch(setResponse({  responseText : dummy  ?? ''}));
-
-    console.log(dummy);
-
-
+    if (apiClient)
+      dispatch(
+        sendQueryGQL({
+          client: apiClient,
+          endpoint: mainState.endpoint,
+          query: editorState.query,
+          variables: editorState.parameters,
+        })
+      )
+        .unwrap()
+        .catch((rejectedValueOrSerializedError: string) => {
+          notifyError(rejectedValueOrSerializedError);
+        });
   }
+
+  const processing = editorState.queryStatus == StoreStatus.loading;
 
   return (
     <Container>
@@ -48,9 +59,10 @@ export const Main = (): ReactElement => {
         <Button variant="contained" size="medium" onClick={changeEndpointClick}>
           Change Endpoint
         </Button>
-        <Button variant="contained" size="medium" onClick={sendQueryClick}>
+        <Button variant="contained" size="medium" onClick={sendQueryClick} disabled={processing}>
           Send query
         </Button>
+        {processing && <CircularProgress size={'1.5rem'} />}
       </Grid>
       <Grid item xs={12}>
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
