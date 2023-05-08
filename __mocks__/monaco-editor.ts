@@ -14,6 +14,8 @@ module.exports = {
     getModel: jest.fn(),
     createModel: jest.fn().mockReturnValue({
       onDidChangeContent: jest.fn(),
+      setValue: jest.fn(),
+      getValue: jest.fn(),
     }),
   },
   Uri: {
