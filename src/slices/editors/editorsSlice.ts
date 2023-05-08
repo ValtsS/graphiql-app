@@ -8,7 +8,7 @@ export type EditorsState = {
   query: string;
   parameters: string;
   response: string;
-  queryStatus: StoreStatus;
+  apiStatus: StoreStatus;
 };
 
 export type queryParams = {
@@ -49,7 +49,7 @@ const initialState: EditorsState = {
   query: 'query { }',
   parameters: '{}',
   response: '',
-  queryStatus: StoreStatus.idle,
+  apiStatus: StoreStatus.idle,
 };
 
 export const editorsSlice = createSlice({
@@ -69,15 +69,15 @@ export const editorsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(sendQueryGQL.pending, (state) => {
-        state.queryStatus = StoreStatus.loading;
+        state.apiStatus = StoreStatus.loading;
       })
       .addCase(sendQueryGQL.fulfilled, (state, action) => {
         state.response = action.payload.response;
-        state.queryStatus = StoreStatus.succeeded;
+        state.apiStatus = StoreStatus.succeeded;
       })
       .addCase(sendQueryGQL.rejected, (state, action) => {
         const fail = action.payload as failData;
-        state.queryStatus = StoreStatus.failed;
+        state.apiStatus = StoreStatus.failed;
         state.response = fail.error;
       });
   },

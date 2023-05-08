@@ -51,7 +51,7 @@ export const Main = (): ReactElement => {
         });
   }
 
-  const processing = editorState.queryStatus == StoreStatus.loading;
+  const processing = editorState.apiStatus == StoreStatus.loading;
 
   return (
     <Container>
