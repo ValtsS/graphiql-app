@@ -3,8 +3,10 @@ import React, { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { Editor, getOrCreateModel } from '../editor/editor';
+import { useAppDispatch } from '@/store';
 
 export const EditorVariables = () => {
+  const dispatch = useAppDispatch();
   const editorData = useSelector(selectEditorsData);
   const [uuid] = useState<string>(uuidv4() + '.json');
   const model = useMemo(() => {
@@ -33,6 +35,3 @@ export const EditorVariables = () => {
     </div>
   );
 };
-function dispatch(arg0: any) {
-  throw new Error('Function not implemented.');
-}
