@@ -1,9 +1,8 @@
-import { AppStore, setupStore } from '@/store';
-import { sendQueryGQL, setQuery, setQueryError, setResponse, setVariables } from './editorsSlice';
 import { SimpleMockApiClient } from '@/../__mocks__/SimpleMockApiClient';
 import { IntrospectionResponseData } from '@/core/api/api';
+import { AppStore, setupStore } from '@/store';
 import { StoreStatus } from '../schema/schema';
-import { setupMockIntrospection } from '@/../__mocks__/api-mock-helper';
+import { sendQueryGQL, setQuery, setQueryError, setResponse, setVariables } from './editorsSlice';
 
 describe('Editors Slice', () => {
   let store: AppStore;
