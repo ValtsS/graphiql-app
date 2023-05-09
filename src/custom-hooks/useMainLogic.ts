@@ -1,6 +1,4 @@
-import { useApplySchema } from './main/useApplySchema';
-import { useFetchSchema } from './main/useFetchSchema';
-import { useQueryParser } from './main/useQueryParser';
+import { useFetchSchema, useApplySchema, useQueryParser } from './main';
 
 export const useMainLogic = () => {
   useFetchSchema();
