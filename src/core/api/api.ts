@@ -3,6 +3,7 @@ import {
   DocumentNode,
   IntrospectionQuery,
   Kind,
+  OperationDefinitionNode,
   assertValidSchema,
   buildClientSchema,
   getIntrospectionQuery,
@@ -47,31 +48,32 @@ type usedVariable = {
   hasDefault: boolean;
 };
 
-export function extractVariables(doc: DocumentNode): usedVariable[] {
+function extractVariables(doc: DocumentNode): usedVariable[] {
   const variables: usedVariable[] = [];
 
-  if (doc.kind == Kind.DOCUMENT) {
-    doc.definitions.forEach((def: DefinitionNode) => {
-      if (def.kind == Kind.OPERATION_DEFINITION)
-        if (def.variableDefinitions) {
-          def.variableDefinitions.forEach((v) => {
-            if (v.kind == Kind.VARIABLE_DEFINITION) {
-              const [varTypeName] = getTypeName(v.type);
-              variables.push({
-                variablename: v.variable.name.value.toString(),
-                hasDefault: v.defaultValue ? true : false,
-                variableTypeName: varTypeName,
-              });
-            }
+  doc.definitions
+    .filter((d) => d.kind == Kind.OPERATION_DEFINITION)
+    .forEach((dd: DefinitionNode) => {
+      const defs = (dd as OperationDefinitionNode).variableDefinitions;
+      if (defs)
+        defs
+          .filter((x) => x.kind == Kind.VARIABLE_DEFINITION)
+          .forEach((v) => {
+            const [varTypeName] = getTypeName(v.type);
+            variables.push({
+              variablename: v.variable.name.value.toString(),
+              hasDefault: v.defaultValue ? true : false,
+              variableTypeName: varTypeName,
+            });
           });
-        }
     });
-  }
 
   return variables;
 }
 
 export function validateVariables(document: DocumentNode, jsonstring: string): string | undefined {
+  if (document.kind !== Kind.DOCUMENT) return;
+
   let res: string | undefined = undefined;
   const requriredVars = extractVariables(document);
   const varsJSON = JSON.parse(jsonstring);
