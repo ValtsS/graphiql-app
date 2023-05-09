@@ -6,9 +6,7 @@ import {
 } from '@mui/material/styles';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { useApplySchema } from './custom-hooks/useApplySchema';
-import { useFetchSchema } from './custom-hooks/useFetchSchema';
-import { useQueryParser } from './custom-hooks/useQueryParser';
+import { useMainLogic } from './custom-hooks/useMainLogic';
 import { RootLayout } from './routes/root-layout';
 
 interface Props {
@@ -30,9 +28,7 @@ const customTheme = extendTheme({
 export const GraphQLApp = (props: Props) => {
   const { routesConfig } = props;
 
-  useFetchSchema();
-  useApplySchema();
-  useQueryParser();
+  useMainLogic();
 
   return (
     <>
