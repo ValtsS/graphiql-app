@@ -1,12 +1,12 @@
+import useAuth from '@/custom-hooks/useAuth';
+import { RouteConfig } from '@/routes';
 import { Box, Button, Container } from '@mui/material';
 import React, { ReactElement } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import useAuth from '@/custom-hooks/useAuth';
-import { defaultRoutes } from '@/routes';
 
-export const Welcome = (): ReactElement => {
+export const Welcome = ({ routes }: { routes: RouteConfig[] }): ReactElement => {
   const { currentUser } = useAuth();
-  const signMenu = defaultRoutes.filter((el) => el.reg);
+  const signMenu = routes.filter((el) => el.displayInRegistration);
 
   return (
     <Container>

@@ -1,16 +1,13 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import { Authorization } from './Authorization';
+import { waitRender } from '@/../__mocks__/test-utils';
 
 describe('Authorization', () => {
-  it('Authorization renders correctly', () => {
-    render(
-      <BrowserRouter>
-        <Authorization />
-      </BrowserRouter>
-    );
+  it('Authorization renders correctly', async () => {
+    await defaultRender();
 
     const textboxEmail = screen.getByRole('textbox', { name: 'Email Address' });
     expect(textboxEmail).toBeInTheDocument;
@@ -20,11 +17,7 @@ describe('Authorization', () => {
   });
 
   it('Registration submited', async () => {
-    render(
-      <BrowserRouter>
-        <Authorization />
-      </BrowserRouter>
-    );
+    await defaultRender();
 
     const textboxEmail = screen.getByRole('textbox', { name: 'Email Address' });
     await userEvent.type(textboxEmail, 'user07@gmail.com');
@@ -37,4 +30,16 @@ describe('Authorization', () => {
     const btnSignUp = screen.getByRole('button', { name: /Sign In/i });
     userEvent.click(btnSignUp);
   });
+
+  async function defaultRender() {
+    act(() =>
+      render(
+        <BrowserRouter>
+          <Authorization />
+        </BrowserRouter>
+      )
+    );
+
+    await waitRender();
+  }
 });
