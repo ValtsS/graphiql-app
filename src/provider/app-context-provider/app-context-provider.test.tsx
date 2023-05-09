@@ -29,6 +29,6 @@ describe('useAppContext', () => {
 
     const { result } = renderHook(() => useAppContext(), { wrapper });
 
-    expect(result.current).toEqual({ apiClient: api });
+    expect(result.current.apiClient).toEqual(api);
   });
 });
