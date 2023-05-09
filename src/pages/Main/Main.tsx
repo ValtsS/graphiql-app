@@ -43,7 +43,7 @@ export const Main = (): ReactElement => {
           client: apiClient,
           endpoint: mainState.endpoint,
           query: editorState.query,
-          variables: editorState.parameters,
+          variables: editorState.variables,
         })
       )
         .unwrap()

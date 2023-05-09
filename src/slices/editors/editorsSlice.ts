@@ -9,8 +9,8 @@ export type EditorsState = {
   query: string;
   queryError?: string;
 
-  parametersVersion: number;
-  parameters: string;
+  variablesVersion: number;
+  variables: string;
   response: string;
   apiStatus: StoreStatus;
 };
@@ -52,8 +52,8 @@ export const sendQueryGQL = createAsyncThunk(
 const initialState: EditorsState = {
   query: 'query { }',
   queryVersion: -1,
-  parameters: '{}',
-  parametersVersion: -1,
+  variables: '{}',
+  variablesVersion: -1,
   response: '',
   apiStatus: StoreStatus.idle,
 };
@@ -72,8 +72,11 @@ export const editorsSlice = createSlice({
       state.queryError = action.payload.error;
     },
 
-    setParameters: (state, action: PayloadAction<{ parametersText: string }>) => {
-      state.parameters = action.payload.parametersText;
+    setVariables: (state, action: PayloadAction<{ version: number; text: string }>) => {
+      if (action.payload.version > state.variablesVersion) {
+        state.variables = action.payload.text;
+        state.variablesVersion = action.payload.version;
+      }
     },
     setResponse: (state, action: PayloadAction<{ responseText: string }>) => {
       state.response = action.payload.responseText;
@@ -96,6 +99,6 @@ export const editorsSlice = createSlice({
   },
 });
 
-export const { setQuery, setParameters, setResponse, setQueryError } = editorsSlice.actions;
+export const { setQuery, setVariables, setResponse, setQueryError } = editorsSlice.actions;
 export const editorsReducer = editorsSlice.reducer;
 export const selectEditorsData = (state: RootState) => state.editors;
