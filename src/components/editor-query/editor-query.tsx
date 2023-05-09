@@ -1,9 +1,5 @@
 import { useAppContext } from '@/provider';
-import {
-  selectEditorsData,
-  setQuery,
-  setQueryError
-} from '@/slices';
+import { selectEditorsData, setQuery, setQueryError } from '@/slices';
 import { useAppDispatch } from '@/store';
 import { parse, validate } from 'graphql';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -13,7 +9,7 @@ import { Editor, getOrCreateModel } from '../editor/editor';
 
 export const EditorQueryGraphQL = () => {
   const dispatch = useAppDispatch();
-    const editorData = useSelector(selectEditorsData);
+  const editorData = useSelector(selectEditorsData);
   const [uuid] = useState<string>(uuidv4() + '.graphql');
   const { currentSchema } = useAppContext();
 

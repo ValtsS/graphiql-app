@@ -30,7 +30,7 @@ export const AppContextProvider = ({ children, apiClient }: AppContextProviderPr
       currentSchema,
       updateCurrentSchema,
     };
-  }, [apiClient, currentSchema]);
+  }, [apiClient, currentSchema, updateCurrentSchema]);
 
   return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>;
 };
