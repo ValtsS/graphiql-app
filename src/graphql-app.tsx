@@ -14,15 +14,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { validateVariables } from './core/api/api';
 import { QUERY_EDITOR_UUID, VARIABLE_EDITOR_UUID } from './core/consts';
+import { useFetchSchema } from './custom-hooks/useFetchSchema';
 import { RootLayout } from './routes/root-layout';
-import {
-  StoreStatus,
-  fetchSchema,
-  selectEditorsData,
-  selectMainData,
-  selectSchemaData,
-  setQueryError,
-} from './slices';
+import { StoreStatus, selectEditorsData, selectSchemaData, setQueryError } from './slices';
 import { useAppDispatch } from './store';
 
 interface Props {
@@ -32,26 +26,12 @@ interface Props {
 export const GraphQLApp = (props: Props) => {
   const { routesConfig } = props;
   const dispatch = useAppDispatch();
-  const { apiClient, currentSchema, updateCurrentSchema } = useAppContext();
-
-  const mainState = useSelector(selectMainData);
+  const { currentSchema, updateCurrentSchema } = useAppContext();
   const schemaData = useSelector(selectSchemaData);
   const editorData = useSelector(selectEditorsData);
   const notifyError = (message: string) => toast(message, { type: 'error' });
 
-  useEffect(() => {
-    if (mainState.endpoint.length > 0 && apiClient)
-      dispatch(
-        fetchSchema({
-          client: apiClient,
-          endpoint: mainState.endpoint,
-        })
-      )
-        .unwrap()
-        .catch((rejectedValueOrSerializedError: string) => {
-          notifyError(rejectedValueOrSerializedError);
-        });
-  }, [mainState, dispatch, apiClient]);
+  useFetchSchema();
 
   useEffect(() => {
     const fetchData = async () => {
