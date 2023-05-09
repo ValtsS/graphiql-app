@@ -9,14 +9,13 @@ export const EditorResponse = () => {
   const [uuid] = useState<string>(uuidv4() + '.json');
   const model = useMemo(() => {
     const modelCreate = getOrCreateModel(uuid, editorData.response);
+    modelCreate.setValue(editorData.response);
     return modelCreate;
   }, [uuid, editorData.response]);
 
   return (
-    <div>
-      <div style={{ width: '100%' }}>
-        <Editor language={'json'} model={model} readOnly={true} />
-      </div>
+    <div style={{ width: '100%' }}>
+      <Editor language={'json'} model={model} readOnly={true} />
     </div>
   );
 };
