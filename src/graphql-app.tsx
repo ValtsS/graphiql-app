@@ -5,12 +5,13 @@ import {
   Experimental_CssVarsProvider as CssVarsProvider,
   experimental_extendTheme as extendTheme,
 } from '@mui/material/styles';
-import { buildASTSchema, parse, validate } from 'graphql';
+import { buildASTSchema, parse, specifiedRules, validate } from 'graphql';
 import { initializeMode } from 'monaco-graphql/esm/initializeMode';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { validateVariables } from './core/api/api';
 import { RootLayout } from './routes/root-layout';
 import {
   StoreStatus,
@@ -52,7 +53,7 @@ export const GraphQLApp = (props: Props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (schemaData.status == StoreStatus.succeeded) {
+      {
         const docNode = parse(schemaData.schema);
         const ast = buildASTSchema(docNode);
         if (updateCurrentSchema) updateCurrentSchema(ast);
@@ -62,18 +63,23 @@ export const GraphQLApp = (props: Props) => {
     };
 
     dispatch(setQueryError({}));
-    fetchData().catch((error) => {
-      notifyError(error);
-    });
+    if (schemaData.status == StoreStatus.succeeded) {
+      fetchData().catch((error) => {
+        notifyError(error);
+      });
+    }
   }, [schemaData, dispatch, updateCurrentSchema]);
 
   useEffect(() => {
     if (currentSchema) {
       try {
         const document = parse(editorData.query);
-        const errors = validate(currentSchema, document);
-        if (errors.length === 0) dispatch(setQueryError({}));
-        else {
+        const errors = validate(currentSchema, document, specifiedRules);
+        if (errors.length === 0) {
+          const warnings = validateVariables(document, editorData.variables);
+          if (warnings) dispatch(setQueryError({ error: warnings }));
+          else dispatch(setQueryError({}));
+        } else {
           const err = errors[0];
           if (err.locations) {
             dispatch(
@@ -88,7 +94,7 @@ export const GraphQLApp = (props: Props) => {
         else dispatch(setQueryError({ error: 'Unknown error' }));
       }
     }
-  }, [editorData.queryVersion, editorData.query, currentSchema, dispatch]);
+  }, [editorData.queryVersion, editorData.query, currentSchema, dispatch, editorData.variables]);
 
   const theme = extendTheme({
     colorSchemes: {
