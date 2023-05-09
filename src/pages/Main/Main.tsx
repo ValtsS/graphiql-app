@@ -16,6 +16,7 @@ import React, { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { DocumentPageComponent } from '../document-page/document-page';
+import { EditorVariables } from '@/components/editor-variables/editor-variables';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
@@ -55,13 +56,13 @@ export const Main = (): ReactElement => {
   const errors = !(editorState?.queryError === undefined);
 
   return (
-    <Container>
+    <Grid container>
       <Grid item xs={12}>
         <Button variant="contained" size="medium" onClick={changeEndpointClick}>
           Change Endpoint
         </Button>
       </Grid>
-      <Grid item xs={12}>
+      <Grid container>
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
           <Typography variant="h6">{mainState.endpoint}</Typography>
           <DocumentPageComponent />
@@ -70,6 +71,9 @@ export const Main = (): ReactElement => {
           <EditorQueryGraphQL />
         </Grid>
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
+          <EditorVariables />
+        </Grid>
+        <Grid item xs={12} borderColor={'red'} border={'1px solid'}>
           {processing && <CircularProgress size={'1.5rem'} />}
           <Typography variant="inherit">{editorState.queryError}</Typography>
           <Button
@@ -81,10 +85,10 @@ export const Main = (): ReactElement => {
             Send query
           </Button>
         </Grid>
-        <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
+        <Grid item xs={12} borderColor={'red'} border={'1px solid'}>
           <EditorResponse />
         </Grid>
       </Grid>
-    </Container>
+    </Grid>
   );
 };
