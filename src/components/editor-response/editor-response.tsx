@@ -15,7 +15,7 @@ export const EditorResponse = () => {
 
   return (
     <div style={{ width: '100%' }}>
-      <Editor language={'json'} model={model} readOnly={true} />
+      <Editor language={'json'} model={model} readOnly={true} hoverEnabled={true} />
     </div>
   );
 };

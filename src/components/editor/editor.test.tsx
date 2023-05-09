@@ -6,7 +6,7 @@ import { Editor } from './editor';
 describe('Monaco editor', () => {
   it('renders without crash', async () => {
     try {
-      render(<Editor language={'json'} />);
+      render(<Editor language={'json'} hoverEnabled={true} />);
       await waitRender();
     } catch (error) {
       expect(error).toBeFalsy();
