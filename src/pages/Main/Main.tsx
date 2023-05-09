@@ -53,7 +53,7 @@ export const Main = (): ReactElement => {
   }
 
   const processing = editorState.apiStatus == StoreStatus.loading;
-  const errors = !(editorState?.queryError === undefined);
+  const errors = editorState?.queryError !== undefined;
 
   return (
     <Grid container>

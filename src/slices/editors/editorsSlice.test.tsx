@@ -7,7 +7,7 @@ import { sendQueryGQL, setQuery, setQueryError, setResponse, setVariables } from
 describe('Editors Slice', () => {
   let store: AppStore;
 
-  const mockEndpoint = 'http://dummy.local/';
+  const mockEndpoint = 'https://dummy.local/';
 
   beforeEach(() => {
     store = setupStore();

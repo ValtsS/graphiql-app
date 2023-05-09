@@ -79,7 +79,7 @@ export class DefaultApiClient implements ApiClient {
   }
 
   private checkForErrors(response: Response, method: HTTPMethod, options?: RequestInitExtended) {
-    if (!response.ok && !(options?.DisableThrowOnError === true)) {
+    if (!response.ok && options?.DisableThrowOnError !== true) {
       throw new Error(`${method} failed: ${response.statusText}`);
     }
   }
