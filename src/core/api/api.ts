@@ -54,7 +54,6 @@ export function extractVariables(doc: DocumentNode): usedVariable[] {
     doc.definitions.forEach((def: DefinitionNode) => {
       switch (def.kind) {
         case Kind.OPERATION_DEFINITION:
-        case Kind.FRAGMENT_DEFINITION:
           if (def.variableDefinitions) {
             def.variableDefinitions.forEach((v) => {
               if (v.kind == Kind.VARIABLE_DEFINITION) {
