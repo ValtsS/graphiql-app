@@ -27,7 +27,7 @@ export const EditorVariables = () => {
     });
 
     return modelCreate;
-  }, [uuid, editorData.variables]);
+  }, [uuid, editorData.variables, dispatch]);
 
   return (
     <div style={{ width: '100%' }}>

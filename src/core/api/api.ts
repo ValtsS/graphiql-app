@@ -33,8 +33,6 @@ export async function sendQuery(
     query: query,
     variables: variables,
   });
-
-  console.log('vars', variables);
-  const v = await client.post<unknown>(url, body, { DisableThrowOnError: true });
-  return JSON.stringify(v, null, 2);
+  const response = await client.post<unknown>(url, body, { DisableThrowOnError: true });
+  return JSON.stringify(response, null, 2);
 }

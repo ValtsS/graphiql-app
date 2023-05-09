@@ -1,6 +1,7 @@
 import { AddressBar } from '@/components';
 import { EditorQueryGraphQL } from '@/components/editor-query/editor-query';
 import { EditorResponse } from '@/components/editor-response/editor-response';
+import { EditorVariables } from '@/components/editor-variables/editor-variables';
 import { useAppContext } from '@/provider';
 import { useModalDialog } from '@/provider/modal-dialog';
 import {
@@ -11,12 +12,11 @@ import {
   sendQueryGQL,
 } from '@/slices';
 import { useAppDispatch } from '@/store';
-import { Button, CircularProgress, Container, Grid, Typography } from '@mui/material';
+import { Button, CircularProgress, Grid, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { DocumentPageComponent } from '../document-page/document-page';
-import { EditorVariables } from '@/components/editor-variables/editor-variables';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
