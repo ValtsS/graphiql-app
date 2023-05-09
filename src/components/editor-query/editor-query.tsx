@@ -1,32 +1,26 @@
+import { useCertainModel } from '@/custom-hooks/useEditorModel';
 import { selectEditorsData, setQuery } from '@/slices';
 import { useAppDispatch } from '@/store';
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import { Editor, getOrCreateModel } from '../editor/editor';
-import { Debouncer } from '@/utils/debounce';
+import { Editor } from '../editor/editor';
 
 export const EditorQueryGraphQL = ({ uuid }: { uuid: string }) => {
   const dispatch = useAppDispatch();
   const editorData = useSelector(selectEditorsData);
-  const [debounce] = useState<Debouncer>(new Debouncer(300));
 
-  const model = useMemo(() => {
-    const modelCreate = getOrCreateModel(uuid, editorData.query);
-
-    modelCreate.onDidChangeContent(() => {
-      debounce.clear();
-      debounce.run(() => {
-        dispatch(
-          setQuery({
-            version: modelCreate.getVersionId(),
-            text: modelCreate.getValue(),
-          })
-        );
-      });
-    });
-
-    return modelCreate;
-  }, [uuid, editorData.query, dispatch, debounce]);
+  const model = useCertainModel({
+    initialValue: editorData.query,
+    uuid,
+    onChange: (model) => {
+      dispatch(
+        setQuery({
+          version: model.getVersionId(),
+          text: model.getValue(),
+        })
+      );
+    },
+  });
 
   return (
     <div>

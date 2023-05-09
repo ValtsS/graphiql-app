@@ -1,32 +1,25 @@
 import { selectEditorsData, setVariables } from '@/slices';
 import { useAppDispatch } from '@/store';
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import { Editor, getOrCreateModel } from '../editor/editor';
-import { Debouncer } from '@/utils/debounce';
+import { Editor } from '../editor/editor';
+import { useCertainModel } from '@/custom-hooks/useEditorModel';
 
 export const EditorVariables = ({ uuid }: { uuid: string }) => {
   const dispatch = useAppDispatch();
   const editorData = useSelector(selectEditorsData);
-  const [debounce] = useState<Debouncer>(new Debouncer(300));
-
-  const model = useMemo(() => {
-    const modelCreate = getOrCreateModel(uuid, editorData.variables);
-
-    modelCreate.onDidChangeContent(() => {
-      debounce.clear();
-      debounce.run(() => {
-        dispatch(
-          setVariables({
-            version: modelCreate.getVersionId(),
-            text: modelCreate.getValue(),
-          })
-        );
-      });
-    });
-
-    return modelCreate;
-  }, [uuid, editorData.variables, dispatch, debounce]);
+  const model = useCertainModel({
+    initialValue: editorData.variables,
+    uuid,
+    onChange: (model) => {
+      dispatch(
+        setVariables({
+          version: model.getVersionId(),
+          text: model.getValue(),
+        })
+      );
+    },
+  });
 
   return (
     <div style={{ width: '100%' }}>
