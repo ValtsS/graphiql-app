@@ -5,7 +5,7 @@ import {
   Experimental_CssVarsProvider as CssVarsProvider,
   experimental_extendTheme as extendTheme,
 } from '@mui/material/styles';
-import { buildASTSchema, parse } from 'graphql';
+import { buildASTSchema, parse, validate } from 'graphql';
 import { initializeMode } from 'monaco-graphql/esm/initializeMode';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -15,6 +15,7 @@ import { RootLayout } from './routes/root-layout';
 import {
   StoreStatus,
   fetchSchema,
+  selectEditorsData,
   selectMainData,
   selectSchemaData,
   setQueryError,
@@ -28,10 +29,11 @@ interface Props {
 export const GraphQLApp = (props: Props) => {
   const { routesConfig } = props;
   const dispatch = useAppDispatch();
-  const { apiClient, updateCurrentSchema } = useAppContext();
+  const { apiClient, currentSchema, updateCurrentSchema } = useAppContext();
 
   const mainState = useSelector(selectMainData);
   const schemaData = useSelector(selectSchemaData);
+  const editorData = useSelector(selectEditorsData);
   const notifyError = (message: string) => toast(message, { type: 'error' });
 
   useEffect(() => {
@@ -64,6 +66,29 @@ export const GraphQLApp = (props: Props) => {
       notifyError(error);
     });
   }, [schemaData, dispatch, updateCurrentSchema]);
+
+  useEffect(() => {
+    if (currentSchema) {
+      try {
+        const document = parse(editorData.query);
+        const errors = validate(currentSchema, document);
+        if (errors.length === 0) dispatch(setQueryError({}));
+        else {
+          const err = errors[0];
+          if (err.locations) {
+            dispatch(
+              setQueryError({
+                error: `${err.message} at line ${err.locations[0].line}:${err.locations[0].column}`,
+              })
+            );
+          } else dispatch(setQueryError({ error: err.message }));
+        }
+      } catch (e) {
+        if ((e as Error).message) dispatch(setQueryError({ error: (e as Error).message }));
+        else dispatch(setQueryError({ error: 'Unknown error' }));
+      }
+    }
+  }, [editorData.queryVersion, editorData.query, currentSchema, dispatch]);
 
   const theme = extendTheme({
     colorSchemes: {
