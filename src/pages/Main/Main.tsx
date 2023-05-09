@@ -17,6 +17,7 @@ import React, { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { DocumentPageComponent } from '../document-page/document-page';
+import { QUERY_EDITOR_UUID, VARIABLE_EDITOR_UUID } from '@/core/consts';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
@@ -58,10 +59,10 @@ export const Main = (): ReactElement => {
   return (
     <Grid container>
       <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-        <EditorVariables />
+        <EditorVariables uuid={VARIABLE_EDITOR_UUID} />
       </Grid>
       <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-        <EditorQueryGraphQL />
+        <EditorQueryGraphQL uuid={QUERY_EDITOR_UUID} />
       </Grid>
       <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
         <Typography variant="h6">{mainState.endpoint}</Typography>

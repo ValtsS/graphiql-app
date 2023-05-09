@@ -6,12 +6,14 @@ import {
   experimental_extendTheme as extendTheme,
 } from '@mui/material/styles';
 import { buildASTSchema, parse, specifiedRules, validate } from 'graphql';
+import { Uri } from 'monaco-editor';
 import { initializeMode } from 'monaco-graphql/esm/initializeMode';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { validateVariables } from './core/api/api';
+import { QUERY_EDITOR_UUID, VARIABLE_EDITOR_UUID } from './core/consts';
 import { RootLayout } from './routes/root-layout';
 import {
   StoreStatus,
@@ -57,7 +59,28 @@ export const GraphQLApp = (props: Props) => {
         const docNode = parse(schemaData.schema);
         const ast = buildASTSchema(docNode);
         if (updateCurrentSchema) updateCurrentSchema(ast);
-        const api = initializeMode();
+
+        const jsonSchema = Uri.file(VARIABLE_EDITOR_UUID).toString();
+
+        const api = initializeMode({
+          diagnosticSettings: {
+            validateVariablesJSON: {
+              [Uri.file(QUERY_EDITOR_UUID).toString()]: [jsonSchema],
+            },
+            jsonDiagnosticSettings: {
+              validate: true,
+              schemaValidation: 'error',
+              allowComments: true,
+              trailingCommas: 'ignore',
+              schemas: [
+                {
+                  uri: jsonSchema,
+                },
+              ],
+            },
+          },
+        });
+
         api.setSchemaConfig([{ schema: ast, uri: schemaData.endpoint }]);
       }
     };
@@ -77,8 +100,7 @@ export const GraphQLApp = (props: Props) => {
         const errors = validate(currentSchema, document, specifiedRules);
         if (errors.length === 0) {
           const warnings = validateVariables(document, editorData.variables);
-          if (warnings) dispatch(setQueryError({ error: warnings }));
-          else dispatch(setQueryError({}));
+          dispatch(setQueryError({ error: warnings }));
         } else {
           const err = errors[0];
           if (err.locations) {

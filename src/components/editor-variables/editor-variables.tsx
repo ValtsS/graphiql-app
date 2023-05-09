@@ -1,14 +1,12 @@
 import { selectEditorsData, setVariables } from '@/slices';
-import React, { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
-import { Editor, getOrCreateModel } from '../editor/editor';
 import { useAppDispatch } from '@/store';
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { Editor, getOrCreateModel } from '../editor/editor';
 
-export const EditorVariables = () => {
+export const EditorVariables = ({ uuid }: { uuid: string }) => {
   const dispatch = useAppDispatch();
   const editorData = useSelector(selectEditorsData);
-  const [uuid] = useState<string>(uuidv4() + '.json');
   const model = useMemo(() => {
     const modelCreate = getOrCreateModel(uuid, editorData.variables);
 
