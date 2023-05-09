@@ -1,7 +1,8 @@
 import { setupMockIntrospection } from '@/../__mocks__/api-mock-helper';
 import { renderHook } from '@testing-library/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppContextProvider, useAppContext } from './app-context-provider';
+import { GraphQLSchema } from 'graphql';
 
 describe('useAppContext', () => {
   test('should throw an error when used outside of AppContextProvider', () => {
@@ -23,12 +24,32 @@ describe('useAppContext', () => {
   test('should return the app context value when used within AppContextProvider', async () => {
     const api = await setupMockIntrospection();
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
-      <AppContextProvider apiClient={api}>{children}</AppContextProvider>
-    );
+    const Internal = () => {
+      const { apiClient, updateCurrentSchema } = useAppContext();
 
-    const { result } = renderHook(() => useAppContext(), { wrapper });
+      useEffect(() => {
+        const update = async () => {
+          if (updateCurrentSchema) updateCurrentSchema(new GraphQLSchema({}));
+        };
+
+        update();
+      }, [apiClient, updateCurrentSchema]);
+
+      return <>Heh</>;
+    };
+
+    const Wrapper = ({ children }: { children: React.ReactNode }) => {
+      return (
+        <AppContextProvider apiClient={api}>
+          <Internal />
+          {children}
+        </AppContextProvider>
+      );
+    };
+
+    const { result } = renderHook(() => useAppContext(), { wrapper: Wrapper });
 
     expect(result.current.apiClient).toEqual(api);
+    expect(result.current.currentSchema).toBeTruthy();
   });
 });
