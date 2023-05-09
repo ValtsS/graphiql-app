@@ -1,17 +1,25 @@
-import { RouteConfig } from '@/routes';
-import React, { useEffect } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Crash } from '@/pages';
-import { RootLayout } from './routes/root-layout';
+import { useAppContext } from '@/provider';
+import { RouteConfig } from '@/routes';
 import {
   Experimental_CssVarsProvider as CssVarsProvider,
   experimental_extendTheme as extendTheme,
 } from '@mui/material/styles';
-import { useAppContext } from '@/provider';
+import { buildASTSchema, parse } from 'graphql';
+import { initializeMode } from 'monaco-graphql/esm/initializeMode';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { RootLayout } from './routes/root-layout';
+import {
+  StoreStatus,
+  fetchSchema,
+  selectMainData,
+  selectSchemaData,
+  setQueryError,
+} from './slices';
 import { useAppDispatch } from './store';
-import { selectMainData, fetchSchema } from './slices';
 
 interface Props {
   routesConfig: RouteConfig[];
@@ -20,8 +28,10 @@ interface Props {
 export const GraphQLApp = (props: Props) => {
   const { routesConfig } = props;
   const dispatch = useAppDispatch();
-  const { apiClient } = useAppContext();
+  const { apiClient, updateCurrentSchema } = useAppContext();
+
   const mainState = useSelector(selectMainData);
+  const schemaData = useSelector(selectSchemaData);
   const notifyError = (message: string) => toast(message, { type: 'error' });
 
   useEffect(() => {
@@ -37,6 +47,23 @@ export const GraphQLApp = (props: Props) => {
           notifyError(rejectedValueOrSerializedError);
         });
   }, [mainState, dispatch, apiClient]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (schemaData.status == StoreStatus.succeeded) {
+        const docNode = parse(schemaData.schema);
+        const ast = buildASTSchema(docNode);
+        if (updateCurrentSchema) updateCurrentSchema(ast);
+        const api = initializeMode();
+        api.setSchemaConfig([{ schema: ast, uri: schemaData.endpoint }]);
+      }
+    };
+
+    dispatch(setQueryError({}));
+    fetchData().catch((error) => {
+      notifyError(error);
+    });
+  }, [schemaData, dispatch, updateCurrentSchema]);
 
   const theme = extendTheme({
     colorSchemes: {

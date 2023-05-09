@@ -1,33 +1,27 @@
+import { useAppContext } from '@/provider';
 import {
-  StoreStatus,
   selectEditorsData,
-  selectSchemaData,
   setQuery,
-  setQueryError,
+  setQueryError
 } from '@/slices';
 import { useAppDispatch } from '@/store';
-import { GraphQLSchema, buildASTSchema, parse, validate } from 'graphql';
-import { initializeMode } from 'monaco-graphql/esm/initializeMode';
+import { parse, validate } from 'graphql';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
 import { Editor, getOrCreateModel } from '../editor/editor';
 
 export const EditorQueryGraphQL = () => {
   const dispatch = useAppDispatch();
-  const schemaData = useSelector(selectSchemaData);
-  const editorData = useSelector(selectEditorsData);
-  const notifyError = (message: string) => toast(message, { type: 'error' });
+    const editorData = useSelector(selectEditorsData);
   const [uuid] = useState<string>(uuidv4() + '.graphql');
-
-  const [gqlSchema, setGqlSchema] = useState<GraphQLSchema | null>(null);
+  const { currentSchema } = useAppContext();
 
   useEffect(() => {
-    if (gqlSchema) {
+    if (currentSchema) {
       try {
         const document = parse(editorData.query);
-        const errors = validate(gqlSchema, document);
+        const errors = validate(currentSchema, document);
         if (errors.length === 0) dispatch(setQueryError({}));
         else {
           const err = errors[0];
@@ -44,7 +38,7 @@ export const EditorQueryGraphQL = () => {
         else dispatch(setQueryError({ error: 'Unknown error' }));
       }
     }
-  }, [editorData.queryVersion, editorData.query, gqlSchema, dispatch]);
+  }, [editorData.queryVersion, editorData.query, currentSchema, dispatch]);
 
   const model = useMemo(() => {
     const modelCreate = getOrCreateModel(uuid, editorData.query);
@@ -64,23 +58,6 @@ export const EditorQueryGraphQL = () => {
 
     return modelCreate;
   }, [uuid, editorData, dispatch]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (schemaData.status == StoreStatus.succeeded) {
-        const docNode = parse(schemaData.schema);
-        const ast = buildASTSchema(docNode);
-        setGqlSchema(ast);
-        const api = initializeMode();
-        api.setSchemaConfig([{ schema: ast, uri: schemaData.endpoint }]);
-      }
-    };
-
-    dispatch(setQueryError({}));
-    fetchData().catch((error) => {
-      notifyError(error);
-    });
-  }, [schemaData, dispatch]);
 
   return (
     <div>

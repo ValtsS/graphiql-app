@@ -83,7 +83,7 @@ export const Main = (): ReactElement => {
           </Grid>
 
           <Grid item xs={12}>
-            <Box sx={{ pl: '1rem' }}>
+            <Box sx={{ pl: '1rem', background: 'white' }}>
               <DocumentPageComponent />
             </Box>
           </Grid>

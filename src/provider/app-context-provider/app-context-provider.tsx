@@ -1,8 +1,11 @@
 import { ApiClient } from '@/core/api/api-client';
-import React, { useMemo } from 'react';
+import { GraphQLSchema } from 'graphql';
+import React, { useCallback, useMemo, useState } from 'react';
 
 type AppContextValue = {
   apiClient: ApiClient | null;
+  currentSchema?: GraphQLSchema;
+  updateCurrentSchema?: (schema?: GraphQLSchema) => void;
 };
 
 export const AppContext = React.createContext<AppContextValue>({
@@ -15,11 +18,21 @@ type AppContextProviderProps = {
 };
 
 export const AppContextProvider = ({ children, apiClient }: AppContextProviderProps) => {
-  const clients = useMemo(() => {
-    return { apiClient };
-  }, [apiClient]);
+  const [currentSchema, setCurrentSchema] = useState<GraphQLSchema | undefined>(undefined);
 
-  return <AppContext.Provider value={clients}>{children}</AppContext.Provider>;
+  const updateCurrentSchema = useCallback((schema?: GraphQLSchema) => {
+    setCurrentSchema(schema);
+  }, []);
+
+  const contextValue: AppContextValue = useMemo(() => {
+    return {
+      apiClient,
+      currentSchema,
+      updateCurrentSchema,
+    };
+  }, [apiClient, currentSchema]);
+
+  return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>;
 };
 
 export function useAppContext() {
