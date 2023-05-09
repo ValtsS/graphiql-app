@@ -52,24 +52,19 @@ export function extractVariables(doc: DocumentNode): usedVariable[] {
 
   if (doc.kind == Kind.DOCUMENT) {
     doc.definitions.forEach((def: DefinitionNode) => {
-      switch (def.kind) {
-        case Kind.OPERATION_DEFINITION:
-          if (def.variableDefinitions) {
-            def.variableDefinitions.forEach((v) => {
-              if (v.kind == Kind.VARIABLE_DEFINITION) {
-                const [varTypeName] = getTypeName(v.type);
-                variables.push({
-                  variablename: v.variable.name.value.toString(),
-                  hasDefault: v.defaultValue ? true : false,
-                  variableTypeName: varTypeName,
-                });
-              }
-            });
-          }
-          break;
-        default:
-          throw Error(`Unknown ${def.kind} passed to extractVariables`);
-      }
+      if (def.kind == Kind.OPERATION_DEFINITION)
+        if (def.variableDefinitions) {
+          def.variableDefinitions.forEach((v) => {
+            if (v.kind == Kind.VARIABLE_DEFINITION) {
+              const [varTypeName] = getTypeName(v.type);
+              variables.push({
+                variablename: v.variable.name.value.toString(),
+                hasDefault: v.defaultValue ? true : false,
+                variableTypeName: varTypeName,
+              });
+            }
+          });
+        }
     });
   }
 
