@@ -1,6 +1,6 @@
 import { selectEditorsData, setQuery } from '@/slices';
 import { useAppDispatch } from '@/store';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Editor, getOrCreateModel } from '../editor/editor';
 
@@ -19,7 +19,6 @@ export const EditorQueryGraphQL = ({ uuid }: { uuid: string }) => {
           setQuery({
             version: modelCreate.getVersionId(),
             text: modelCreate.getValue(),
-            source: uuid,
           })
         );
       }, 300);
