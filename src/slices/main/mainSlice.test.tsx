@@ -1,7 +1,7 @@
 import { AppStore, setupStore } from '@/store';
 import { changeEndpoint } from './mainSlice';
 
-describe('schemaSlice', () => {
+describe('Main Slice', () => {
   let store: AppStore;
 
   beforeEach(() => {
