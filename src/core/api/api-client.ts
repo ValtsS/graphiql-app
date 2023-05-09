@@ -19,50 +19,65 @@ const enum HTTPMethod {
 
 export class DefaultApiClient implements ApiClient {
   async get<T>(url: string, options?: RequestInitExtended): Promise<T> {
-    const response = await fetch(url, options);
-    this.checkForErrors(response, HTTPMethod.GET, options);
-    const data = await response.json();
+    const method = HTTPMethod.GET;
+    const promise = fetch(url, options);
+    const data = await promise.then((response) => {
+      this.checkForErrors(response, method, options);
+      return response.json();
+    });
+
     return data as T;
   }
 
   async post<T>(url: string, body: string, options?: RequestInitExtended): Promise<T> {
     const method = HTTPMethod.POST;
-    const response = await fetch(url, {
+    const promise = fetch(url, {
       method,
       body,
       headers: { 'Content-Type': 'application/json' },
       ...options,
     });
 
-    this.checkForErrors(response, method, options);
-    const data = await response.json();
+    const data = await promise.then((response) => {
+      this.checkForErrors(response, method, options);
+      return response.json();
+    });
+
     return data as T;
   }
 
   async put<T>(url: string, body: string, options?: RequestInitExtended): Promise<T> {
     const method = HTTPMethod.PUT;
-    const response = await fetch(url, {
+    const promise = fetch(url, {
       method,
       body,
       headers: { 'Content-Type': 'application/json' },
       ...options,
     });
-    this.checkForErrors(response, method, options);
-    const data = await response.json();
+
+    const data = await promise.then((response) => {
+      this.checkForErrors(response, method, options);
+      return response.json();
+    });
+
     return data as T;
   }
 
   async delete<T>(url: string, options?: RequestInitExtended): Promise<T> {
     const method = HTTPMethod.DELETE;
-    const response = await fetch(url, {
+    const promise = fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
       ...options,
     });
-    this.checkForErrors(response, method, options);
-    const data = await response.json();
+    const data = await promise.then((response) => {
+      this.checkForErrors(response, method, options);
+      return response.json();
+    });
+
     return data as T;
   }
+
   private checkForErrors(response: Response, method: HTTPMethod, options?: RequestInitExtended) {
     if (!response.ok && !(options?.DisableThrowOnError === true)) {
       throw new Error(`${method} failed: ${response.statusText}`);

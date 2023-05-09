@@ -23,6 +23,11 @@ export async function getremoteSchema(client: ApiClient, url: string): Promise<s
   return printSchema(schema);
 }
 
+type APIResponse = {
+  data: unknown;
+  error: unknown;
+};
+
 export async function sendQuery(
   client: ApiClient,
   url: string,
@@ -34,9 +39,7 @@ export async function sendQuery(
     variables: variables,
   });
 
-  return JSON.stringify(
-    await client.post<string>(url, body, { DisableThrowOnError: true }),
-    null,
-    2
-  );
+  const v = await client.post<unknown>(url, body, { DisableThrowOnError: true });
+
+  return JSON.stringify(v, null, 2);
 }
