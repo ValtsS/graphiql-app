@@ -12,7 +12,7 @@ import {
   sendQueryGQL,
 } from '@/slices';
 import { useAppDispatch } from '@/store';
-import { Button, CircularProgress, Grid, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -57,37 +57,44 @@ export const Main = (): ReactElement => {
 
   return (
     <Grid container>
-      <Grid item xs={12}>
-        <Button variant="contained" size="medium" onClick={changeEndpointClick}>
-          Change Endpoint
-        </Button>
+      <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
+        <EditorVariables />
       </Grid>
-      <Grid container>
-        <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-          <Typography variant="h6">{mainState.endpoint}</Typography>
-          <DocumentPageComponent />
+      <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
+        <EditorQueryGraphQL />
+      </Grid>
+      <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
+        <Typography variant="h6">{mainState.endpoint}</Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Button
+              variant="contained"
+              size="small"
+              onClick={sendQueryClick}
+              disabled={processing || errors}
+            >
+              Send query
+            </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Button variant="contained" size="small" onClick={changeEndpointClick}>
+              Change Endpoint
+            </Button>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Box sx={{ pl: '1rem' }}>
+              <DocumentPageComponent />
+            </Box>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-          <EditorQueryGraphQL />
-        </Grid>
-        <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-          <EditorVariables />
-        </Grid>
-        <Grid item xs={12} borderColor={'red'} border={'1px solid'}>
-          {processing && <CircularProgress size={'1.5rem'} />}
-          <Typography variant="inherit">{editorState.queryError}</Typography>
-          <Button
-            variant="contained"
-            size="medium"
-            onClick={sendQueryClick}
-            disabled={processing || errors}
-          >
-            Send query
-          </Button>
-        </Grid>
-        <Grid item xs={12} borderColor={'red'} border={'1px solid'}>
-          <EditorResponse />
-        </Grid>
+      </Grid>
+      <Grid item xs={12} borderColor={'red'} border={'1px solid'}>
+        {processing && <CircularProgress size={'1.5rem'} />}
+        <Typography variant="inherit">{editorState.queryError}</Typography>
+      </Grid>
+      <Grid item xs={12} borderColor={'red'} border={'1px solid'}>
+        <EditorResponse />
       </Grid>
     </Grid>
   );
