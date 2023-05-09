@@ -3,7 +3,7 @@ import { Debouncer } from '@/utils/debounce';
 import { editor } from 'monaco-editor';
 import { useMemo, useState } from 'react';
 
-interface Props {
+export interface Props {
   uuid: string;
   initialValue: string;
   onChange: (model: editor.ITextModel) => void;
