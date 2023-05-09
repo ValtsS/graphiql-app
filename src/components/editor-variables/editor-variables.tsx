@@ -31,7 +31,7 @@ export const EditorVariables = () => {
 
   return (
     <div style={{ width: '100%' }}>
-      <Editor language={'json'} model={model} />
+      <Editor language={'json'} model={model} hoverEnabled={true} />
     </div>
   );
 };

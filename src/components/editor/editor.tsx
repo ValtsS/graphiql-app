@@ -7,6 +7,7 @@ interface Props {
   language: string;
   model?: editor.ITextModel;
   readOnly?: boolean;
+  hoverEnabled: boolean;
 }
 
 const MONACO_OPTIONS: editor.IEditorOptions = {
@@ -40,6 +41,9 @@ export const Editor = (props: Props) => {
           model: props.model,
           ...MONACO_OPTIONS,
           readOnly: props.readOnly,
+          hover: {
+            enabled: props.hoverEnabled,
+          },
         });
 
         return newEditor;
@@ -47,7 +51,7 @@ export const Editor = (props: Props) => {
     }
 
     return () => editorControl?.dispose();
-  }, [props.language, props.model, props.readOnly, editorControl]);
+  }, [props.language, props.model, props.readOnly, props.hoverEnabled, editorControl]);
 
   return <div className={styles.Editor} ref={monacoEl}></div>;
 };

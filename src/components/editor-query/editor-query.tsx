@@ -27,12 +27,12 @@ export const EditorQueryGraphQL = () => {
     });
 
     return modelCreate;
-  }, [uuid, editorData, dispatch]);
+  }, [uuid, editorData.query, dispatch]);
 
   return (
     <div>
       <div style={{ width: '100%' }}>
-        <Editor language={'graphql'} model={model} />
+        <Editor language={'graphql'} model={model} hoverEnabled={false} />
       </div>
     </div>
   );
