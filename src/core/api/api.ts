@@ -11,7 +11,6 @@ import {
 } from 'graphql';
 import { ApiClient } from './api-client';
 import { getTypeName } from '../docs/sdl-type-helper';
-import { boolean } from 'yargs';
 
 export type IntrospectionResponseData = {
   data: IntrospectionQuery;
@@ -49,7 +48,7 @@ type usedVariable = {
   hasDefault: boolean;
 };
 
-function extractVariables(doc: DocumentNode): usedVariable[] {
+export function extractVariables(doc: DocumentNode): usedVariable[] {
   const variables: usedVariable[] = [];
 
   doc.definitions
