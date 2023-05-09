@@ -5,18 +5,15 @@ import {
   Experimental_CssVarsProvider as CssVarsProvider,
   experimental_extendTheme as extendTheme,
 } from '@mui/material/styles';
-import { buildASTSchema, parse, specifiedRules, validate } from 'graphql';
-import { Uri } from 'monaco-editor';
-import { initializeMode } from 'monaco-graphql/esm/initializeMode';
+import { parse, specifiedRules, validate } from 'graphql';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { validateVariables } from './core/api/api';
-import { QUERY_EDITOR_UUID, VARIABLE_EDITOR_UUID } from './core/consts';
+import { useApplySchema } from './custom-hooks/useApplySchema';
 import { useFetchSchema } from './custom-hooks/useFetchSchema';
 import { RootLayout } from './routes/root-layout';
-import { StoreStatus, selectEditorsData, selectSchemaData, setQueryError } from './slices';
+import { selectEditorsData, setQueryError } from './slices';
 import { useAppDispatch } from './store';
 
 interface Props {
@@ -26,52 +23,11 @@ interface Props {
 export const GraphQLApp = (props: Props) => {
   const { routesConfig } = props;
   const dispatch = useAppDispatch();
-  const { currentSchema, updateCurrentSchema } = useAppContext();
-  const schemaData = useSelector(selectSchemaData);
+  const { currentSchema } = useAppContext();
   const editorData = useSelector(selectEditorsData);
-  const notifyError = (message: string) => toast(message, { type: 'error' });
 
   useFetchSchema();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      {
-        const docNode = parse(schemaData.schema);
-        const ast = buildASTSchema(docNode);
-        if (updateCurrentSchema) updateCurrentSchema(ast);
-
-        const jsonSchema = Uri.file(VARIABLE_EDITOR_UUID).toString();
-
-        const api = initializeMode({
-          diagnosticSettings: {
-            validateVariablesJSON: {
-              [Uri.file(QUERY_EDITOR_UUID).toString()]: [jsonSchema],
-            },
-            jsonDiagnosticSettings: {
-              validate: true,
-              schemaValidation: 'error',
-              allowComments: true,
-              trailingCommas: 'ignore',
-              schemas: [
-                {
-                  uri: jsonSchema,
-                },
-              ],
-            },
-          },
-        });
-
-        api.setSchemaConfig([{ schema: ast, uri: schemaData.endpoint }]);
-      }
-    };
-
-    dispatch(setQueryError({}));
-    if (schemaData.status == StoreStatus.succeeded) {
-      fetchData().catch((error) => {
-        notifyError(error);
-      });
-    }
-  }, [schemaData, dispatch, updateCurrentSchema]);
+  useApplySchema();
 
   useEffect(() => {
     if (currentSchema) {
