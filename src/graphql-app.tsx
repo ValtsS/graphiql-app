@@ -15,6 +15,18 @@ interface Props {
   routesConfig: RouteConfig[];
 }
 
+const customTheme = extendTheme({
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: {
+          main: '#009999',
+        },
+      },
+    },
+  },
+});
+
 export const GraphQLApp = (props: Props) => {
   const { routesConfig } = props;
 
@@ -22,20 +34,9 @@ export const GraphQLApp = (props: Props) => {
   useApplySchema();
   useQueryParser();
 
-  const theme = extendTheme({
-    colorSchemes: {
-      light: {
-        palette: {
-          primary: {
-            main: '#009999',
-          },
-        },
-      },
-    },
-  });
   return (
     <>
-      <CssVarsProvider theme={theme}>
+      <CssVarsProvider theme={customTheme}>
         <BrowserRouter>
           <Routes>
             {routesConfig.map((c) => (
