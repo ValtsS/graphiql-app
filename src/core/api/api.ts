@@ -11,6 +11,7 @@ import {
 } from 'graphql';
 import { ApiClient } from './api-client';
 import { getTypeName } from '../docs/sdl-type-helper';
+import { boolean } from 'yargs';
 
 export type IntrospectionResponseData = {
   data: IntrospectionQuery;
@@ -52,17 +53,17 @@ function extractVariables(doc: DocumentNode): usedVariable[] {
   const variables: usedVariable[] = [];
 
   doc.definitions
-    .filter((d) => d.kind == Kind.OPERATION_DEFINITION)
+    .filter((d) => d.kind === Kind.OPERATION_DEFINITION)
     .forEach((dd: DefinitionNode) => {
       const defs = (dd as OperationDefinitionNode).variableDefinitions;
       if (defs)
         defs
-          .filter((x) => x.kind == Kind.VARIABLE_DEFINITION)
+          .filter((x) => x.kind === Kind.VARIABLE_DEFINITION)
           .forEach((v) => {
             const [varTypeName] = getTypeName(v.type);
             variables.push({
               variablename: v.variable.name.value.toString(),
-              hasDefault: v.defaultValue ? true : false,
+              hasDefault: Boolean(v.defaultValue),
               variableTypeName: varTypeName,
             });
           });
