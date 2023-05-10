@@ -4,15 +4,7 @@ import { getFirestore, setDoc, doc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { ref, uploadBytesResumable, getDownloadURL, getStorage } from 'firebase/storage';
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyAqXNxgNCBXB6EOojJMMmH7AN_87bCyrjU',
-  authDomain: 'clone-graphql.firebaseapp.com',
-  projectId: 'clone-graphql',
-  storageBucket: 'clone-graphql.appspot.com',
-  messagingSenderId: '367178595862',
-  appId: '1:367178595862:web:c93fdfa0e0e97793e3bf37',
-  measurementId: 'G-WGP8LWNH1L',
-};
+const firebaseConfig = JSON.parse(import.meta.env.VITE_FIREBASE_CONFIG);
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
