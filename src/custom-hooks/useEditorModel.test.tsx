@@ -10,8 +10,9 @@ jest.mock('@/components/editor/editor', () => ({
 describe('useCertainModel', () => {
   const mockOnChange = jest.fn();
   const mockModel: editor.ITextModel = {
-    onDidChangeContent(_listener: () => void) {
-      expect(_listener).toBeTruthy();
+    onDidChangeContent(listener: () => void) {
+      expect(listener).toBeTruthy();
+      listener();
       mockOnChange(mockModel);
     },
   } as editor.ITextModel;
