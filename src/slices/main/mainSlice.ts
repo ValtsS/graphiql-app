@@ -2,7 +2,7 @@ import { FALLBACK_ENDPOINT } from '@/core/consts';
 import { RootState } from '@/store';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-const CURRENT_ENDPOINT =  import.meta.env.VITE_DEFAULT_ENDPOINT ?? FALLBACK_ENDPOINT;
+const CURRENT_ENDPOINT = import.meta.env.VITE_DEFAULT_ENDPOINT ?? FALLBACK_ENDPOINT;
 
 export type MainState = {
   endpoint: string;
