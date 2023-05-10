@@ -1,14 +1,15 @@
+import { FALLBACK_ENDPOINT } from '@/core/consts';
 import { RootState } from '@/store';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-const DEFAULT_ENDPOINT = 'http://lyra.velns.org:8000/graphql/';
+const CURRENT_ENDPOINT =  import.meta.env.VITE_DEFAULT_ENDPOINT ?? FALLBACK_ENDPOINT;
 
 export type MainState = {
   endpoint: string;
 };
 
 const initialState: MainState = {
-  endpoint: DEFAULT_ENDPOINT,
+  endpoint: CURRENT_ENDPOINT,
 };
 
 export const mainSlice = createSlice({
