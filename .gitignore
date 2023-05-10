@@ -28,7 +28,7 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
-locales
+# locales
 
 # JUnit generated files
 junit.xml

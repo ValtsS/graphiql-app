@@ -8,3 +8,7 @@
   background-color: #5bafaf !important;
   transition: all 0.5s ease-out;
 }
+
+.lang {
+  font-size: 0.875rem !important;
+}

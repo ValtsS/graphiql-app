@@ -16,11 +16,14 @@ import {
   Tooltip,
   MenuItem,
   Link,
+  FormControlLabel,
+  Stack,
 } from '@mui/material';
 import { logout } from '@/core/firebase';
 import useAuth from '@/custom-hooks/useAuth';
 import './header.css';
 import { RouteConfig } from '@/routes/routes-config';
+import { LangSwitch } from './langSwitch';
 
 interface Props {
   routesConfig: RouteConfig[];
@@ -168,12 +171,18 @@ export const Header = (props: Props): ReactElement => {
               ))}
             </Box>
 
-            <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Typography className="lang">RU</Typography>
+                <FormControlLabel control={<LangSwitch sx={{ m: 1 }} defaultChecked />} label="" />
+                <Typography className="lang">EN</Typography>
+              </Stack>
+
               {currentUser ? (
                 <Box sx={{ flexGrow: 1 }}>
                   <Button
                     variant="outlined"
-                    sx={{ my: 2, color: 'white', display: 'block' }}
+                    sx={{ my: 2, color: 'white', display: 'block', border: '1px solid #fff' }}
                     onClick={logout}
                   >
                     Sign Out
