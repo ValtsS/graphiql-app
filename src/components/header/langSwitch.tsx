@@ -10,17 +10,12 @@ export const LangSwitch = styled((props: SwitchProps) => {
   const dispatch = useDispatch();
   const langMode = useAppSelector((state) => state.langMode.langMode);
 
-  const toggle = (e: React.ChangeEvent) => {
+  const toggle = () => {
     dispatch(switchMode());
     i18next.changeLanguage(langMode ? 'en' : 'ru');
   };
   return (
-    <Switch
-      focusVisibleClassName=".Mui-focusVisible"
-      disableRipple
-      {...props}
-      onChange={(e) => toggle(e)}
-    />
+    <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} onChange={toggle} />
   );
 })(({ theme }) => ({
   width: 42,
