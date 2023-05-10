@@ -1,10 +1,11 @@
-import { mainReducer, schemaReducer } from '@/slices';
+import { editorsReducer, mainReducer, schemaReducer } from '@/slices';
 import { PreloadedState, combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 const rootReducer = combineReducers({
   main: mainReducer,
   schema: schemaReducer,
+  editors: editorsReducer,
 });
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {
