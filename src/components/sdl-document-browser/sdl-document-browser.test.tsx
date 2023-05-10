@@ -35,7 +35,7 @@ describe('Document browser', () => {
     const link = screen.getByRole('link');
     expect(link).toBeVisible();
     act(() => link.click());
-    expect(screen.getByText('Content not found')).toBeVisible();
+    expect(screen.getByText('notFound')).toBeVisible();
   });
 
   function renderPage(root: string) {

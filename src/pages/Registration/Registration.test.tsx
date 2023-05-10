@@ -3,20 +3,16 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import { Registration } from './Registration';
+import { waitRender } from '@/../__mocks__/test-utils';
 
 describe('Registration', () => {
   it('Registration renders correctly', async () => {
-    act(() =>
-      render(
-        <BrowserRouter>
-          <Registration />
-        </BrowserRouter>
-      )
-    );
+    await defaultRender();
+
     const textboxName = screen.getByRole('textbox', { name: 'Name' });
     expect(textboxName).toBeInTheDocument;
 
-    const textboxEmail = screen.getByRole('textbox', { name: 'Email Address' });
+    const textboxEmail = screen.getByRole('textbox', { name: 'Email' });
     expect(textboxEmail).toBeInTheDocument;
 
     const textboxPassword = screen.getByLabelText('Password *');
@@ -24,18 +20,13 @@ describe('Registration', () => {
   });
 
   it('Registration submited', async () => {
-    act(() =>
-      render(
-        <BrowserRouter>
-          <Registration />
-        </BrowserRouter>
-      )
-    );
+    await defaultRender();
+
     const textboxName = screen.getByRole('textbox', { name: 'Name' });
     await userEvent.type(textboxName, 'Skave');
     expect((textboxName as HTMLInputElement).value).toBe('Skave');
 
-    const textboxEmail = screen.getByRole('textbox', { name: 'Email Address' });
+    const textboxEmail = screen.getByRole('textbox', { name: 'Email' });
     await userEvent.type(textboxEmail, 'user07@gmail.com');
     expect((textboxEmail as HTMLInputElement).value).toBe('user07@gmail.com');
 
@@ -43,11 +34,23 @@ describe('Registration', () => {
     await userEvent.type(textboxPassword, 'myPassword');
     expect((textboxPassword as HTMLInputElement).value).toBe('myPassword');
 
-    const btnSignUp = screen.getByRole('button', { name: /Sign Up/i });
+    const btnSignUp = screen.getByRole('button', { name: 'SignUp' });
     userEvent.click(btnSignUp);
 
     const form = screen.getByRole('form');
 
     fireEvent.submit(form);
   });
+
+  async function defaultRender() {
+    act(() =>
+      render(
+        <BrowserRouter>
+          <Registration />
+        </BrowserRouter>
+      )
+    );
+
+    await waitRender();
+  }
 });

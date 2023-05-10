@@ -34,7 +34,7 @@ export const LangSwitch = styled((props: SwitchProps) => {
       transform: 'translateX(16px)',
       color: '#fff',
       '& + .MuiSwitch-track': {
-        backgroundColor: '#65C466',
+        backgroundColor: '#007395',
         opacity: 1,
         border: 0,
       },
@@ -47,7 +47,7 @@ export const LangSwitch = styled((props: SwitchProps) => {
       border: '6px solid #fff',
     },
     '&.Mui-disabled .MuiSwitch-thumb': {
-      color: '#65C466',
+      color: '#007395',
     },
   },
   '& .MuiSwitch-thumb': {
@@ -57,7 +57,7 @@ export const LangSwitch = styled((props: SwitchProps) => {
   },
   '& .MuiSwitch-track': {
     borderRadius: 26 / 2,
-    backgroundColor: '#65C466',
+    backgroundColor: '#007395',
     opacity: 1,
     transition: theme.transitions.create(['background-color'], {
       duration: 500,
