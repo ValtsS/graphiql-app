@@ -51,6 +51,10 @@ main {
   color: #888;
 }
 
+.monaco-editor {
+  position: absolute !important;
+}
+
 a {
   text-decoration: none !important;
 }
