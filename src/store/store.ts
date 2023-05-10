@@ -1,10 +1,12 @@
 import { mainReducer, schemaReducer } from '@/slices';
 import { PreloadedState, combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { switchReducer } from '../slices/lang/langSlice';
 
 const rootReducer = combineReducers({
   main: mainReducer,
   schema: schemaReducer,
+  langMode: switchReducer,
 });
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {

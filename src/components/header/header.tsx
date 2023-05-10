@@ -171,7 +171,7 @@ export const Header = (props: Props): ReactElement => {
               ))}
             </Box>
 
-            <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 5 }}>
               <Stack direction="row" spacing={1} alignItems="center">
                 <Typography className="lang">RU</Typography>
                 <FormControlLabel control={<LangSwitch sx={{ m: 1 }} defaultChecked />} label="" />

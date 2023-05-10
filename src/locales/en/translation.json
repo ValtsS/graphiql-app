@@ -19,5 +19,7 @@
   "Password": "Password",
   "Main": "Main page",
   "Forgot": "Forgot password?",
-  "Don'tHave": "Don't have an account? Sign Up"
+  "Don'tHave": "Don't have an account? Sign Up",
+  "Email": "Email Address",
+  "back": "Back"
 }

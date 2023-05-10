@@ -6,12 +6,15 @@ import React, { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { DocumentPageComponent } from '../document-page/document-page';
 import { changeEndpoint, selectMainData } from '@/slices';
+import { useTranslation } from 'react-i18next';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
   const { hide, showDialog } = useModalDialog();
 
   const mainState = useSelector(selectMainData);
+
+  const { t } = useTranslation();
 
   const onEndPointChange = (newendpoint: string) => {
     hide();
@@ -26,7 +29,7 @@ export const Main = (): ReactElement => {
     <Container>
       <Grid item xs={12}>
         <Button variant="contained" size="medium" onClick={changeEndpointClick}>
-          Change Endpoint
+          {t('Change')}
         </Button>
       </Grid>
       <Grid item xs={12}>
@@ -35,10 +38,10 @@ export const Main = (): ReactElement => {
           <DocumentPageComponent />
         </Grid>
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-          Query
+          {t('Query')}
         </Grid>
         <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-          result
+          {t('result')}
         </Grid>
       </Grid>
     </Container>

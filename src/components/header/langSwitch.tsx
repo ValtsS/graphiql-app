@@ -1,10 +1,28 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Switch, { SwitchProps } from '@mui/material/Switch';
+import { useDispatch } from 'react-redux';
+import { switchMode } from '@/slices';
+import i18next from 'i18next';
+import { useAppSelector } from '@/store';
 
-export const LangSwitch = styled((props: SwitchProps) => (
-  <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
-))(({ theme }) => ({
+export const LangSwitch = styled((props: SwitchProps) => {
+  const dispatch = useDispatch();
+  const langMode = useAppSelector((state) => state.langMode.langMode);
+
+  const toggle = (e: React.ChangeEvent) => {
+    dispatch(switchMode());
+    i18next.changeLanguage(langMode ? 'en' : 'ru');
+  };
+  return (
+    <Switch
+      focusVisibleClassName=".Mui-focusVisible"
+      disableRipple
+      {...props}
+      onChange={(e) => toggle(e)}
+    />
+  );
+})(({ theme }) => ({
   width: 42,
   height: 26,
   padding: 0,
