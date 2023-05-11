@@ -9,6 +9,7 @@ export interface RouteConfig {
   element: React.ReactNode;
   displayInMenu?: boolean;
   menuText?: string;
+  menuTextRu?: string;
   displayInRegistration?: boolean;
 }
 
@@ -23,6 +24,7 @@ const regRoutes: RouteConfig[] = [
     ),
     displayInMenu: true,
     menuText: 'Sign in',
+    menuTextRu: 'Войти',
     displayInRegistration: true,
   },
   {
@@ -35,6 +37,7 @@ const regRoutes: RouteConfig[] = [
     ),
     displayInMenu: true,
     menuText: 'Sign up',
+    menuTextRu: 'Зарегистрироваться',
     displayInRegistration: true,
   },
 ];
@@ -46,6 +49,7 @@ export const defaultRoutes: RouteConfig[] = [
     element: <Welcome routes={regRoutes} />,
     displayInMenu: true,
     menuText: 'Welcome',
+    menuTextRu: 'Приветствие',
   },
   {
     uuid: uuidv4(),
@@ -53,6 +57,7 @@ export const defaultRoutes: RouteConfig[] = [
     element: <Main />,
     displayInMenu: true,
     menuText: 'Main',
+    menuTextRu: 'Главная',
   },
   ...regRoutes,
 ];

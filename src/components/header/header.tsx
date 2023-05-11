@@ -25,6 +25,7 @@ import './header.css';
 import { RouteConfig } from '@/routes/routes-config';
 import { LangSwitch } from './langSwitch';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '@/store';
 
 interface Props {
   routesConfig: RouteConfig[];
@@ -35,6 +36,7 @@ export const Header = (props: Props): ReactElement => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [isSticky, setSticky] = useState(false);
   const { t } = useTranslation();
+  const langMode = useAppSelector((state) => state.langMode.langMode);
 
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -120,7 +122,9 @@ export const Header = (props: Props): ReactElement => {
                 {headerMenu.map((page) => (
                   <MenuItem key={page.uuid} onClick={handleCloseNavMenu}>
                     <Link to={page.path} component={RouterLink}>
-                      <Typography textAlign="center">{page.menuText}</Typography>
+                      <Typography textAlign="center">
+                        {langMode ? page.menuTextRu : page.menuText}
+                      </Typography>
                     </Link>
                   </MenuItem>
                 ))}
@@ -128,7 +132,9 @@ export const Header = (props: Props): ReactElement => {
                   signMenu.map((page) => (
                     <MenuItem key={page.uuid} onClick={handleCloseNavMenu}>
                       <Link to={page.path} component={RouterLink} sx={{ textDecoration: 'none' }}>
-                        <Typography textAlign="center">{page.menuText}</Typography>
+                        <Typography textAlign="center">
+                          {langMode ? page.menuTextRu : page.menuText}
+                        </Typography>
                       </Link>
                     </MenuItem>
                   ))
@@ -169,7 +175,7 @@ export const Header = (props: Props): ReactElement => {
                   component={RouterLink}
                   to={page.path}
                 >
-                  {page.menuText}
+                  {langMode ? page.menuTextRu : page.menuText}
                 </Button>
               ))}
             </Box>
