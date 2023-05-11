@@ -25,6 +25,7 @@ describe('useCertainModel', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.useFakeTimers();
     (getOrCreateModel as jest.Mock).mockReturnValue(mockModel);
   });
 
