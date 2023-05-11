@@ -3,32 +3,13 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import style from './Footer.module.css';
 import React from 'react';
-
-const LINK_TO_THE_COURSE = 'https://rs.school/react/';
-
-export const develops = [
-  {
-    id: 1,
-    name: 'Valts Silaputnins',
-    link: 'https://github.com/ValtsS',
-  },
-  {
-    id: 2,
-    name: 'Evgeniy Onishchenko',
-    link: 'https://github.com/evvgenchik',
-  },
-  {
-    id: 3,
-    name: 'Natalya Polyakova',
-    link: 'https://github.com/Skave-a',
-  },
-];
+import { DEVELOPERS, LINK_TO_THE_COURSE } from '@/utils/constants';
 
 export const Footer = () => {
   return (
     <Box component="footer" sx={{}} className={style.footer}>
       <Box component={Box} maxWidth="sm" className={style.dev}>
-        {develops.map((develop) => (
+        {DEVELOPERS.map((develop) => (
           <Box key={develop.id}>
             <Link href={develop.link} target="_blank" rel="noreferrer" className={style.link}>
               {develop.name}

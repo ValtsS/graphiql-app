@@ -3,6 +3,8 @@ import { RouteConfig } from '@/routes';
 import { Box, Button, Container } from '@mui/material';
 import React, { ReactElement } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { Developers } from '@/components/developers/developers';
+import { AboutApp } from '@/components/aboutApp/aboutApp';
 
 export const Welcome = ({ routes }: { routes: RouteConfig[] }): ReactElement => {
   const { currentUser } = useAuth();
@@ -11,6 +13,7 @@ export const Welcome = ({ routes }: { routes: RouteConfig[] }): ReactElement => 
   return (
     <Container>
       Welcome
+      <AboutApp />
       <Box sx={{ display: 'flex', gap: 5, justifyContent: 'center' }}>
         {currentUser ? (
           <Button variant="contained" component={RouterLink} to="/">
@@ -30,6 +33,7 @@ export const Welcome = ({ routes }: { routes: RouteConfig[] }): ReactElement => 
           ))
         )}
       </Box>
+      <Developers />
     </Container>
   );
 };

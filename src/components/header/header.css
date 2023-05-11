@@ -5,8 +5,7 @@
 }
 
 .sticky {
-  background-color: #5bafaf !important;
-  transition: all 0.5s ease-out;
+  background: linear-gradient(to right, #007195, #009999) !important;
 }
 
 .lang {
