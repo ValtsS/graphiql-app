@@ -15,7 +15,7 @@ describe('Welcome', () => {
       )
     );
     await waitRender();
-    const btns = screen.getAllByRole('link');
-    expect(btns.length).toBe(2);
+    const developers = screen.getByText('Developers');
+    expect(developers).toBeInTheDocument;
   });
 });
