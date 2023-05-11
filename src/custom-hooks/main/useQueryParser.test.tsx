@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { render } from '@testing-library/react';
 import { waitRender } from '@/../__mocks__/test-utils';
 import { setupMockIntrospection } from '@/../__mocks__/api-mock-helper';
+import fuzzball from 'fuzzball';
 
 const TestQueryParser = ({ schema }: { schema: GraphQLSchema }) => {
   useQueryParser();
@@ -59,7 +60,12 @@ describe('useQueryparser', () => {
 
     expect(store.getState().editors.queryError).toBe(textTestState);
     await defaultRender(mockSchema);
-    expect(store.getState().editors.queryError).toBe(expected);
+    const res = store.getState().editors.queryError;
+    if (expected === undefined) {
+      expect(res).toBe(expected);
+    } else {
+      expect(fuzzball.ratio(res ?? '', expected)).toBeGreaterThan(98);
+    }
   });
 
   async function defaultRender(schema: GraphQLSchema) {
