@@ -24,6 +24,7 @@ import useAuth from '@/custom-hooks/useAuth';
 import './header.css';
 import { RouteConfig } from '@/routes/routes-config';
 import { LangSwitch } from './langSwitch';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   routesConfig: RouteConfig[];
@@ -33,6 +34,8 @@ export const Header = (props: Props): ReactElement => {
   const { routesConfig } = props;
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [isSticky, setSticky] = useState(false);
+  const { t } = useTranslation();
+
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -185,7 +188,7 @@ export const Header = (props: Props): ReactElement => {
                     sx={{ my: 2, color: 'white', display: 'block', border: '1px solid #fff' }}
                     onClick={logout}
                   >
-                    Sign Out
+                    {t('SignOut')}
                   </Button>
                 </Box>
               ) : null}
