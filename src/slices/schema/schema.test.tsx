@@ -44,7 +44,7 @@ describe('schemaSlice', () => {
   });
 
   it('should handle fetchSchema.fulfilled', async () => {
-    const mockClient = await setupMockIntrospection();
+    const { mockClient } = await setupMockIntrospection();
     await store.dispatch(fetchSchema({ client: mockClient, endpoint: mockEndpoint }));
 
     const state = store.getState().schema;
