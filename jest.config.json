@@ -6,9 +6,6 @@
   "testEnvironmentOptions": {
     "url": "http://127.0.0.1/"
   },
-  "fakeTimers": {
-    "enableGlobally": true
-  },
   "transform": {
     "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
   },
