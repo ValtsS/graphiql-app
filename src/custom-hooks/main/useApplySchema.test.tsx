@@ -9,7 +9,7 @@ import { AppContextProvider, useAppContext } from '@/provider';
 import { StoreStatus } from '@/slices';
 import { initializeMode } from 'monaco-graphql/esm/initializeMode';
 
-const mockToaster = jest.fn().mockImplementation(() => console.log('ZZZZZZZZZZ'));
+const mockToaster = jest.fn();
 
 jest.mock('react-toastify', () => ({
   toast: jest.fn().mockImplementation((...expected) => mockToaster(expected)),
