@@ -1,13 +1,12 @@
+import { waitRender } from '@/../__mocks__/test-utils';
 import { AppContextProvider, useAppContext } from '@/provider';
+import { AppStore, setupStore } from '@/store';
+import { render } from '@testing-library/react';
+import fuzzball from 'fuzzball';
 import { GraphQLSchema, buildASTSchema, parse } from 'graphql';
 import React, { useEffect } from 'react';
-import { useQueryParser } from './useQueryParser';
-import { AppStore, setupStore } from '@/store';
 import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import { waitRender } from '@/../__mocks__/test-utils';
-import { setupMockIntrospection } from '@/../__mocks__/api-mock-helper';
-import fuzzball from 'fuzzball';
+import { useQueryParser } from './useQueryParser';
 
 const TestQueryParser = ({ schema }: { schema: GraphQLSchema }) => {
   useQueryParser();
