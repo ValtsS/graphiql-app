@@ -30,5 +30,5 @@ export async function setupMockIntrospection() {
 
   const fn = jest.fn().mockReturnValue(introspectionResult);
   const mockClient = new SimpleMockApiClient<IntrospectionResponseData>(fn);
-  return mockClient;
+  return { mockClient: mockClient, callback: fn };
 }

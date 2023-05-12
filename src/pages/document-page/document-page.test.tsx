@@ -58,7 +58,7 @@ describe('Document page component', () => {
 
   async function defaultRender() {
     const store = setupStore();
-    const mockClient = await setupMockIntrospection();
+    const { mockClient } = await setupMockIntrospection();
     await store.dispatch(fetchSchema({ client: mockClient, endpoint: 'dummy' }));
 
     render(
