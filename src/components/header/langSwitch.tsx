@@ -5,8 +5,10 @@ import { useDispatch } from 'react-redux';
 import { switchMode } from '@/slices';
 import i18next from 'i18next';
 import { useAppSelector } from '@/store';
+import { FormControlLabel, Stack, Typography } from '@mui/material';
 
-export const LangSwitch = styled((props: SwitchProps) => {
+const LangSwitch = styled((props: SwitchProps) => {
+  const { className } = props;
   const dispatch = useDispatch();
   const langMode = useAppSelector((state) => state.langMode.langMode);
 
@@ -14,8 +16,14 @@ export const LangSwitch = styled((props: SwitchProps) => {
     dispatch(switchMode());
     i18next.changeLanguage(langMode ? 'en' : 'ru');
   };
+
   return (
-    <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} onChange={toggle} />
+    <Switch
+      focusVisibleClassName=".Mui-focusVisible"
+      className={className}
+      onChange={toggle}
+      checked={!langMode}
+    />
   );
 })(({ theme }) => ({
   width: 42,
@@ -59,3 +67,13 @@ export const LangSwitch = styled((props: SwitchProps) => {
     }),
   },
 }));
+
+export const SwitchMode = () => {
+  return (
+    <Stack direction="row" spacing={1} alignItems="center">
+      <Typography className="lang">RU</Typography>
+      <FormControlLabel control={<LangSwitch sx={{ m: 1 }} defaultChecked />} label="" />
+      <Typography className="lang">EN</Typography>
+    </Stack>
+  );
+};

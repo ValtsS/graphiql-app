@@ -16,14 +16,12 @@ import {
   Tooltip,
   MenuItem,
   Link,
-  FormControlLabel,
-  Stack,
 } from '@mui/material';
 import { logout } from '@/core/firebase';
 import useAuth from '@/custom-hooks/useAuth';
 import './header.css';
 import { RouteConfig } from '@/routes/routes-config';
-import { LangSwitch } from './langSwitch';
+import { SwitchMode } from './langSwitch';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/store';
 
@@ -145,6 +143,9 @@ export const Header = (props: Props): ReactElement => {
                     </Link>
                   </MenuItem>
                 )}
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <SwitchMode />
+                </MenuItem>
               </Menu>
             </Box>
             <HiveIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -181,11 +182,7 @@ export const Header = (props: Props): ReactElement => {
             </Box>
 
             <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 5 }}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <Typography className="lang">RU</Typography>
-                <FormControlLabel control={<LangSwitch sx={{ m: 1 }} defaultChecked />} label="" />
-                <Typography className="lang">EN</Typography>
-              </Stack>
+              <SwitchMode />
 
               {currentUser ? (
                 <Box sx={{ flexGrow: 1 }}>

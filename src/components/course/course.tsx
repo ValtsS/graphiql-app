@@ -7,7 +7,7 @@ export const Course = () => {
   const { t } = useTranslation();
 
   return (
-    <Grid container mb={20}>
+    <Grid container mb={20} spacing={3}>
       <Grid item xs={12} md={6}>
         <img
           src="https://rs.school/images/rs_school_js.svg"
