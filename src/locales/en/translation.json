@@ -23,5 +23,11 @@
   "Email": "Email Address",
   "back": "Back",
   "Developers": "Developers",
-  "mainPage": "Go to Main Page"
+  "mainPage": "Go to Main Page",
+  "description": "Clone GraphQL is an application designed to replicate the functionality of GraphQL, a popular query language for APIs. This application enables developers to easily create and manage GraphQL APIs, allowing them to efficiently design and deliver high-performance applications.",
+  "React": "React Course",
+  "free": "Free | Online | in English",
+  "Enroll": "Enroll"
+
+
 }
