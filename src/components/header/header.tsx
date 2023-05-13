@@ -1,26 +1,26 @@
-import React, { ReactElement, MouseEvent, useState, useEffect, useLayoutEffect } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import MenuIcon from '@mui/icons-material/Menu';
-import HiveIcon from '@mui/icons-material/Hive';
-import {
-  CssBaseline,
-  AppBar,
-  Box,
-  Toolbar,
-  IconButton,
-  Typography,
-  Menu,
-  Container,
-  Avatar,
-  Button,
-  Tooltip,
-  MenuItem,
-  Link,
-} from '@mui/material';
 import { logout } from '@/core/firebase';
 import useAuth from '@/custom-hooks/useAuth';
-import './header.css';
 import { RouteConfig } from '@/routes/routes-config';
+import HiveIcon from '@mui/icons-material/Hive';
+import MenuIcon from '@mui/icons-material/Menu';
+import {
+  AppBar,
+  Avatar,
+  Box,
+  Button,
+  Container,
+  CssBaseline,
+  IconButton,
+  Link,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+import React, { MouseEvent, ReactElement, useLayoutEffect, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import './header.css';
 
 interface Props {
   routesConfig: RouteConfig[];
