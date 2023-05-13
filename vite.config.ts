@@ -1,13 +1,15 @@
-import { defineConfig } from 'vite';
+import { PluginOption, defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import monacoEditorPlugin from 'vite-plugin-monaco-editor';
+import monacoEditorPlugin, { IMonacoEditorOpts } from 'vite-plugin-monaco-editor';
 import path from 'path';
+
+type hack = (options: IMonacoEditorOpts) => PluginOption;
+const monacoEditorPlug: hack = monacoEditorPlugin['default'];
 
 export default defineConfig({
   plugins: [
     react(),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (monacoEditorPlugin as any).default({
+    monacoEditorPlug({
       languageWorkers: ['json', 'editorWorkerService'],
       customWorkers: [
         {
