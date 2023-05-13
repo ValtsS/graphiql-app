@@ -1,9 +1,9 @@
-import { defineConfig } from 'vite';
+import { PluginOption, defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import monacoEditorPlugin, { IMonacoEditorOpts } from 'vite-plugin-monaco-editor';
 import path from 'path';
 
-type hack = (options: IMonacoEditorOpts) => Plugin;
+type hack = (options: IMonacoEditorOpts) => PluginOption;
 const monacoEditorPlug: hack = monacoEditorPlugin['default'];
 
 export default defineConfig({
