@@ -1,4 +1,4 @@
-import React, { ReactElement, MouseEvent, useState, useEffect } from 'react';
+import React, { ReactElement, MouseEvent, useState, useEffect, useLayoutEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import HiveIcon from '@mui/icons-material/Hive';
@@ -40,20 +40,14 @@ export const Header = (props: Props): ReactElement => {
 
   const { currentUser } = useAuth();
 
-  const stickyHeader = () => {
-    window.addEventListener('scroll', () => {
-      if (document.body.scrollTop > 0 || document.documentElement.scrollTop > 0) {
-        setSticky(true);
-      } else {
-        setSticky(false);
-      }
-    });
-  };
-
-  useEffect(() => {
-    stickyHeader();
-    return () => window.addEventListener('scroll', stickyHeader);
-  }, [isSticky]);
+  useLayoutEffect(() => {
+    function update() {
+      setSticky(document.body.scrollTop > 0 || document.documentElement.scrollTop > 0);
+    }
+    window.addEventListener('scroll', update);
+    update();
+    return () => window.removeEventListener('scroll', update);
+  });
 
   const headerMenu = routesConfig.filter((el) => !el.displayInRegistration);
   const signMenu = routesConfig.filter((el) => el.displayInRegistration);
