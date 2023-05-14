@@ -19,6 +19,26 @@ export default defineConfig({
       ],
     }),
   ],
+  build: {
+    minify: 'esbuild',
+    chunkSizeWarningLimit: 4096,
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('@firebase') || id.includes('firebase')) {
+              return 'vendor_firebase';
+            } else if (id.includes('monaco-editor') || id.includes('monaco-graphql')) {
+              return 'vendor_monaco';
+            } else if (id.includes('@mui')) {
+              return 'vendor_mui';
+            }
+            return 'vendor';
+          }
+        },
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
