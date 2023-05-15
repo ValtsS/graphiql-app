@@ -2,6 +2,8 @@ import { GraphQLObjectType, GraphQLSchema, Kind, buildASTSchema, parse } from 'g
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { DocumentBook, DocumentPage, DocumentPageHelper } from './sdl-docs';
 import { prepareTypePage, processFunction } from './sdl-docs-helper';
+import { Translation } from 'react-i18next';
+import React from 'react';
 
 export function generateBook(schema: string): DocumentBook {
   const book: DocumentBook = {};
@@ -34,15 +36,27 @@ function generateRootPage(ast: GraphQLSchema, book: DocumentBook) {
 
   const queryPage = prepQueryPage(ast.getQueryType());
   book['/query'] = queryPage;
-  DocumentPageHelper.pushLinkToPage(root, 'Queries', '/query');
+  DocumentPageHelper.pushLinkToPage(
+    root,
+    <Translation>{(t) => t('Queries')}</Translation>,
+    '/query'
+  );
 
   const mutationPage = prepQueryPage(ast.getMutationType());
   book['/mutate'] = mutationPage;
-  DocumentPageHelper.pushLinkToPage(root, 'Mutations', '/mutate');
+  DocumentPageHelper.pushLinkToPage(
+    root,
+    <Translation>{(t) => t('Mutations')}</Translation>,
+    '/mutate'
+  );
 
   const subscribePage = prepQueryPage(ast.getSubscriptionType());
   book['/subscribe'] = subscribePage;
-  DocumentPageHelper.pushLinkToPage(root, 'Subscriptions', '/subscribe');
+  DocumentPageHelper.pushLinkToPage(
+    root,
+    <Translation>{(t) => t('Subscriptions')}</Translation>,
+    '/subscribe'
+  );
 
   book['/'] = root;
 }

@@ -1,4 +1,5 @@
 import { DocumentPage, DocumentPart, DocumentPartKind, RenderOnClick } from '@/core/docs/sdl-docs';
+import { Box, Link } from '@mui/material';
 import React from 'react';
 
 export const UNKNOWNDOCUMENTPARTERROR = 'Unrecognized document part kind';
@@ -29,9 +30,13 @@ export class DocumentContent {
           const link = p.link_uuid;
           if (link) {
             eles.push(
-              <a href="#" onClick={() => linkClick(link)} key={`${this._page.uuid}${i.toString()}`}>
+              <Link
+                href="#"
+                onClick={() => linkClick(link)}
+                key={`${this._page.uuid}${i.toString()}`}
+              >
                 {p.text && p.text(linkClick)}
-              </a>
+              </Link>
             );
           } else
             eles.push(
@@ -50,7 +55,11 @@ export class DocumentContent {
       }
     });
 
-    return <div key={this._page.uuid}>{eles}</div>;
+    return (
+      <Box key={this._page.uuid} mt={2}>
+        {eles}
+      </Box>
+    );
   }
 }
 

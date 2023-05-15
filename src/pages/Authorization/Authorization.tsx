@@ -21,7 +21,7 @@ export const Authorization = (): ReactElement => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success('Successefully logged in');
-      navigate('/');
+      navigate('/main');
     } catch (err) {
       toast.error('something went wrong');
       console.log(err);
@@ -32,7 +32,7 @@ export const Authorization = (): ReactElement => {
     if (loading) {
       return;
     }
-    if (user) navigate('/');
+    if (user) navigate('/main');
   }, [user, loading, navigate]);
 
   const { t } = useTranslation();

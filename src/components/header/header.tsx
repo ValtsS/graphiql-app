@@ -3,7 +3,6 @@ import useAuth from '@/custom-hooks/useAuth';
 import { RouteConfig } from '@/routes/routes-config';
 import { SwitchMode } from './langSwitch';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from '@/store';
 import HiveIcon from '@mui/icons-material/Hive';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
@@ -34,7 +33,7 @@ export const Header = (props: Props): ReactElement => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [isSticky, setSticky] = useState(false);
   const { t } = useTranslation();
-  const langMode = useAppSelector((state) => state.langMode.langMode);
+  // const langMode = useAppSelector((state) => state.langMode.langMode);
 
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -114,9 +113,7 @@ export const Header = (props: Props): ReactElement => {
                 {headerMenu.map((page) => (
                   <MenuItem key={page.uuid} onClick={handleCloseNavMenu}>
                     <Link to={page.path} component={RouterLink}>
-                      <Typography textAlign="center">
-                        {langMode ? page.menuTextRu : page.menuText}
-                      </Typography>
+                      <Typography textAlign="center">{page.menuText}</Typography>
                     </Link>
                   </MenuItem>
                 ))}
@@ -124,9 +121,7 @@ export const Header = (props: Props): ReactElement => {
                   signMenu.map((page) => (
                     <MenuItem key={page.uuid} onClick={handleCloseNavMenu}>
                       <Link to={page.path} component={RouterLink} sx={{ textDecoration: 'none' }}>
-                        <Typography textAlign="center">
-                          {langMode ? page.menuTextRu : page.menuText}
-                        </Typography>
+                        <Typography textAlign="center">{page.menuText}</Typography>
                       </Link>
                     </MenuItem>
                   ))
@@ -170,7 +165,7 @@ export const Header = (props: Props): ReactElement => {
                   component={RouterLink}
                   to={page.path}
                 >
-                  {langMode ? page.menuTextRu : page.menuText}
+                  {page.menuText}
                 </Button>
               ))}
             </Box>

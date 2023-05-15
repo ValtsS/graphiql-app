@@ -67,9 +67,11 @@ export const Main = (): ReactElement => {
         <EditorQueryGraphQL uuid={QUERY_EDITOR_UUID} />
       </Grid>
       <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-        <Typography variant="h6">{mainState.endpoint}</Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
+        <Typography variant="h6" sx={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
+          {mainState.endpoint}
+        </Typography>
+        <Grid container sx={{ justifyContent: 'space-around' }}>
+          <Grid item xs={4}>
             <Button
               variant="contained"
               size="small"
@@ -79,13 +81,13 @@ export const Main = (): ReactElement => {
               {t('Query')}
             </Button>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <Button variant="contained" size="small" onClick={changeEndpointClick}>
               {t('Change')}
             </Button>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={12} mt={2}>
             <Box sx={{ pl: '1rem', background: 'white' }}>
               <DocumentPageComponent />
             </Box>

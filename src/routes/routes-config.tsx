@@ -2,14 +2,14 @@ import { Authorization, Main, Registration, Welcome } from '@/pages';
 import React from 'react';
 import { ProtectedRoute } from './protected-route';
 import { v4 as uuidv4 } from 'uuid';
+import { Translation } from 'react-i18next';
 
 export interface RouteConfig {
   uuid: string;
   path: string;
   element: React.ReactNode;
   displayInMenu?: boolean;
-  menuText?: string;
-  menuTextRu?: string;
+  menuText?: React.ReactNode;
   displayInRegistration?: boolean;
 }
 
@@ -23,8 +23,7 @@ const regRoutes: RouteConfig[] = [
       </ProtectedRoute>
     ),
     displayInMenu: true,
-    menuText: 'Sign in',
-    menuTextRu: 'Войти',
+    menuText: <Translation>{(t) => t('SignIn')}</Translation>,
     displayInRegistration: true,
   },
   {
@@ -36,8 +35,7 @@ const regRoutes: RouteConfig[] = [
       </ProtectedRoute>
     ),
     displayInMenu: true,
-    menuText: 'Sign up',
-    menuTextRu: 'Зарегистрироваться',
+    menuText: <Translation>{(t) => t('SignUp')}</Translation>,
     displayInRegistration: true,
   },
 ];
@@ -45,19 +43,17 @@ const regRoutes: RouteConfig[] = [
 export const defaultRoutes: RouteConfig[] = [
   {
     uuid: uuidv4(),
-    path: '/welcome',
+    path: '/',
     element: <Welcome routes={regRoutes} />,
     displayInMenu: true,
-    menuText: 'Welcome',
-    menuTextRu: 'Приветствие',
+    menuText: <Translation>{(t) => t('Welcome')}</Translation>,
   },
   {
     uuid: uuidv4(),
-    path: '/',
+    path: '/main',
     element: <Main />,
     displayInMenu: true,
-    menuText: 'Main',
-    menuTextRu: 'Главная',
+    menuText: <Translation>{(t) => t('toMain')}</Translation>,
   },
   ...regRoutes,
 ];

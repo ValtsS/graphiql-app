@@ -28,7 +28,7 @@ export const Registration = (): ReactElement => {
   };
   useEffect(() => {
     if (loading) return;
-    if (user) navigate('/', { replace: true });
+    if (user) navigate('/main', { replace: true });
   }, [user, loading, navigate]);
 
   const { t } = useTranslation();
