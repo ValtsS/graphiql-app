@@ -6,14 +6,12 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Developers } from '@/components/developers/developers';
 import graphqlImg from '@/assets/graphql.gif';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from '@/store';
 import { Course } from '@/components/course/course';
 
 export const Welcome = ({ routes }: { routes: RouteConfig[] }): ReactElement => {
   const { currentUser } = useAuth();
   const signMenu = routes.filter((el) => el.displayInRegistration);
   const { t } = useTranslation();
-  const langMode = useAppSelector((state) => state.langMode.langMode);
 
   return (
     <Container>
@@ -47,7 +45,7 @@ export const Welcome = ({ routes }: { routes: RouteConfig[] }): ReactElement => 
                   to={page.path}
                   size="large"
                 >
-                  {langMode ? page.menuTextRu : page.menuText}
+                  {page.menuText}
                 </Button>
               ))
             )}

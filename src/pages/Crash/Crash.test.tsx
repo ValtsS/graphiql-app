@@ -28,7 +28,7 @@ describe('Crash page component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText(new RegExp(unkErrorText, 'i'))).toBeInTheDocument();
+      expect(screen.getByText('UnknownError')).toBeInTheDocument();
     });
   });
 });
