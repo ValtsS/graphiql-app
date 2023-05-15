@@ -33,7 +33,6 @@ export const Header = (props: Props): ReactElement => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [isSticky, setSticky] = useState(false);
   const { t } = useTranslation();
-  // const langMode = useAppSelector((state) => state.langMode.langMode);
 
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);

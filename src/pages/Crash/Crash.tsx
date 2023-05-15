@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Translation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Translation } from 'react-i18next';
 
 interface ErrorPageProps {
   error: Error | null;
