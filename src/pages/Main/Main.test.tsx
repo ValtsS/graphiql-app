@@ -51,11 +51,11 @@ describe('Main page component', () => {
 
   async function defaultRender() {
     const store = setupStore();
-    const client = await setupMockIntrospection();
+    const { mockClient } = await setupMockIntrospection();
 
     act(() => {
       render(
-        <AppContextProvider apiClient={client}>
+        <AppContextProvider apiClient={mockClient}>
           <Provider store={store}>
             <ModalDialogProvider>
               <BrowserRouter>

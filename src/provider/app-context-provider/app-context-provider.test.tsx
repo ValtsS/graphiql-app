@@ -22,7 +22,7 @@ describe('useAppContext', () => {
   });
 
   test('should return the app context value when used within AppContextProvider', async () => {
-    const api = await setupMockIntrospection();
+    const { mockClient: api } = await setupMockIntrospection();
 
     const Internal = () => {
       const { apiClient, updateCurrentSchema } = useAppContext();

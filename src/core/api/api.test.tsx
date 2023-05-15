@@ -10,7 +10,7 @@ describe('API test', () => {
   items{ uuid } }}`);
 
   it('should handle schema decoding', async () => {
-    const mockClient = await setupMockIntrospection();
+    const { mockClient } = await setupMockIntrospection();
     const result = await getremoteSchema(mockClient, '://');
     expect(fuzzball.ratio(result, MOCK_QUERY_EXPECTED)).toBeGreaterThan(98);
   });

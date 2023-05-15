@@ -1,3 +1,5 @@
+const mockSchemaConfig = jest.fn();
+
 module.exports = {
   KeyMod: { CtrlCmd: '' },
   KeyCode: { Enter: '' },
@@ -19,6 +21,11 @@ module.exports = {
     }),
   },
   Uri: {
-    file: jest.fn(),
+    file: jest.fn().mockImplementation((id) => id),
   },
+  initializeMode: jest.fn().mockImplementation(() => {
+    return {
+      setSchemaConfig: mockSchemaConfig,
+    };
+  }),
 };
