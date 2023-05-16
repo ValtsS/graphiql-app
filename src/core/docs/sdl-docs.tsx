@@ -35,7 +35,7 @@ export class DocumentPageHelper {
     page.parts.push(part);
   }
 
-  static pushLinkToPage(page: DocumentPage, text: string, link_uuid: string) {
+  static pushLinkToPage(page: DocumentPage, text: React.ReactNode, link_uuid: string) {
     const part: DocumentPart = {
       kind: DocumentPartKind.Regular,
       link_uuid,

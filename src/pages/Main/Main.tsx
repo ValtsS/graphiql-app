@@ -18,10 +18,12 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { DocumentPageComponent } from '../document-page/document-page';
 import { QUERY_EDITOR_UUID, VARIABLE_EDITOR_UUID } from '@/core/consts';
+import { useTranslation } from 'react-i18next';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
   const { hide, showDialog } = useModalDialog();
+  const { t } = useTranslation();
 
   const mainState = useSelector(selectMainData);
   const editorState = useSelector(selectEditorsData);
@@ -65,25 +67,27 @@ export const Main = (): ReactElement => {
         <EditorQueryGraphQL uuid={QUERY_EDITOR_UUID} />
       </Grid>
       <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-        <Typography variant="h6">{mainState.endpoint}</Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
+        <Typography variant="h6" sx={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
+          {mainState.endpoint}
+        </Typography>
+        <Grid container sx={{ justifyContent: 'space-around' }}>
+          <Grid item xs={4} sx={{ display: 'flex' }}>
             <Button
               variant="contained"
               size="small"
               onClick={sendQueryClick}
               disabled={processing || errors}
             >
-              Send query
+              {t('Query')}
             </Button>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <Button variant="contained" size="small" onClick={changeEndpointClick}>
-              Change Endpoint
+              {t('Change')}
             </Button>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={12} mt={2}>
             <Box sx={{ pl: '1rem', background: 'white' }}>
               <DocumentPageComponent />
             </Box>

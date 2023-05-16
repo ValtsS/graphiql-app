@@ -9,17 +9,17 @@ describe('Authorization', () => {
   it('Authorization renders correctly', async () => {
     await defaultRender();
 
-    const textboxEmail = screen.getByRole('textbox', { name: 'Email Address' });
+    const textboxEmail = screen.getByRole('textbox', { name: 'Email' });
     expect(textboxEmail).toBeInTheDocument;
 
     const textboxPassword = screen.getByLabelText('Password *');
     expect(textboxPassword).toBeInTheDocument;
   });
 
-  it('Registration submited', async () => {
+  it('Authorization submited', async () => {
     await defaultRender();
 
-    const textboxEmail = screen.getByRole('textbox', { name: 'Email Address' });
+    const textboxEmail = screen.getByRole('textbox', { name: 'Email' });
     await userEvent.type(textboxEmail, 'user07@gmail.com');
     expect((textboxEmail as HTMLInputElement).value).toBe('user07@gmail.com');
 
@@ -27,7 +27,7 @@ describe('Authorization', () => {
     await userEvent.type(textboxPassword, 'myPassword');
     expect((textboxPassword as HTMLInputElement).value).toBe('myPassword');
 
-    const btnSignUp = screen.getByRole('button', { name: /Sign In/i });
+    const btnSignUp = screen.getByRole('button', { name: 'SignIn' });
     userEvent.click(btnSignUp);
   });
 

@@ -4,6 +4,7 @@ import { CircularProgress, Typography } from '@mui/material';
 import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import '@/core/i18n';
 
 const LazySDLDocumentBrowser = lazy(
   () => import('@/components/sdl-document-browser/sdl-document-browser')

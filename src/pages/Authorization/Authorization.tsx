@@ -7,6 +7,7 @@ import { auth } from '@/core/firebase';
 import { signInWithEmailAndPassword } from '@firebase/auth';
 import { toast } from 'react-toastify';
 import { SideBar } from '@/components';
+import { useTranslation } from 'react-i18next';
 
 export const Authorization = (): ReactElement => {
   const [email, setEmail] = useState('');
@@ -20,7 +21,7 @@ export const Authorization = (): ReactElement => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success('Successefully logged in');
-      navigate('/');
+      navigate('/main');
     } catch (err) {
       toast.error('something went wrong');
       console.log(err);
@@ -31,14 +32,16 @@ export const Authorization = (): ReactElement => {
     if (loading) {
       return;
     }
-    if (user) navigate('/');
+    if (user) navigate('/main');
   }, [user, loading, navigate]);
 
+  const { t } = useTranslation();
+
   const data = {
-    greet: 'Hello, Friend!',
-    desc: 'Enter your personal details',
+    greet: t('Hello'),
+    desc: t('personal'),
     path: '/reg',
-    btn: 'Sign Up',
+    btn: t('SignUp'),
   };
 
   return (
@@ -53,14 +56,14 @@ export const Authorization = (): ReactElement => {
                 gutterBottom
                 sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', md: '2rem' } }}
               >
-                Sign in
+                {t('SignIn')}
               </Typography>
               <TextField
                 margin="normal"
                 required
                 fullWidth
                 id="email"
-                label={'Email Address'}
+                label={t('Email')}
                 name="email"
                 autoComplete="email"
                 autoFocus
@@ -72,7 +75,7 @@ export const Authorization = (): ReactElement => {
                 required
                 fullWidth
                 name="password"
-                label={'Password'}
+                label={t('Password')}
                 type="password"
                 id="password"
                 autoComplete="current-password"
@@ -86,17 +89,17 @@ export const Authorization = (): ReactElement => {
                 sx={{ mt: 3, mb: 2, color: '#fff' }}
                 onClick={(e) => handleSignUp(e)}
               >
-                Sign in
+                {t('SignIn')}
               </Button>
               <Grid container sx={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Grid item>
+                {/* <Grid item>
                   <Link href="#" variant="body2">
-                    Forgot password?
+                  {t('Forgot')}
                   </Link>
-                </Grid>
+                </Grid> */}
                 <Grid item>
                   <Link variant="body2" component={RouterLink} to="/reg">
-                    Don&apos;t have an account? Sign Up
+                    {t(`Don'tHave`)}
                   </Link>
                 </Grid>
               </Grid>

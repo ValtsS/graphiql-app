@@ -7,6 +7,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, registerWithEmailAndPassword } from '@/core/firebase';
 import { toast } from 'react-toastify';
 import { SideBar } from '../../components';
+import { useTranslation } from 'react-i18next';
 
 export const Registration = (): ReactElement => {
   const [email, setEmail] = useState('');
@@ -27,14 +28,16 @@ export const Registration = (): ReactElement => {
   };
   useEffect(() => {
     if (loading) return;
-    if (user) navigate('/', { replace: true });
+    if (user) navigate('/main', { replace: true });
   }, [user, loading, navigate]);
 
+  const { t } = useTranslation();
+
   const data = {
-    greet: 'Welcome Back!',
-    desc: 'To keep connected with us please login with your personal info',
+    greet: t('WelcomeBack'),
+    desc: t('keepConnected'),
     path: '/auth',
-    btn: 'Sign In',
+    btn: t('SignIn'),
   };
 
   return (
@@ -51,14 +54,14 @@ export const Registration = (): ReactElement => {
                 gutterBottom
                 sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', md: '2rem' } }}
               >
-                Create Account
+                {t('Create')}
               </Typography>
               <TextField
                 margin="normal"
                 required
                 fullWidth
                 id="userName"
-                label={'Name'}
+                label={t('Name')}
                 name="userName"
                 aria-label="textbox-name"
                 value={name}
@@ -74,7 +77,7 @@ export const Registration = (): ReactElement => {
               />
               <label htmlFor="raised-button-file">
                 <Button component="span" variant="outlined">
-                  Upload your avatar&nbsp;&nbsp;
+                  {t('Upload')}
                   <CloudUploadOutlinedIcon />
                 </Button>
               </label>
@@ -83,7 +86,7 @@ export const Registration = (): ReactElement => {
                 required
                 fullWidth
                 id="email"
-                label={'Email Address'}
+                label={t('Email')}
                 name="email"
                 aria-label="textbox-email"
                 value={email}
@@ -94,7 +97,7 @@ export const Registration = (): ReactElement => {
                 required
                 fullWidth
                 name="password"
-                label={'Password'}
+                label={t('Password')}
                 type="password"
                 id="password"
                 aria-label="textbox-password"
@@ -111,7 +114,7 @@ export const Registration = (): ReactElement => {
                 sx={{ mt: 3, mb: 2, color: '#fff' }}
                 onClick={(e) => register(e)}
               >
-                Sign Up
+                {t('SignUp')}
               </Button>
             </Box>
           </Grid>

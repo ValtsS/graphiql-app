@@ -1,6 +1,26 @@
-import { Container } from '@mui/material';
-import React, { ReactElement } from 'react';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
+import style from './Footer.module.css';
+import React from 'react';
+import { DEVELOPERS, LINK_TO_THE_COURSE } from '@/utils/constants';
 
-export const Footer = (): ReactElement => {
-  return <Container component="footer">footer</Container>;
+export const Footer = () => {
+  return (
+    <Box component="footer" sx={{}} className={style.footer}>
+      <Box component={Box} maxWidth="sm" className={style.dev}>
+        {DEVELOPERS.map((develop) => (
+          <Box key={develop.id}>
+            <Link href={develop.link} target="_blank" rel="noreferrer" className={style.link}>
+              {develop.name}
+            </Link>
+          </Box>
+        ))}
+      </Box>
+      <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>
+        <Link className={style.rss} href={LINK_TO_THE_COURSE} target="_blank" rel="noreferrer" />
+        <Typography component="span">2023</Typography>
+      </Box>
+    </Box>
+  );
 };

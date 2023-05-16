@@ -1,5 +1,6 @@
 import { Button, TextField } from '@mui/material';
 import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface AddressBarProps {
   onChanged?: (newendpoint: string) => void;
@@ -8,6 +9,8 @@ interface AddressBarProps {
 
 export const AddressBar = (props: AddressBarProps) => {
   const [currentAddr, setAddr] = useState<string>(props.initialAddress);
+
+  const { t } = useTranslation();
 
   const change = useCallback(() => {
     if (props.onChanged) props.onChanged(currentAddr);
@@ -33,8 +36,8 @@ export const AddressBar = (props: AddressBarProps) => {
         onKeyDown={handleKeyPress}
         inputProps={{ 'data-testid': 'addressbar-input' }}
       />
-      <Button variant="contained" size="medium" onClick={() => change()}>
-        Apply
+      <Button variant="contained" size="medium" onClick={() => change()} sx={{ mt: 2 }}>
+        {t('Apply')}
       </Button>
     </>
   );

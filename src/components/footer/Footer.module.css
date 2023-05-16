@@ -1,0 +1,90 @@
+.footer {
+  margin: 0 auto;
+  left: 0;
+  bottom: 0;
+  z-index: 5;
+  padding: 15px 0;
+  margin-top: auto;
+  background: linear-gradient(to right, #009999, #007195);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  position: fixed;
+}
+
+.dev {
+  display: flex;
+  justify-content: space-evenly;
+  flex-basis: 55%;
+  gap: 5px;
+}
+
+.rss {
+  display: block;
+  position: relative;
+  width: 82px;
+  height: 32px;
+  background-image: url(https://rs.school/images/rs_school_js.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  padding-right: 42px;
+}
+
+.year {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: 21px;
+  letter-spacing: -2px;
+  color: #a2abb3;
+  line-height: 0.9;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.link {
+  display: flex;
+  justify-content: left;
+  color: #fff !important;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.link:hover,
+.rss:hover {
+  transform: scale(1.05);
+  transition: 0.4s ease-out;
+}
+
+@media (max-width: 768px) {
+  .dev {
+    width: 270px;
+    display: inline;
+  }
+}
+
+@media (max-width: 377px) {
+  .dev {
+    width: 250px;
+    display: inline;
+  }
+
+  .github {
+    height: 25px;
+    padding-left: 23px;
+    background-size: 18px;
+    line-height: 25px;
+  }
+
+  .rss {
+    padding-right: 27px;
+    height: 27px;
+  }
+
+  .year {
+    right: 6px;
+    font-size: 17px;
+  }
+}

@@ -1,6 +1,8 @@
 import { logout } from '@/core/firebase';
 import useAuth from '@/custom-hooks/useAuth';
 import { RouteConfig } from '@/routes/routes-config';
+import { SwitchMode } from './langSwitch';
+import { useTranslation } from 'react-i18next';
 import HiveIcon from '@mui/icons-material/Hive';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
@@ -19,7 +21,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { MouseEvent, ReactElement, useLayoutEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import './header.css';
 
 interface Props {
@@ -30,6 +32,9 @@ export const Header = (props: Props): ReactElement => {
   const { routesConfig } = props;
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [isSticky, setSticky] = useState(false);
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -51,6 +56,11 @@ export const Header = (props: Props): ReactElement => {
 
   const headerMenu = routesConfig.filter((el) => !el.displayInRegistration);
   const signMenu = routesConfig.filter((el) => el.displayInRegistration);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <>
@@ -127,6 +137,9 @@ export const Header = (props: Props): ReactElement => {
                     </Link>
                   </MenuItem>
                 )}
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <SwitchMode />
+                </MenuItem>
               </Menu>
             </Box>
             <HiveIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -162,15 +175,17 @@ export const Header = (props: Props): ReactElement => {
               ))}
             </Box>
 
-            <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 5 }}>
+              <SwitchMode />
+
               {currentUser ? (
                 <Box sx={{ flexGrow: 1 }}>
                   <Button
                     variant="outlined"
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                    onClick={logout}
+                    sx={{ my: 2, color: 'white', display: 'block', border: '1px solid #fff' }}
+                    onClick={handleLogout}
                   >
-                    Sign Out
+                    {t('SignOut')}
                   </Button>
                 </Box>
               ) : null}

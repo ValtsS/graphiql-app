@@ -6,7 +6,7 @@ import { Footer } from './footer';
 describe('Footer', () => {
   it('renders Footer', () => {
     render(<Footer />, { wrapper: MemoryRouter });
-    const element = screen.queryByText('footer');
+    const element = screen.queryByText('2023');
     expect(element).toBeInTheDocument();
   });
 });

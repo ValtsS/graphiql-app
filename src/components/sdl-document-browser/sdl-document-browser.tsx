@@ -2,6 +2,7 @@ import { DocumentBook } from '@/core/docs/sdl-docs';
 import { Box, Button } from '@mui/material';
 import React, { useMemo, useState } from 'react';
 import { DocumentContent, SDLDocument } from '../sdl-document/sdl-document';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   book: DocumentBook;
@@ -11,6 +12,8 @@ interface Props {
 const SDLDocumentBrowser = (props: Props) => {
   const [state, setState] = useState<string[]>([props.root]);
   const page = props.book[state[state.length - 1]];
+
+  const { t } = useTranslation();
 
   const content = useMemo(() => {
     if (!page?.uuid) return null;
@@ -39,10 +42,10 @@ const SDLDocumentBrowser = (props: Props) => {
       }}
     >
       <Button variant="contained" size="small" disabled={!backAvailable} onClick={goBack}>
-        Back
+        {t('back')}
       </Button>
       {content && <SDLDocument content={content} onClick={navigate}></SDLDocument>}
-      {!content && <>Content not found</>}
+      {!content && <>{t('notFound')}</>}
     </Box>
   );
 };

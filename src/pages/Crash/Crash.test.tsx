@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { Crash, unkErrorText } from './Crash';
+import { Crash } from './Crash';
 
 describe('Crash page component', () => {
   it('should render without crash', async () => {
@@ -28,7 +28,7 @@ describe('Crash page component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText(new RegExp(unkErrorText, 'i'))).toBeInTheDocument();
+      expect(screen.getByText('UnknownError')).toBeInTheDocument();
     });
   });
 });
