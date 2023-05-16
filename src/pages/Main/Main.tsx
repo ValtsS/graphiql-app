@@ -71,7 +71,7 @@ export const Main = (): ReactElement => {
           {mainState.endpoint}
         </Typography>
         <Grid container sx={{ justifyContent: 'space-around' }}>
-          <Grid item xs={4}>
+          <Grid item xs={4} sx={{ display: 'flex' }}>
             <Button
               variant="contained"
               size="small"

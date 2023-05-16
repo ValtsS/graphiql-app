@@ -21,7 +21,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { MouseEvent, ReactElement, useLayoutEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import './header.css';
 
 interface Props {
@@ -33,6 +33,7 @@ export const Header = (props: Props): ReactElement => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [isSticky, setSticky] = useState(false);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -55,6 +56,11 @@ export const Header = (props: Props): ReactElement => {
 
   const headerMenu = routesConfig.filter((el) => !el.displayInRegistration);
   const signMenu = routesConfig.filter((el) => el.displayInRegistration);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <>
@@ -177,7 +183,7 @@ export const Header = (props: Props): ReactElement => {
                   <Button
                     variant="outlined"
                     sx={{ my: 2, color: 'white', display: 'block', border: '1px solid #fff' }}
-                    onClick={logout}
+                    onClick={handleLogout}
                   >
                     {t('SignOut')}
                   </Button>

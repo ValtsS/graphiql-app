@@ -33,7 +33,7 @@ export const Welcome = ({ routes }: { routes: RouteConfig[] }): ReactElement => 
         <Grid item xs={12} md={4} sx={{ gap: '50px', display: 'flex', flexDirection: 'column' }}>
           <Box sx={{ display: 'flex', gap: 5, justifyContent: 'center' }}>
             {currentUser ? (
-              <Button variant="contained" component={RouterLink} to="/">
+              <Button variant="contained" component={RouterLink} to="/main">
                 {t('mainPage')}
               </Button>
             ) : (
