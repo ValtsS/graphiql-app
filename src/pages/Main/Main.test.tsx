@@ -21,10 +21,6 @@ describe('Main page component', () => {
 
   beforeEach(() => {
     const mock = new FirebaseMock();
-    mock.user.mockReturnValue({
-      displayName: 'Dummy',
-      uid: 'uid',
-    });
     mockAuth = mock;
   });
 

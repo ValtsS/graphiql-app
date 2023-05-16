@@ -23,6 +23,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import './header.css';
 import { useAppContext } from '@/provider';
 import { toast } from 'react-toastify';
+import useAuth from '@/custom-hooks/useAuth';
 
 interface Props {
   routesConfig: RouteConfig[];
@@ -44,6 +45,7 @@ export const Header = (props: Props): ReactElement => {
   };
 
   const { auth } = useAppContext();
+  const { currentUser } = useAuth();
 
   useLayoutEffect(() => {
     function update() {
@@ -67,8 +69,6 @@ export const Header = (props: Props): ReactElement => {
       }
     }
   };
-
-  const currentUser = auth?.getUser();
 
   return (
     <>

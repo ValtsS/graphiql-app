@@ -11,6 +11,8 @@ import {
 import { doc, getFirestore, setDoc } from '@firebase/firestore';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from '@firebase/storage';
 
+export type OnAuthChange = (user: User | null) => void;
+
 export interface FirebaseAuth {
   registerWithEmailAndPassword(
     name: string,
@@ -23,17 +25,18 @@ export interface FirebaseAuth {
 
   logout(): Promise<string | null>;
 
-  getUser(): User | undefined;
+  onAuthStateChange(change: OnAuthChange): void;
 }
 
 export class FirebaseAuthReal implements FirebaseAuth {
   private app: FirebaseApp;
-  private user?: User;
 
   constructor(app: FirebaseApp) {
     this.app = app;
+  }
+  onAuthStateChange(change: OnAuthChange): void {
     const auth = getAuth(this.app);
-    onAuthStateChanged(auth, (user) => (this.user = user ? user : undefined));
+    onAuthStateChanged(auth, (user) => change(user));
   }
 
   async registerWithEmailAndPassword(
@@ -98,8 +101,5 @@ export class FirebaseAuthReal implements FirebaseAuth {
       if ((err as Error).message) return (err as Error).message;
       return 'Unknown error during logout';
     }
-  }
-  getUser(): User | undefined {
-    return this.user;
   }
 }

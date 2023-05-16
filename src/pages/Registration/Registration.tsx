@@ -1,6 +1,6 @@
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
-import React, { MouseEvent, ReactElement, useState } from 'react';
+import React, { MouseEvent, ReactElement, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './Registration.module.css';
 
@@ -8,6 +8,7 @@ import { SideBar } from '@/components';
 import { useAppContext } from '@/provider';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import useAuth from '@/custom-hooks/useAuth';
 
 export const Registration = (): ReactElement => {
   const [email, setEmail] = useState('');
@@ -16,6 +17,7 @@ export const Registration = (): ReactElement => {
   const [file, setFile] = useState<File | null>(null);
 
   const { auth } = useAppContext();
+  const { currentUser } = useAuth();
 
   const navigate = useNavigate();
   const register = async (e: MouseEvent) => {
@@ -27,13 +29,17 @@ export const Registration = (): ReactElement => {
         toast.error(error);
       } else {
         toast.success('Sign up');
-        if (auth.getUser()) navigate('/main', { replace: true });
       }
     } catch (err) {
       toast.error('Something went wrong');
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    if (!auth) return;
+    if (currentUser) navigate('/main');
+  }, [auth, navigate, currentUser]);
 
   const { t } = useTranslation();
 

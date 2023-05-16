@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { SideBar } from '@/components';
 import { useTranslation } from 'react-i18next';
 import { useAppContext } from '@/provider';
+import useAuth from '@/custom-hooks/useAuth';
 
 export const Authorization = (): ReactElement => {
   const [email, setEmail] = useState('');
@@ -13,10 +14,10 @@ export const Authorization = (): ReactElement => {
   const navigate = useNavigate();
 
   const { auth } = useAppContext();
+  const { currentUser } = useAuth();
 
   const handleSignUp = async (e: MouseEvent) => {
     e.preventDefault();
-
     try {
       if (!auth) throw new Error('Missing auth');
 
@@ -35,8 +36,8 @@ export const Authorization = (): ReactElement => {
 
   useEffect(() => {
     if (!auth) return;
-    if (auth.getUser()) navigate('/main');
-  }, [auth, navigate]);
+    if (currentUser) navigate('/main');
+  }, [auth, navigate, currentUser]);
 
   const { t } = useTranslation();
 

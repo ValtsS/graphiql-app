@@ -26,10 +26,6 @@ describe('useAppContext', () => {
     const { mockClient: api } = await setupMockIntrospection();
 
     const auth = new FirebaseMock();
-    auth.user.mockReturnValue({
-      displayName: 'Dummy',
-      uid: 'uid',
-    });
 
     const Internal = () => {
       const { apiClient, updateCurrentSchema } = useAppContext();

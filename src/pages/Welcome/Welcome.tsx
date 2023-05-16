@@ -1,19 +1,17 @@
+import graphqlImg from '@/assets/graphql.gif';
+import { Course } from '@/components/course/course';
+import { Developers } from '@/components/developers/developers';
+import useAuth from '@/custom-hooks/useAuth';
 import { RouteConfig } from '@/routes';
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { Developers } from '@/components/developers/developers';
-import graphqlImg from '@/assets/graphql.gif';
 import { useTranslation } from 'react-i18next';
-import { Course } from '@/components/course/course';
-import { useAppContext } from '@/provider';
+import { Link as RouterLink } from 'react-router-dom';
 
 export const Welcome = ({ routes }: { routes: RouteConfig[] }): ReactElement => {
-  const { auth } = useAppContext();
+  const { currentUser } = useAuth();
   const signMenu = routes.filter((el) => el.displayInRegistration);
   const { t } = useTranslation();
-
-  const currentUser = auth?.getUser();
 
   return (
     <Container>
