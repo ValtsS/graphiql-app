@@ -2,9 +2,6 @@ import React, { ReactElement, useEffect, useState, MouseEvent } from 'react';
 import { Button, Grid, Typography, Paper, Box, TextField, Link } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import style from '../Registration/Registration.module.css';
-// import { useAuthState } from 'react-firebase-hooks/auth';
-// import { auth } from '@/core/firebase';
-//import { signInWithEmailAndPassword } from '@firebase/auth';
 import { toast } from 'react-toastify';
 import { SideBar } from '@/components';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +10,6 @@ import { useAppContext } from '@/provider';
 export const Authorization = (): ReactElement => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  //  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
 
   const { auth } = useAppContext();
