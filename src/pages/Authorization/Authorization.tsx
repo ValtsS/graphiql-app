@@ -95,11 +95,6 @@ export const Authorization = (): ReactElement => {
                 {t('SignIn')}
               </Button>
               <Grid container sx={{ display: 'flex', justifyContent: 'space-around' }}>
-                {/* <Grid item>
-                  <Link href="#" variant="body2">
-                  {t('Forgot')}
-                  </Link>
-                </Grid> */}
                 <Grid item>
                   <Link variant="body2" component={RouterLink} to="/reg">
                     {t(`Don'tHave`)}
