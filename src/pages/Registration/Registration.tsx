@@ -1,35 +1,39 @@
-import React, { MouseEvent, ReactElement, useEffect, useState } from 'react';
-import { Button, Grid, Typography, Paper, Box, TextField } from '@mui/material';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
+import React, { MouseEvent, ReactElement, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './Registration.module.css';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, registerWithEmailAndPassword } from '@/core/firebase';
-import { toast } from 'react-toastify';
-import { SideBar } from '../../components';
+
+import { SideBar } from '@/components';
+import { useAppContext } from '@/provider';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 export const Registration = (): ReactElement => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
-  const [user, loading] = useAuthState(auth);
+
+  const { auth } = useAppContext();
+
   const navigate = useNavigate();
   const register = async (e: MouseEvent) => {
     e.preventDefault();
+    if (!auth) throw new Error('Auth not supplied');
     try {
-      await registerWithEmailAndPassword(name, email, password, file);
-      toast.success('Sign up');
+      const error = await auth.registerWithEmailAndPassword(name, email, password, file);
+      if (error) {
+        toast.error(error);
+      } else {
+        toast.success('Sign up');
+        if (auth.getUser()) navigate('/main', { replace: true });
+      }
     } catch (err) {
       toast.error('Something went wrong');
       console.log(err);
     }
   };
-  useEffect(() => {
-    if (loading) return;
-    if (user) navigate('/main', { replace: true });
-  }, [user, loading, navigate]);
 
   const { t } = useTranslation();
 

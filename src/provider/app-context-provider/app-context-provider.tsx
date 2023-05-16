@@ -1,23 +1,27 @@
 import { ApiClient } from '@/core/api/api-client';
+import { FirebaseAuth } from '@/core/firebase/firebase';
 import { GraphQLSchema } from 'graphql';
 import React, { useCallback, useMemo, useState } from 'react';
 
 type AppContextValue = {
   apiClient: ApiClient | null;
+  auth: FirebaseAuth | null;
   currentSchema?: GraphQLSchema;
   updateCurrentSchema?: (schema?: GraphQLSchema) => void;
 };
 
 export const AppContext = React.createContext<AppContextValue>({
   apiClient: null,
+  auth: null,
 });
 
 type AppContextProviderProps = {
   children: React.ReactNode;
   apiClient: ApiClient | null;
+  auth: FirebaseAuth | null;
 };
 
-export const AppContextProvider = ({ children, apiClient }: AppContextProviderProps) => {
+export const AppContextProvider = ({ children, apiClient, auth }: AppContextProviderProps) => {
   const [currentSchema, setCurrentSchema] = useState<GraphQLSchema | undefined>(undefined);
 
   const updateCurrentSchema = useCallback((schema?: GraphQLSchema) => {
@@ -29,8 +33,9 @@ export const AppContextProvider = ({ children, apiClient }: AppContextProviderPr
       apiClient,
       currentSchema,
       updateCurrentSchema,
+      auth,
     };
-  }, [apiClient, currentSchema, updateCurrentSchema]);
+  }, [apiClient, currentSchema, updateCurrentSchema, auth]);
 
   return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>;
 };

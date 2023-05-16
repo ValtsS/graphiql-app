@@ -9,11 +9,24 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { Main } from './Main';
+import { FirebaseAuth } from '@/core/firebase/firebase';
+import { FirebaseMock } from '@/../__mocks__/firebaseMock';
 
 jest.mock('monaco-editor');
 
 describe('Main page component', () => {
   const testURL = 'https://dummy/';
+
+  let mockAuth: FirebaseAuth;
+
+  beforeEach(() => {
+    const mock = new FirebaseMock();
+    mock.user.mockReturnValue({
+      displayName: 'Dummy',
+      uid: 'uid',
+    });
+    mockAuth = mock;
+  });
 
   it('should render and have change button', async () => {
     const store = await defaultRender();
@@ -55,7 +68,7 @@ describe('Main page component', () => {
 
     act(() => {
       render(
-        <AppContextProvider apiClient={mockClient}>
+        <AppContextProvider apiClient={mockClient} auth={mockAuth}>
           <Provider store={store}>
             <ModalDialogProvider>
               <BrowserRouter>

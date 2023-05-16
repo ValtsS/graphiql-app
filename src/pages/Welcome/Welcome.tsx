@@ -1,4 +1,3 @@
-import useAuth from '@/custom-hooks/useAuth';
 import { RouteConfig } from '@/routes';
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
@@ -7,11 +6,14 @@ import { Developers } from '@/components/developers/developers';
 import graphqlImg from '@/assets/graphql.gif';
 import { useTranslation } from 'react-i18next';
 import { Course } from '@/components/course/course';
+import { useAppContext } from '@/provider';
 
 export const Welcome = ({ routes }: { routes: RouteConfig[] }): ReactElement => {
-  const { currentUser } = useAuth();
+  const { auth } = useAppContext();
   const signMenu = routes.filter((el) => el.displayInRegistration);
   const { t } = useTranslation();
+
+  const currentUser = auth?.getUser();
 
   return (
     <Container>

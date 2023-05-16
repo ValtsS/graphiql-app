@@ -2,26 +2,35 @@ import React, { ReactElement, useEffect, useState, MouseEvent } from 'react';
 import { Button, Grid, Typography, Paper, Box, TextField, Link } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import style from '../Registration/Registration.module.css';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '@/core/firebase';
-import { signInWithEmailAndPassword } from '@firebase/auth';
+// import { useAuthState } from 'react-firebase-hooks/auth';
+// import { auth } from '@/core/firebase';
+//import { signInWithEmailAndPassword } from '@firebase/auth';
 import { toast } from 'react-toastify';
 import { SideBar } from '@/components';
 import { useTranslation } from 'react-i18next';
+import { useAppContext } from '@/provider';
 
 export const Authorization = (): ReactElement => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [user, loading] = useAuthState(auth);
+  //  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
+
+  const { auth } = useAppContext();
 
   const handleSignUp = async (e: MouseEvent) => {
     e.preventDefault();
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      toast.success('Successefully logged in');
-      navigate('/main');
+      if (!auth) throw new Error('Missing auth');
+
+      const error = await auth.signInWithEmailAndPassword(email, password);
+      if (error) {
+        toast.error(error);
+      } else {
+        toast.success('Successefully logged in');
+        navigate('/main');
+      }
     } catch (err) {
       toast.error('something went wrong');
       console.log(err);
@@ -29,11 +38,9 @@ export const Authorization = (): ReactElement => {
   };
 
   useEffect(() => {
-    if (loading) {
-      return;
-    }
-    if (user) navigate('/main');
-  }, [user, loading, navigate]);
+    if (!auth) return;
+    if (auth.getUser()) navigate('/main');
+  }, [auth, navigate]);
 
   const { t } = useTranslation();
 

@@ -1,5 +1,3 @@
-import { logout } from '@/core/firebase';
-import useAuth from '@/custom-hooks/useAuth';
 import { RouteConfig } from '@/routes/routes-config';
 import { SwitchMode } from './langSwitch';
 import { useTranslation } from 'react-i18next';
@@ -23,6 +21,8 @@ import {
 import React, { MouseEvent, ReactElement, useLayoutEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import './header.css';
+import { useAppContext } from '@/provider';
+import { toast } from 'react-toastify';
 
 interface Props {
   routesConfig: RouteConfig[];
@@ -43,7 +43,7 @@ export const Header = (props: Props): ReactElement => {
     setAnchorElNav(null);
   };
 
-  const { currentUser } = useAuth();
+  const { auth } = useAppContext();
 
   useLayoutEffect(() => {
     function update() {
@@ -57,10 +57,18 @@ export const Header = (props: Props): ReactElement => {
   const headerMenu = routesConfig.filter((el) => !el.displayInRegistration);
   const signMenu = routesConfig.filter((el) => el.displayInRegistration);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
+  const handleLogout = async () => {
+    if (auth) {
+      const error = await auth.logout();
+      if (error) toast.error(error);
+      else {
+        toast.success('Logged out');
+        navigate('/');
+      }
+    }
   };
+
+  const currentUser = auth?.getUser();
 
   return (
     <>
