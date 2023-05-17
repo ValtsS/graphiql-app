@@ -12,6 +12,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { Main } from './Main';
 import userEvent from '@testing-library/user-event';
+import { StoreStatus } from '@/slices';
 
 jest.mock('monaco-editor');
 
@@ -73,7 +74,28 @@ describe('Main page component', () => {
     expect(sendButton).toBeEnabled();
     await userEvent.click(sendButton);
     await waitRender();
-    expect(store.getState().editors.response).toBe(`"${responseText}"`);
+    const post = store.getState().editors;
+    expect(post.response).toBe(`"${responseText}"`);
+    expect(post.apiStatus).toBe(StoreStatus.succeeded);
+  });
+
+  it('should render and respond with an error in query', async () => {
+    const { store, callback } = await defaultRender();
+    const state = store.getState();
+
+    expect(state.main.endpoint.toLowerCase().startsWith('http')).toBe(true);
+    expect(screen.getByText(state.main.endpoint));
+
+    const errorText = 'This is an error';
+    callback.mockRejectedValueOnce(new Error(errorText));
+
+    const sendButton = screen.getByRole('button', { name: 'Send query' });
+    expect(sendButton).toBeVisible();
+    expect(sendButton).toBeEnabled();
+    await userEvent.click(sendButton);
+    await waitRender();
+    const post = store.getState().editors;
+    expect(post.apiStatus).toBe(StoreStatus.failed);
   });
 
   async function defaultRender() {
