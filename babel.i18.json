@@ -1,4 +1,0 @@
-{
-  "presets": [],
-  "plugins": [["i18next-extract", { "locales": ["en", "ru"] }]]
-}
