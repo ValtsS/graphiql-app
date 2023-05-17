@@ -14,6 +14,8 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from '@firebase
 export type OnAuthChange = (user: User | null) => void;
 
 export interface FirebaseAuth {
+  lastUser: User | null;
+
   registerWithEmailAndPassword(
     name: string,
     email: string,
@@ -30,13 +32,19 @@ export interface FirebaseAuth {
 
 export class FirebaseAuthReal implements FirebaseAuth {
   private app: FirebaseApp;
+  lastUser: User | null;
 
   constructor(app: FirebaseApp) {
     this.app = app;
+    this.lastUser = null;
   }
+
   onAuthStateChange(change: OnAuthChange): void {
     const auth = getAuth(this.app);
-    onAuthStateChanged(auth, (user) => change(user));
+    onAuthStateChanged(auth, (user) => {
+      change(user);
+      this.lastUser = user;
+    });
   }
 
   async registerWithEmailAndPassword(

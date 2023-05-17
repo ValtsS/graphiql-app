@@ -2,6 +2,7 @@ import { User } from '@firebase/auth';
 import { FirebaseAuth, OnAuthChange } from '../src/core/firebase/firebase';
 
 export class FirebaseMock implements FirebaseAuth {
+  lastUser: User | null = null;
   public currentUser: User | undefined;
   public reg = jest.fn();
   public signIn = jest.fn();
@@ -30,11 +31,13 @@ export class FirebaseMock implements FirebaseAuth {
       };
       this.currentUser = dummy as User;
     }
-
+    this.lastUser = this.currentUser ?? null;
     this.observers.forEach((o) => o(this.currentUser ?? null));
     return error;
   }
   logout(): Promise<string | null> {
+    this.currentUser = undefined;
+    this.lastUser = this.currentUser ?? null;
     this.observers.forEach((o) => o(null));
     return this.logOut();
   }

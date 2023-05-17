@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 const useAuth = () => {
   const { auth } = useAppContext();
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(auth?.lastUser ?? null);
 
   useEffect(() => {
     if (auth) {
