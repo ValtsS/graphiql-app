@@ -18,7 +18,6 @@
       }
     ],
     "@babel/plugin-proposal-class-properties",
-    "babel-plugin-transform-vite-meta-env",
-    ["i18next-extract", { "locales": ["en", "ru"] }]
+    "babel-plugin-transform-vite-meta-env"
   ]
 }
