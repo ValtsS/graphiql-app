@@ -1,14 +1,14 @@
-import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
-import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
-import React, { MouseEvent, ReactElement, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import style from './Registration.module.css';
 import { SideBar } from '@/components';
-import { useAppContext } from '@/provider';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import useAuth from '@/custom-hooks/useAuth';
 import { FieldName, useSingupValidation } from '@/custom-hooks/useSingupValidation';
+import { useAppContext } from '@/provider';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
+import React, { MouseEvent, ReactElement, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import style from './Registration.module.css';
 
 export const Registration = (): ReactElement => {
   const { email, emailChange, name, nameChange, password, passwordChange, isValid } =

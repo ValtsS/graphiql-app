@@ -11,9 +11,21 @@ export const enum FieldName {
 export const useSingupValidation = () => {
   const [isValid, setValidity] = useState<Set<FieldName>>();
 
-  const [isNameValid, name, nameChange] = useValidator({ validator: validateName });
-  const [isEmailValid, email, emailChange] = useValidator({ validator: validateEmail });
-  const [isPasswordValid, password, passwordChange] = useValidator({ validator: validatePassword });
+  const {
+    isValid: isNameValid,
+    val: name,
+    valChange: nameChange,
+  } = useValidator({ validator: validateName });
+  const {
+    isValid: isEmailValid,
+    val: email,
+    valChange: emailChange,
+  } = useValidator({ validator: validateEmail });
+  const {
+    isValid: isPasswordValid,
+    val: password,
+    valChange: passwordChange,
+  } = useValidator({ validator: validatePassword });
 
   useEffect(() => {
     const newstate = new Set<FieldName>();
