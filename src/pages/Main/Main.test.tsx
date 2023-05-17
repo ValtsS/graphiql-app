@@ -22,7 +22,7 @@ describe('Main page component', () => {
   let mockAuth: FirebaseAuth;
 
   beforeEach(() => {
-    mockAuth = SetupFirebaseMock(false);
+    mockAuth = SetupFirebaseMock(true);
   });
 
   it('should render and have change button', async () => {
