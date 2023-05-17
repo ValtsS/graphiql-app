@@ -1,12 +1,12 @@
-import React from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { BrowserRouter } from 'react-router-dom';
-import { Registration } from './Registration';
+import { FirebaseMock } from '@/../__mocks__/firebaseMock';
 import { waitRender } from '@/../__mocks__/test-utils';
 import { AppContextProvider } from '@/provider';
 import { defaultRoutes } from '@/routes';
-import { FirebaseMock } from '@/../__mocks__/firebaseMock';
+import { act, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import { Registration } from './Registration';
 
 const mockToasterError = jest.fn();
 const mockToasterSuccess = jest.fn();
