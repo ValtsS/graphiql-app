@@ -4,8 +4,23 @@ import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import { Registration } from './Registration';
 import { waitRender } from '@/../__mocks__/test-utils';
+import { AppContextProvider } from '@/provider';
+import { defaultRoutes } from '@/routes';
+import { FirebaseMock } from '@/../__mocks__/firebaseMock';
+
+const mockToasterError = jest.fn();
+const mockToasterSuccess = jest.fn();
+
+jest.mock('react-toastify', () => ({
+  toast: {
+    error: jest.fn().mockImplementation((...args) => mockToasterError(args)),
+    success: jest.fn().mockImplementation((...args) => mockToasterSuccess(args)),
+  },
+}));
 
 describe('Registration', () => {
+  const auth = new FirebaseMock();
+
   it('Registration renders correctly', async () => {
     await defaultRender();
 
@@ -19,38 +34,69 @@ describe('Registration', () => {
     expect(textboxPassword).toBeInTheDocument;
   });
 
-  it('Registration submited', async () => {
+  it('should handle valid registration', async () => {
     await defaultRender();
 
-    const textboxName = screen.getByTestId('editName');
-    await userEvent.type(textboxName, 'Skave');
-    expect((textboxName as HTMLInputElement).value).toBe('Skave');
+    auth.reg.mockReturnValueOnce(null);
+    auth.signIn.mockReturnValueOnce(null);
 
-    const textboxEmail = screen.getByTestId('editEmail');
-    await userEvent.type(textboxEmail, 'user07@gmail.com');
-    expect((textboxEmail as HTMLInputElement).value).toBe('user07@gmail.com');
+    await fillBoxes();
+    await waitRender();
 
-    const textboxPassword = screen.getByTestId('editPassword');
-    await userEvent.type(textboxPassword, 'myPassword');
-    expect((textboxPassword as HTMLInputElement).value).toBe('myPassword');
+    expect(auth.reg).toBeCalledTimes(1);
+    expect(auth.reg).toHaveBeenLastCalledWith('Skave', 'user07@gmail.com', 'myPassword12', null);
 
-    const btnSignUp = screen.getByRole('button', { name: 'Sign Up' });
-    userEvent.click(btnSignUp);
+    expect(mockToasterSuccess).toHaveBeenCalledTimes(1);
+    expect(mockToasterSuccess).toHaveBeenLastCalledWith(['Sign up succeeded']);
+    expect(mockToasterError).toBeCalledTimes(0);
+  });
 
-    const form = screen.getByRole('form');
+  it('should handle invalid registration', async () => {
+    await defaultRender();
 
-    fireEvent.submit(form);
+    auth.reg.mockReturnValueOnce('Duplicate');
+    auth.signIn.mockReturnValueOnce(null);
+
+    await fillBoxes();
+    await waitRender();
+
+    expect(auth.reg).toBeCalledTimes(1);
+    expect(auth.reg).toHaveBeenLastCalledWith('Skave', 'user07@gmail.com', 'myPassword12', null);
+
+    expect(mockToasterSuccess).toHaveBeenCalledTimes(0);
+    expect(mockToasterError).toBeCalledTimes(1);
   });
 
   async function defaultRender() {
     act(() =>
       render(
-        <BrowserRouter>
-          <Registration />
-        </BrowserRouter>
+        <AppContextProvider apiClient={null} auth={auth} routing={defaultRoutes}>
+          <BrowserRouter>
+            <Registration />
+          </BrowserRouter>
+        </AppContextProvider>
       )
     );
 
     await waitRender();
+  }
+
+  async function fillBoxes() {
+    const textboxName = screen.getByTestId('editName');
+    await userEvent.type(textboxName, 'Skave');
+    expect((textboxName as HTMLInputElement).value).toBe('Skave');
+
+    const textboxEmail = screen.getByTestId('editEmail');
+    const testEmail = 'user07@gmail.com';
+    await userEvent.type(textboxEmail, testEmail);
+    expect((textboxEmail as HTMLInputElement).value).toBe(testEmail);
+
+    const textboxPassword = screen.getByTestId('editPassword');
+    const testPass = 'myPassword12';
+    await userEvent.type(textboxPassword, testPass);
+    expect((textboxPassword as HTMLInputElement).value).toBe(testPass);
+
+    const btnSignUp = screen.getByRole('button', { name: 'Sign Up' });
+    await userEvent.click(btnSignUp);
   }
 });

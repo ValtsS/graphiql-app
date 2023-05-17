@@ -17,6 +17,8 @@ export class FirebaseMock implements FirebaseAuth {
     file: File | null
   ): Promise<string | null> {
     const error = this.reg(name, email, password, file);
+    if (!error) return this.signInWithEmailAndPassword(email, password);
+
     return error;
   }
   signInWithEmailAndPassword(email: string, password: string): Promise<string | null> {

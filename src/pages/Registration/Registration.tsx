@@ -3,7 +3,6 @@ import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
 import React, { MouseEvent, ReactElement, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './Registration.module.css';
-
 import { SideBar } from '@/components';
 import { useAppContext } from '@/provider';
 import { useTranslation } from 'react-i18next';
@@ -18,6 +17,7 @@ export const Registration = (): ReactElement => {
 
   const { auth } = useAppContext();
   const { currentUser } = useAuth();
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const register = async (e: MouseEvent) => {
@@ -28,10 +28,10 @@ export const Registration = (): ReactElement => {
       if (error) {
         toast.error(error);
       } else {
-        toast.success('Sign up');
+        toast.success(t('Sign up succeeded'));
       }
     } catch (err) {
-      toast.error('Something went wrong');
+      toast.error(t('Something went wrong'));
       console.log(err);
     }
   };
@@ -40,8 +40,6 @@ export const Registration = (): ReactElement => {
     if (!auth) return;
     if (currentUser) navigate('/main');
   }, [auth, navigate, currentUser]);
-
-  const { t } = useTranslation();
 
   const data = {
     greet: t('WelcomeBack'),
