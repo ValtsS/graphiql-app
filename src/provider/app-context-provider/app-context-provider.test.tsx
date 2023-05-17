@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { AppContextProvider, useAppContext } from './app-context-provider';
 import { GraphQLSchema } from 'graphql';
 import { FirebaseMock } from '@/../__mocks__/firebaseMock';
+import { defaultRoutes } from '@/routes';
 
 describe('useAppContext', () => {
   test('should throw an error when used outside of AppContextProvider', () => {
@@ -43,7 +44,7 @@ describe('useAppContext', () => {
 
     const Wrapper = ({ children }: { children: React.ReactNode }) => {
       return (
-        <AppContextProvider apiClient={api} auth={auth}>
+        <AppContextProvider apiClient={api} auth={auth} routing={defaultRoutes}>
           <Internal />
           {children}
         </AppContextProvider>
@@ -55,5 +56,6 @@ describe('useAppContext', () => {
     expect(result.current.apiClient).toEqual(api);
     expect(result.current.currentSchema).toBeTruthy();
     expect(result.current.auth).toBe(auth);
+    expect(result.current.routing).toBe(defaultRoutes);
   });
 });

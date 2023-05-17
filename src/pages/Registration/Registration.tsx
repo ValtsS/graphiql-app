@@ -75,6 +75,7 @@ export const Registration = (): ReactElement => {
                 name="userName"
                 aria-label="textbox-name"
                 value={name}
+                inputProps={{ 'data-testid': 'editName' }}
                 onChange={(e) => setName(e.target.value)}
               />
               <input
@@ -100,6 +101,7 @@ export const Registration = (): ReactElement => {
                 name="email"
                 aria-label="textbox-email"
                 value={email}
+                inputProps={{ 'data-testid': 'editEmail' }}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
@@ -113,6 +115,7 @@ export const Registration = (): ReactElement => {
                 aria-label="textbox-password"
                 value={password}
                 inputProps={{
+                  'data-testid': 'editPassword',
                   pattern: '(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{8,}',
                 }}
                 onChange={(e) => setPassword(e.target.value)}

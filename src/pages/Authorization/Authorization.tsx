@@ -72,6 +72,7 @@ export const Authorization = (): ReactElement => {
                 autoComplete="email"
                 autoFocus
                 value={email}
+                inputProps={{ 'data-testid': 'editEmail' }}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
@@ -84,6 +85,7 @@ export const Authorization = (): ReactElement => {
                 id="password"
                 autoComplete="current-password"
                 value={password}
+                inputProps={{ 'data-testid': 'editPassword' }}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <Button

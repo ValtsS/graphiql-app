@@ -6,6 +6,7 @@ import { Authorization } from './Authorization';
 import { waitRender } from '@/../__mocks__/test-utils';
 import { AppContextProvider } from '@/provider';
 import { FirebaseMock } from '@/../__mocks__/firebaseMock';
+import { defaultRoutes } from '@/routes';
 
 const mockToasterError = jest.fn();
 const mockToasterSuccess = jest.fn();
@@ -27,10 +28,10 @@ describe('Authorization', () => {
   it('Authorization renders correctly', async () => {
     await defaultRender();
 
-    const textboxEmail = screen.getByRole('textbox', { name: 'Email' });
+    const textboxEmail = screen.getByTestId('editEmail');
     expect(textboxEmail).toBeInTheDocument;
 
-    const textboxPassword = screen.getByLabelText('Password *');
+    const textboxPassword = screen.getByTestId('editPassword');
     expect(textboxPassword).toBeInTheDocument;
   });
 
@@ -38,7 +39,7 @@ describe('Authorization', () => {
     await defaultRender();
     await fillNameAndPass(testEmail, testPassword);
 
-    const btnSignIn = screen.getByRole('button', { name: 'SignIn' });
+    const btnSignIn = screen.getByRole('button', { name: 'Sign In' });
 
     auth.signIn.mockReturnValueOnce(null);
     await userEvent.click(btnSignIn);
@@ -54,7 +55,7 @@ describe('Authorization', () => {
     await defaultRender();
     await fillNameAndPass(testEmail, testPassword);
 
-    const btnSignIn = screen.getByRole('button', { name: 'SignIn' });
+    const btnSignIn = screen.getByRole('button', { name: 'Sign In' });
 
     const errorMessage = 'Invalid password';
     auth.signIn.mockReturnValueOnce(errorMessage);
@@ -71,7 +72,7 @@ describe('Authorization', () => {
   async function defaultRender() {
     act(() =>
       render(
-        <AppContextProvider apiClient={null} auth={auth}>
+        <AppContextProvider apiClient={null} auth={auth} routing={defaultRoutes}>
           <BrowserRouter>
             <Authorization />
           </BrowserRouter>
@@ -83,11 +84,11 @@ describe('Authorization', () => {
   }
 
   async function fillNameAndPass(testEmail: string, testPassword: string) {
-    const textboxEmail = screen.getByRole('textbox', { name: 'Email' });
+    const textboxEmail = screen.getByTestId('editEmail');
     await userEvent.type(textboxEmail, testEmail);
     expect((textboxEmail as HTMLInputElement).value).toBe(testEmail);
 
-    const textboxPassword = screen.getByLabelText('Password *');
+    const textboxPassword = screen.getByTestId('editPassword');
     await userEvent.type(textboxPassword, testPassword);
     expect((textboxPassword as HTMLInputElement).value).toBe(testPassword);
   }

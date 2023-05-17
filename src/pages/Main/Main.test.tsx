@@ -2,7 +2,7 @@ import { setupMockIntrospection } from '@/../__mocks__/api-mock-helper';
 import { waitRender } from '@/../__mocks__/test-utils';
 import { AppContextProvider } from '@/provider/app-context-provider/app-context-provider';
 import { ModalDialogProvider } from '@/provider/modal-dialog';
-import { RootLayout } from '@/routes';
+import { RootLayout, defaultRoutes } from '@/routes';
 import { setupStore } from '@/store';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
@@ -64,7 +64,7 @@ describe('Main page component', () => {
 
     act(() => {
       render(
-        <AppContextProvider apiClient={mockClient} auth={mockAuth}>
+        <AppContextProvider apiClient={mockClient} auth={mockAuth} routing={defaultRoutes}>
           <Provider store={store}>
             <ModalDialogProvider>
               <BrowserRouter>
