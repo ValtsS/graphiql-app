@@ -1,4 +1,4 @@
-import { Crash } from '@/pages';
+import { Crash } from '@/pages/Crash';
 import {
   Experimental_CssVarsProvider as CssVarsProvider,
   experimental_extendTheme as extendTheme,
