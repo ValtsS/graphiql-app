@@ -1,6 +1,6 @@
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
-import React, { MouseEvent, ReactElement, useEffect, useState } from 'react';
+import React, { MouseEvent, ReactElement, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './Registration.module.css';
 import { SideBar } from '@/components';
@@ -8,11 +8,11 @@ import { useAppContext } from '@/provider';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import useAuth from '@/custom-hooks/useAuth';
+import { FieldName, useSingupValidation } from '@/custom-hooks/useSingupValidation';
 
 export const Registration = (): ReactElement => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState<string>('');
-  const [name, setName] = useState<string>('');
+  const { email, emailChange, name, nameChange, password, passwordChange, isValid } =
+    useSingupValidation();
   const [file, setFile] = useState<File | null>(null);
 
   const { auth } = useAppContext();
@@ -74,7 +74,9 @@ export const Registration = (): ReactElement => {
                 aria-label="textbox-name"
                 value={name}
                 inputProps={{ 'data-testid': 'editName' }}
-                onChange={(e) => setName(e.target.value)}
+                error={!isValid?.has(FieldName.Name)}
+                helperText={t('Name needs to be at least 3 characters')}
+                onChange={(e) => nameChange(e.target.value)}
               />
               <input
                 accept="image/*"
@@ -100,7 +102,8 @@ export const Registration = (): ReactElement => {
                 aria-label="textbox-email"
                 value={email}
                 inputProps={{ 'data-testid': 'editEmail' }}
-                onChange={(e) => setEmail(e.target.value)}
+                error={!isValid?.has(FieldName.Email)}
+                onChange={(e) => emailChange(e.target.value)}
               />
               <TextField
                 margin="normal"
@@ -112,11 +115,12 @@ export const Registration = (): ReactElement => {
                 id="password"
                 aria-label="textbox-password"
                 value={password}
+                helperText="HelperText"
+                error={!isValid?.has(FieldName.Password)}
                 inputProps={{
                   'data-testid': 'editPassword',
-                  pattern: '(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{8,}',
                 }}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => passwordChange(e.target.value)}
               />
               <Button
                 type="submit"
@@ -124,6 +128,7 @@ export const Registration = (): ReactElement => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2, color: '#fff' }}
                 onClick={(e) => register(e)}
+                disabled={isValid?.size !== 3}
               >
                 {t('SignUp')}
               </Button>
