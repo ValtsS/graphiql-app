@@ -35,7 +35,7 @@ export const GraphQLApp = () => {
               routing.map((c) => (
                 <Route
                   path={c.path}
-                  element={<RootLayout key={c.uuid}>{c.element}</RootLayout>}
+                  element={<RootLayout key={c.uuid}>{c.element()}</RootLayout>}
                   key={c.uuid}
                 />
               ))}

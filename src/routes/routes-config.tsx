@@ -13,7 +13,7 @@ export const enum DisplayMode {
 export interface RouteConfig {
   uuid: string;
   path: string;
-  element: React.ReactNode;
+  element: () => React.ReactNode;
   displayInMenu?: boolean;
   menuText?: React.ReactNode;
   displayInRegistration?: boolean;
@@ -24,7 +24,7 @@ const regRoutes: RouteConfig[] = [
   {
     uuid: uuidv4(),
     path: '/auth',
-    element: (
+    element: () => (
       <ProtectedRoute>
         <Authorization />
       </ProtectedRoute>
@@ -37,7 +37,7 @@ const regRoutes: RouteConfig[] = [
   {
     uuid: uuidv4(),
     path: '/reg',
-    element: (
+    element: () => (
       <ProtectedRoute>
         <Registration />
       </ProtectedRoute>
@@ -53,7 +53,7 @@ export const defaultRoutes: RouteConfig[] = [
   {
     uuid: uuidv4(),
     path: '/',
-    element: <Welcome />,
+    element: () => <Welcome />,
     displayInMenu: true,
     menuText: <Translation>{(t) => t('Welcome')}</Translation>,
     displayMode: DisplayMode.Always,
@@ -61,7 +61,7 @@ export const defaultRoutes: RouteConfig[] = [
   {
     uuid: uuidv4(),
     path: '/main',
-    element: <Main />,
+    element: () => <Main />,
     displayInMenu: true,
     menuText: <Translation>{(t) => t('toMain')}</Translation>,
     displayMode: DisplayMode.LoggedIn,
