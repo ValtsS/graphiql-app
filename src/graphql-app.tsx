@@ -1,5 +1,4 @@
 import { Crash } from '@/pages';
-import { RouteConfig } from '@/routes';
 import {
   Experimental_CssVarsProvider as CssVarsProvider,
   experimental_extendTheme as extendTheme,
@@ -8,10 +7,7 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useMainLogic } from './custom-hooks/useMainLogic';
 import { RootLayout } from './routes/root-layout';
-
-interface Props {
-  routesConfig: RouteConfig[];
-}
+import { useAppContext } from './provider';
 
 const customTheme = extendTheme({
   colorSchemes: {
@@ -25,8 +21,8 @@ const customTheme = extendTheme({
   },
 });
 
-export const GraphQLApp = (props: Props) => {
-  const { routesConfig } = props;
+export const GraphQLApp = () => {
+  const { routing } = useAppContext();
 
   useMainLogic();
 
@@ -35,13 +31,14 @@ export const GraphQLApp = (props: Props) => {
       <CssVarsProvider theme={customTheme}>
         <BrowserRouter>
           <Routes>
-            {routesConfig.map((c) => (
-              <Route
-                path={c.path}
-                element={<RootLayout key={c.uuid}>{c.element}</RootLayout>}
-                key={c.uuid}
-              />
-            ))}
+            {routing &&
+              routing.map((c) => (
+                <Route
+                  path={c.path}
+                  element={<RootLayout key={c.uuid}>{c.element}</RootLayout>}
+                  key={c.uuid}
+                />
+              ))}
 
             <Route path="*" element={<Crash error={new Error('Error 404')} />} />
           </Routes>

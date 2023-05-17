@@ -1,6 +1,5 @@
-import { RouteConfig } from '@/routes/routes-config';
-import { SwitchMode } from './langSwitch';
-import { useTranslation } from 'react-i18next';
+import useAuth from '@/custom-hooks/useAuth';
+import { useAppContext } from '@/provider';
 import HiveIcon from '@mui/icons-material/Hive';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
@@ -19,11 +18,12 @@ import {
   Typography,
 } from '@mui/material';
 import React, { MouseEvent, ReactElement, useLayoutEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import './header.css';
-import { useAppContext } from '@/provider';
 import { toast } from 'react-toastify';
-import useAuth from '@/custom-hooks/useAuth';
+import './header.css';
+import { SwitchMode } from './langSwitch';
+import { DisplayMode, RouteConfig, filterByMode } from '@/routes/routes-config';
 
 interface Props {
   routesConfig: RouteConfig[];
@@ -56,8 +56,13 @@ export const Header = (props: Props): ReactElement => {
     return () => window.removeEventListener('scroll', update);
   });
 
-  const headerMenu = routesConfig.filter((el) => !el.displayInRegistration);
-  const signMenu = routesConfig.filter((el) => el.displayInRegistration);
+  const routes = filterByMode(routesConfig, [
+    DisplayMode.Always,
+    currentUser ? DisplayMode.LoggedIn : DisplayMode.Guest,
+  ]);
+
+  const headerMenu = routes.filter((el) => !el.displayInRegistration);
+  const signMenu = routes.filter((el) => el.displayInRegistration);
 
   const handleLogout = async () => {
     if (auth) {

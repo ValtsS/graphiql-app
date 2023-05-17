@@ -20,10 +20,10 @@ const firebaseAuth = new FirebaseAuthReal(initializeApp(firebaseConfig));
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <App>
-      <AppContextProvider apiClient={client} auth={firebaseAuth}>
+      <AppContextProvider apiClient={client} auth={firebaseAuth} routing={defaultRoutes}>
         <Provider store={store}>
           <ModalDialogProvider>
-            <GraphQLApp routesConfig={defaultRoutes} />
+            <GraphQLApp />
           </ModalDialogProvider>
         </Provider>
       </AppContextProvider>

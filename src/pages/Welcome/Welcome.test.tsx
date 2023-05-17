@@ -1,11 +1,10 @@
 import { waitRender } from '@/../__mocks__/test-utils';
-import { defaultRoutes } from '@/routes';
+import { setupStore } from '@/store';
 import { act, render, screen } from '@testing-library/react';
 import React from 'react';
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { Welcome } from './Welcome';
-import { Provider } from 'react-redux';
-import { setupStore } from '@/store';
 
 const store = setupStore();
 
@@ -15,7 +14,7 @@ describe('Welcome', () => {
       render(
         <Provider store={store}>
           <BrowserRouter>
-            <Welcome routes={defaultRoutes} />
+            <Welcome />
           </BrowserRouter>
         </Provider>
       )
