@@ -1,10 +1,10 @@
 import { setupMockIntrospection } from '@/../__mocks__/api-mock-helper';
+import { SetupFirebaseMock } from '@/../__mocks__/firebaseMock';
+import { defaultRoutes } from '@/routes';
 import { renderHook } from '@testing-library/react';
+import { GraphQLSchema } from 'graphql';
 import React, { useEffect } from 'react';
 import { AppContextProvider, useAppContext } from './app-context-provider';
-import { GraphQLSchema } from 'graphql';
-import { FirebaseMock } from '@/../__mocks__/firebaseMock';
-import { defaultRoutes } from '@/routes';
 
 describe('useAppContext', () => {
   test('should throw an error when used outside of AppContextProvider', () => {
@@ -26,7 +26,7 @@ describe('useAppContext', () => {
   test('should return the app context value when used within AppContextProvider', async () => {
     const { mockClient: api } = await setupMockIntrospection();
 
-    const auth = new FirebaseMock();
+    const auth = SetupFirebaseMock(false);
 
     const Internal = () => {
       const { apiClient, updateCurrentSchema } = useAppContext();

@@ -6,20 +6,19 @@ import { Provider } from 'react-redux';
 import { setupStore } from '../../store';
 import { AppContextProvider } from '@/provider';
 import { defaultRoutes } from '@/routes';
-import { FirebaseMock } from '@/../__mocks__/firebaseMock';
+import { FirebaseMock, SetupFirebaseMock } from '@/../__mocks__/firebaseMock';
 import { waitRender } from '@/../__mocks__/test-utils';
 import { User } from '@firebase/auth';
 import userEvent from '@testing-library/user-event';
 import i18next from 'i18next';
 
 describe('Header', () => {
-  const auth = new FirebaseMock();
-
   beforeEach(async () => {
     await i18next.changeLanguage('en');
   });
 
   it('render for guest', async () => {
+    const auth = SetupFirebaseMock(false);
     auth.reg.mockReturnValueOnce(null);
     auth.signIn.mockReturnValueOnce(null);
 
@@ -35,6 +34,7 @@ describe('Header', () => {
   });
 
   it('render for logged in', async () => {
+    const auth = SetupFirebaseMock(true);
     auth.reg.mockReturnValueOnce(null);
     auth.signIn.mockReturnValueOnce(null);
     auth.currentUser = {

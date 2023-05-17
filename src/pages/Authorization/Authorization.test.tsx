@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Authorization } from './Authorization';
 import { waitRender } from '@/../__mocks__/test-utils';
 import { AppContextProvider } from '@/provider';
-import { FirebaseMock } from '@/../__mocks__/firebaseMock';
+import { FirebaseMock, SetupFirebaseMock } from '@/../__mocks__/firebaseMock';
 import { defaultRoutes } from '@/routes';
 
 const mockToasterError = jest.fn();
@@ -19,14 +19,14 @@ jest.mock('react-toastify', () => ({
 }));
 
 describe('Authorization', () => {
-  const auth = new FirebaseMock();
   const testEmail = 'user07@gmail.com';
   const testPassword = 'myPassword';
 
   beforeEach(() => {});
 
   it('Authorization renders correctly', async () => {
-    await defaultRender();
+    const auth = SetupFirebaseMock(false);
+    await defaultRender(auth);
 
     const textboxEmail = screen.getByTestId('editEmail');
     expect(textboxEmail).toBeInTheDocument;
@@ -36,7 +36,8 @@ describe('Authorization', () => {
   });
 
   it('Valid Authorization submited', async () => {
-    await defaultRender();
+    const auth = SetupFirebaseMock(false);
+    await defaultRender(auth);
     await fillNameAndPass(testEmail, testPassword);
 
     const btnSignIn = screen.getByRole('button', { name: 'Sign In' });
@@ -52,7 +53,8 @@ describe('Authorization', () => {
   });
 
   it('Invalid Authorization submited', async () => {
-    await defaultRender();
+    const auth = SetupFirebaseMock(false);
+    await defaultRender(auth);
     await fillNameAndPass(testEmail, testPassword);
 
     const btnSignIn = screen.getByRole('button', { name: 'Sign In' });
@@ -69,7 +71,7 @@ describe('Authorization', () => {
     expect(mockToasterError).toHaveBeenLastCalledWith([errorMessage]);
   });
 
-  async function defaultRender() {
+  async function defaultRender(auth: FirebaseMock) {
     act(() =>
       render(
         <AppContextProvider apiClient={null} auth={auth} routing={defaultRoutes}>

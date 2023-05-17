@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { Main } from './Main';
 import { FirebaseAuth } from '@/core/firebase/firebase';
-import { FirebaseMock } from '@/../__mocks__/firebaseMock';
+import { FirebaseMock, SetupFirebaseMock } from '@/../__mocks__/firebaseMock';
 
 jest.mock('monaco-editor');
 
@@ -20,8 +20,7 @@ describe('Main page component', () => {
   let mockAuth: FirebaseAuth;
 
   beforeEach(() => {
-    const mock = new FirebaseMock();
-    mockAuth = mock;
+    mockAuth = SetupFirebaseMock(false);
   });
 
   it('should render and have change button', async () => {

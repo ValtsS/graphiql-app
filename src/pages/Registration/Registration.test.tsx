@@ -1,4 +1,4 @@
-import { FirebaseMock } from '@/../__mocks__/firebaseMock';
+import { FirebaseMock, SetupFirebaseMock } from '@/../__mocks__/firebaseMock';
 import { waitRender } from '@/../__mocks__/test-utils';
 import { AppContextProvider } from '@/provider';
 import { defaultRoutes } from '@/routes';
@@ -19,10 +19,9 @@ jest.mock('react-toastify', () => ({
 }));
 
 describe('Registration', () => {
-  const auth = new FirebaseMock();
-
   it('Registration renders correctly', async () => {
-    await defaultRender();
+    const auth = SetupFirebaseMock(false);
+    await defaultRender(auth);
 
     const textboxName = screen.getByTestId('editName');
     expect(textboxName).toBeInTheDocument;
@@ -35,16 +34,13 @@ describe('Registration', () => {
   });
 
   it('should handle valid registration', async () => {
-    await defaultRender();
-
-    auth.reg.mockReturnValueOnce(null);
-    auth.signIn.mockReturnValueOnce(null);
-
+    const auth = SetupFirebaseMock(false);
+    await defaultRender(auth);
     await fillBoxes();
     await waitRender();
 
     expect(auth.reg).toBeCalledTimes(1);
-    expect(auth.reg).toHaveBeenLastCalledWith('Skave', 'user07@gmail.com', 'myPassword12', null);
+    expect(auth.reg).toHaveBeenLastCalledWith('Skave', 'user07@gmail.com', 'password', null);
 
     expect(mockToasterSuccess).toHaveBeenCalledTimes(1);
     expect(mockToasterSuccess).toHaveBeenLastCalledWith(['Sign up succeeded']);
@@ -52,22 +48,19 @@ describe('Registration', () => {
   });
 
   it('should handle invalid registration', async () => {
-    await defaultRender();
-
-    auth.reg.mockReturnValueOnce('Duplicate');
-    auth.signIn.mockReturnValueOnce(null);
-
-    await fillBoxes();
+    const auth = SetupFirebaseMock(false);
+    await defaultRender(auth);
+    await fillBoxes('bad');
     await waitRender();
 
     expect(auth.reg).toBeCalledTimes(1);
-    expect(auth.reg).toHaveBeenLastCalledWith('Skave', 'user07@gmail.com', 'myPassword12', null);
+    expect(auth.reg).toHaveBeenLastCalledWith('bad', 'user07@gmail.com', 'password', null);
 
     expect(mockToasterSuccess).toHaveBeenCalledTimes(0);
     expect(mockToasterError).toBeCalledTimes(1);
   });
 
-  async function defaultRender() {
+  async function defaultRender(auth: FirebaseMock) {
     act(() =>
       render(
         <AppContextProvider apiClient={null} auth={auth} routing={defaultRoutes}>
@@ -81,10 +74,10 @@ describe('Registration', () => {
     await waitRender();
   }
 
-  async function fillBoxes() {
+  async function fillBoxes(name: string = 'Skave') {
     const textboxName = screen.getByTestId('editName');
-    await userEvent.type(textboxName, 'Skave');
-    expect((textboxName as HTMLInputElement).value).toBe('Skave');
+    await userEvent.type(textboxName, name);
+    expect((textboxName as HTMLInputElement).value).toBe(name);
 
     const textboxEmail = screen.getByTestId('editEmail');
     const testEmail = 'user07@gmail.com';
@@ -92,7 +85,7 @@ describe('Registration', () => {
     expect((textboxEmail as HTMLInputElement).value).toBe(testEmail);
 
     const textboxPassword = screen.getByTestId('editPassword');
-    const testPass = 'myPassword12';
+    const testPass = 'password';
     await userEvent.type(textboxPassword, testPass);
     expect((textboxPassword as HTMLInputElement).value).toBe(testPass);
 

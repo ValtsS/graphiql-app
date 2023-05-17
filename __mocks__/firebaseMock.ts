@@ -23,7 +23,6 @@ export class FirebaseMock implements FirebaseAuth {
   }
   signInWithEmailAndPassword(email: string, password: string): Promise<string | null> {
     const error = this.signIn(email, password);
-
     if (error) {
       this.currentUser = undefined;
     } else {
@@ -47,4 +46,34 @@ export class FirebaseMock implements FirebaseAuth {
   onAuthStateChange(change: OnAuthChange): void {
     this.observers.push(change);
   }
+}
+
+export function SetupFirebaseMock(loggedin: boolean): FirebaseMock {
+  const auth = new FirebaseMock();
+
+  auth.reg.mockImplementation((name: string) => {
+    if (name === 'bad') return 'Bad name';
+    return null;
+  });
+
+  auth.signIn.mockImplementation((email: string, password: string) => {
+    if (password !== 'password') return 'Invalid password';
+    return null;
+  });
+
+  auth.logOut.mockReturnValue(null);
+  auth.reg.mockImplementation((name: string) => {
+    if (name === 'bad') return 'Bad name';
+    return null;
+  });
+
+  if (loggedin) {
+    auth.lastUser = {
+      displayName: 'Test User',
+      uid: '01345',
+    } as User;
+    auth.currentUser = auth.lastUser ?? undefined;
+  }
+
+  return auth;
 }

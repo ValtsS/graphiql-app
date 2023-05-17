@@ -32,7 +32,7 @@ export const Registration = (): ReactElement => {
       }
     } catch (err) {
       toast.error(t('Something went wrong'));
-      console.log(err);
+      console.log('Firebase error', err);
     }
   };
 

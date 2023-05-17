@@ -1,14 +1,11 @@
-import { FirebaseMock } from '@/../__mocks__/firebaseMock';
-import useAuth from './useAuth';
-import React from 'react';
-import { act, render, screen } from '@testing-library/react';
-import { AppContextProvider } from '@/provider';
+import { SetupFirebaseMock } from '@/../__mocks__/firebaseMock';
 import { waitRender } from '@/../__mocks__/test-utils';
-import { User } from '@firebase/auth';
+import { AppContextProvider } from '@/provider';
+import { act, render, screen } from '@testing-library/react';
+import React from 'react';
+import useAuth from './useAuth';
 
 describe('useAuth', () => {
-  const mock = new FirebaseMock();
-
   const AuthTester = () => {
     const { currentUser } = useAuth();
     return (
@@ -20,11 +17,7 @@ describe('useAuth', () => {
   };
 
   it('should set the initial currentUser value to the lastUser', async () => {
-    mock.currentUser = {
-      displayName: '123',
-    } as User;
-    mock.lastUser = mock.currentUser;
-
+    const mock = SetupFirebaseMock(true);
     render(
       <AppContextProvider apiClient={null} auth={mock}>
         <AuthTester />
@@ -32,16 +25,11 @@ describe('useAuth', () => {
     );
 
     await waitRender();
-    expect(screen.getByText('123')).toBeInTheDocument();
+    expect(screen.getByText('Test User')).toBeInTheDocument();
   });
 
   it('should handle logout', async () => {
-    mock.currentUser = {
-      displayName: '123',
-    } as User;
-    mock.lastUser = mock.currentUser;
-    mock.logOut.mockReturnValue(null);
-
+    const mock = SetupFirebaseMock(true);
     render(
       <AppContextProvider apiClient={null} auth={mock}>
         <AuthTester />
@@ -56,9 +44,7 @@ describe('useAuth', () => {
   });
 
   it('should handle login', async () => {
-    mock.currentUser = undefined;
-    mock.lastUser = null;
-    mock.signIn.mockReturnValue(null);
+    const mock = SetupFirebaseMock(false);
 
     render(
       <AppContextProvider apiClient={null} auth={mock}>
@@ -66,7 +52,7 @@ describe('useAuth', () => {
       </AppContextProvider>
     );
 
-    act(() => mock.signInWithEmailAndPassword('log', 'pass'));
+    act(() => mock.signInWithEmailAndPassword('log', 'password'));
 
     await waitRender();
 
