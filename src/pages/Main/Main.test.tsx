@@ -1,5 +1,7 @@
 import { setupMockIntrospection } from '@/../__mocks__/api-mock-helper';
+import { SetupFirebaseMock } from '@/../__mocks__/firebaseMock';
 import { waitRender } from '@/../__mocks__/test-utils';
+import { FirebaseAuth } from '@/core/firebase/firebase';
 import { AppContextProvider } from '@/provider/app-context-provider/app-context-provider';
 import { ModalDialogProvider } from '@/provider/modal-dialog';
 import { RootLayout, defaultRoutes } from '@/routes';
@@ -9,8 +11,6 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { Main } from './Main';
-import { FirebaseAuth } from '@/core/firebase/firebase';
-import { FirebaseMock, SetupFirebaseMock } from '@/../__mocks__/firebaseMock';
 
 jest.mock('monaco-editor');
 

@@ -74,7 +74,7 @@ describe('Registration', () => {
     await waitRender();
   }
 
-  async function fillBoxes(name: string = 'Skave') {
+  async function fillBoxes(name = 'Skave') {
     const textboxName = screen.getByTestId('editName');
     await userEvent.type(textboxName, name);
     expect((textboxName as HTMLInputElement).value).toBe(name);

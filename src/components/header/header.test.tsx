@@ -1,16 +1,16 @@
-import { act, render, screen } from '@testing-library/react';
-import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
-import { Header } from './header';
-import { Provider } from 'react-redux';
-import { setupStore } from '../../store';
-import { AppContextProvider } from '@/provider';
-import { defaultRoutes } from '@/routes';
 import { FirebaseMock, SetupFirebaseMock } from '@/../__mocks__/firebaseMock';
 import { waitRender } from '@/../__mocks__/test-utils';
+import { AppContextProvider } from '@/provider';
+import { defaultRoutes } from '@/routes';
 import { User } from '@firebase/auth';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import i18next from 'i18next';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router-dom';
+import { setupStore } from '../../store';
+import { Header } from './header';
 
 describe('Header', () => {
   beforeEach(async () => {
