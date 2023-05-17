@@ -15,6 +15,7 @@ export const Authorization = (): ReactElement => {
 
   const { auth } = useAppContext();
   const { currentUser } = useAuth();
+  const { t } = useTranslation();
 
   const handleSignUp = async (e: MouseEvent) => {
     e.preventDefault();
@@ -25,11 +26,11 @@ export const Authorization = (): ReactElement => {
       if (error) {
         toast.error(error);
       } else {
-        toast.success('Successefully logged in');
+        toast.success(t('Successefully logged in'));
         navigate('/main');
       }
     } catch (err) {
-      toast.error('something went wrong');
+      toast.error(t('Something went wrong'));
       console.log(err);
     }
   };
@@ -39,7 +40,7 @@ export const Authorization = (): ReactElement => {
     if (currentUser) navigate('/main');
   }, [auth, navigate, currentUser]);
 
-  const { t } = useTranslation();
+
 
   const data = {
     greet: t('Hello'),
