@@ -7,11 +7,16 @@ import { Developers } from '@/components/developers/developers';
 import graphqlImg from '@/assets/graphql.gif';
 import { useTranslation } from 'react-i18next';
 import { Course } from '@/components/course/course';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '@/store';
 
 export const Welcome = ({ routes }: { routes: RouteConfig[] }): ReactElement => {
   const { currentUser } = useAuth();
   const signMenu = routes.filter((el) => el.displayInRegistration);
   const { t } = useTranslation();
+
+  const dispatch = useDispatch();
+  const langMode = useAppSelector((state) => state.langMode.langMode);
 
   return (
     <Container>
@@ -31,7 +36,14 @@ export const Welcome = ({ routes }: { routes: RouteConfig[] }): ReactElement => 
         </Grid>
 
         <Grid item xs={12} md={4} sx={{ gap: '50px', display: 'flex', flexDirection: 'column' }}>
-          <Box sx={{ display: 'flex', gap: 5, justifyContent: 'center' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: langMode ? 2 : 5,
+              justifyContent: 'center',
+              flexDirection: langMode ? 'column' : 'row',
+            }}
+          >
             {currentUser ? (
               <Button variant="contained" component={RouterLink} to="/main">
                 {t('mainPage')}
@@ -44,6 +56,9 @@ export const Welcome = ({ routes }: { routes: RouteConfig[] }): ReactElement => 
                   component={RouterLink}
                   to={page.path}
                   size="large"
+                  // sx={{
+                  //   fontSize: { xs: '8px', sm: '8px', md: '14px' },
+                  // }}
                 >
                   {page.menuText}
                 </Button>
