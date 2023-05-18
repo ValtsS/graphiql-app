@@ -25,16 +25,22 @@ function isHostValid(hostname: string): boolean {
   });
 }
 
-export function validateEmail(email: string): boolean {
-  const RE_local =
-    /^(?!-)([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+9=?A-Z^-~-]+)*|"(!#-[^-~ \t]|(\[\t -~]))+")$/;
+function isLocalValid(local: string): boolean {
+  if (local.startsWith('-')) {
+    return false;
+  }
 
+  if (/^"(!#-[^-~ \t]|(\[\t -~]))+"$/.test(local)) return true;
+
+  return local.split('.').every((part: string) => /^[!#+'*A-Z\d=?^-~-/$%&]+$/.test(part));
+}
+
+export function validateEmail(email: string): boolean {
   if (email.length >= 3) {
     try {
       const normalized = convertIDNAEmailToASCII(email);
       const { localPart, domainPart } = splitEmail(normalized);
-
-      return RE_local.test(localPart) && isHostValid(domainPart);
+      return isLocalValid(localPart) && isHostValid(domainPart);
     } catch {}
   }
 

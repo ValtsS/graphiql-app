@@ -26,6 +26,7 @@ describe('Valdidators', () => {
     ['email@domain.name', true],
     ['email@domain.co.jp', true],
     ['firstname-lastname@domain.com', true],
+    ['email.-one@domain.one.com', true],
     ['plain address', false],
     ['#@%^%#$@#$@#.com', false],
     ['@domain.com', false],
@@ -44,7 +45,7 @@ describe('Valdidators', () => {
     ['abc#def@mail.com', true],
     ['abc.def@mail#archive.com', false],
     ['abc.def@2001:db8:c000:221::', true],
-    ['abc.def@[2001:db8:c000:221::]', true],
+    ['Abc.def@[2001:db8:c000:221::]', true],
   ])('Expect e-mail %s to be %s', (email: string, valid: boolean) => {
     expect(validateEmail(email)).toBe(valid);
   });
