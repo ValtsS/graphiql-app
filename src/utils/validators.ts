@@ -1,8 +1,18 @@
 import { convertIDNAEmailToASCII, splitEmail } from './idna';
-import { isIP } from 'net';
+import { Address4, Address6 } from 'ip-address';
 
 export function validateName(name: string): boolean {
   return name.length > 2;
+}
+
+function isIP(ip: string): number {
+  try {
+    if (Address4.isValid(ip)) return 4;
+
+    if (Address6.isValid(ip)) return 6;
+  } catch {}
+
+  return 0;
 }
 
 function isHostValid(hostname: string): boolean {
