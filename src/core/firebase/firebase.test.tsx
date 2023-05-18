@@ -1,10 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { FirebaseApp, initializeApp } from '@firebase/app';
 import { FirebaseAuthReal } from './firebase';
-import {
-  User,
-  UserCredential,
-} from '@firebase/auth';
+import { User, UserCredential } from '@firebase/auth';
 import { waitRender } from '@/../__mocks__/test-utils';
 import { waitFor } from '@testing-library/react';
 
@@ -33,7 +30,7 @@ jest.mock('@firebase/auth', () => ({
   }),
   onAuthStateChanged: jest
     .fn()
-    .mockImplementation((auth: unknown, nextOrObserver: (user: unknown) => void) => {
+    .mockImplementation((_: unknown, nextOrObserver: (user: unknown) => void) => {
       mocktriggerChange.mockImplementation((value: unknown) => {
         nextOrObserver(value);
       });
@@ -43,7 +40,7 @@ jest.mock('@firebase/auth', () => ({
 
 jest.mock('@firebase/firestore', () => ({
   ...jest.requireActual('@firebase/firestore'),
-  getFirestore: jest.fn().mockImplementation((...args) => {
+  getFirestore: jest.fn().mockImplementation(() => {
     return { type: 'firestore' };
   }),
   doc: jest.fn(),
@@ -52,7 +49,7 @@ jest.mock('@firebase/firestore', () => ({
 
 jest.mock('@firebase/storage', () => ({
   ...jest.requireActual('@firebase/storage'),
-  getStorage: jest.fn().mockImplementation((...args) => {
+  getStorage: jest.fn().mockImplementation(() => {
     return { type: 'storage' };
   }),
   ref: jest.fn(),
@@ -92,7 +89,7 @@ describe('Firebase Auth Real', () => {
 
   beforeAll(() => {
     mockAuth.mockReturnValue({ type: 'getAuth object' });
-    mockSignin.mockImplementation((auth: unknown, user: string, password: string) => {
+    mockSignin.mockImplementation((_: unknown, user: string) => {
       if (user === 'good') return { type: 'user credentials' };
       throw new Error('Invalid user');
     });
