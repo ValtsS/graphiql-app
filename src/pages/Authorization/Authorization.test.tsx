@@ -67,8 +67,8 @@ describe('Authorization', () => {
     expect(mockToasterError).toHaveBeenLastCalledWith(['Invalid password']);
   });
 
-  async function defaultRender(auth: FirebaseMock) {
-    act(() =>
+  async function defaultRender(auth: FirebaseMock | null) {
+    await act(() =>
       render(
         <AppContextProvider apiClient={null} auth={auth} routing={defaultRoutes}>
           <BrowserRouter>
@@ -80,6 +80,24 @@ describe('Authorization', () => {
 
     await waitRender();
   }
+
+  it('should throw exception', async () => {
+    const badPass = 'badpassword';
+    await defaultRender(null);
+    await fillNameAndPass(testEmail, badPass);
+
+    const btnSignIn = screen.getByRole('button', { name: 'Sign In' });
+    try {
+      await userEvent.click(btnSignIn);
+      await waitRender();
+      expect(true).toBe(false);
+    } catch {
+      expect(true).toBe(true);
+    }
+
+    expect(mockToasterError).toBeCalledTimes(1);
+    expect(mockToasterError).toHaveBeenLastCalledWith(['Something went wrong']);
+  });
 
   async function fillNameAndPass(testEmail: string, testPassword: string) {
     const textboxEmail = screen.getByTestId('editEmail');
