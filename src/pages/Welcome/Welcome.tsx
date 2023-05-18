@@ -7,7 +7,6 @@ import { Developers } from '@/components/developers/developers';
 import graphqlImg from '@/assets/graphql.gif';
 import { useTranslation } from 'react-i18next';
 import { Course } from '@/components/course/course';
-import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/store';
 
 export const Welcome = ({ routes }: { routes: RouteConfig[] }): ReactElement => {
@@ -15,7 +14,6 @@ export const Welcome = ({ routes }: { routes: RouteConfig[] }): ReactElement => 
   const signMenu = routes.filter((el) => el.displayInRegistration);
   const { t } = useTranslation();
 
-  const dispatch = useDispatch();
   const langMode = useAppSelector((state) => state.langMode.langMode);
 
   return (
