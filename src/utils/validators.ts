@@ -11,12 +11,12 @@ function isHostValid(hostname: string): boolean {
   if (/^\[.+\]$/.test(hostname) && isIP(hostname.substring(1, hostname.length - 1)) > 0)
     return true;
 
+  if (hostname.includes(':')) return isIP(hostname) >= 6;
+
   if (!/^[a-zA-Z0-9-.]{1,253}$/.test(hostname)) return false;
 
   const mightBeIpV4 = hostname.split('.').some((label: string) => /^\d+$/.test(label));
   if (mightBeIpV4) return isIP(hostname) > 0;
-
-  if (hostname.includes(':')) return isIP(hostname) >= 6;
 
   return hostname.split('.').every((label: string) => {
     if (!/^([a-zA-Z0-9-]{1,63})$/.test(label)) return false;
@@ -29,8 +29,6 @@ function isLocalValid(local: string): boolean {
   if (local.startsWith('-')) {
     return false;
   }
-
-  if (/^"(!#-[^-~ \t]|(\[\t -~]))+"$/.test(local)) return true;
 
   return local.split('.').every((part: string) => /^[!#+'*A-Z\d=?^-~-/$%&]+$/.test(part));
 }

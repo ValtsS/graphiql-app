@@ -46,6 +46,7 @@ describe('Valdidators', () => {
     ['abc.def@mail#archive.com', false],
     ['abc.def@2001:db8:c000:221::', true],
     ['Abc.def@[2001:db8:c000:221::]', true],
+    ['abc.def@X2001:db8:c000:221::', false],
   ])('Expect e-mail %s to be %s', (email: string, valid: boolean) => {
     expect(validateEmail(email)).toBe(valid);
   });
