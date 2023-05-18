@@ -1,4 +1,4 @@
-import { SetupFirebaseMock } from '@/../__mocks__/firebaseMock';
+import { MOCK_PASS_VALID, SetupFirebaseMock } from '@/../__mocks__/firebaseMock';
 import { waitRender } from '@/../__mocks__/test-utils';
 import { AppContextProvider } from '@/provider';
 import { act, render, screen } from '@testing-library/react';
@@ -52,7 +52,7 @@ describe('useAuth', () => {
       </AppContextProvider>
     );
 
-    act(() => mock.signInWithEmailAndPassword('log', 'password'));
+    act(() => mock.signInWithEmailAndPassword('loginname', MOCK_PASS_VALID));
 
     await waitRender();
 

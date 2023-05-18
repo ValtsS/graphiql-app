@@ -115,7 +115,9 @@ export const Registration = (): ReactElement => {
                 id="password"
                 aria-label="textbox-password"
                 value={password}
-                helperText={t("minimum 8 symbols, at least one letter, one digit, one special character")}
+                helperText={t(
+                  'minimum 8 symbols, at least one letter, one digit, one special character'
+                )}
                 error={!isValid?.has(FieldName.Password)}
                 inputProps={{
                   'data-testid': 'editPassword',

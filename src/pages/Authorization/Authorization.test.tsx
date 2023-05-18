@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Authorization } from './Authorization';
 import { waitRender } from '@/../__mocks__/test-utils';
 import { AppContextProvider } from '@/provider';
-import { FirebaseMock, SetupFirebaseMock } from '@/../__mocks__/firebaseMock';
+import { FirebaseMock, MOCK_PASS_VALID, SetupFirebaseMock } from '@/../__mocks__/firebaseMock';
 import { defaultRoutes } from '@/routes';
 
 const mockToasterError = jest.fn();
@@ -20,7 +20,6 @@ jest.mock('react-toastify', () => ({
 
 describe('Authorization', () => {
   const testEmail = 'user07@gmail.com';
-  const testPassword = 'myPassword';
 
   beforeEach(() => {});
 
@@ -38,37 +37,35 @@ describe('Authorization', () => {
   it('Valid Authorization submited', async () => {
     const auth = SetupFirebaseMock(false);
     await defaultRender(auth);
-    await fillNameAndPass(testEmail, testPassword);
+    await fillNameAndPass(testEmail, MOCK_PASS_VALID);
 
     const btnSignIn = screen.getByRole('button', { name: 'Sign In' });
-
-    auth.signIn.mockReturnValueOnce(null);
     await userEvent.click(btnSignIn);
+    await waitRender();
 
     expect(auth.signIn).toBeCalledTimes(1);
-    expect(auth.signIn).toHaveBeenLastCalledWith(testEmail, testPassword);
+    expect(auth.signIn).toHaveBeenLastCalledWith(testEmail, MOCK_PASS_VALID);
     expect(mockToasterSuccess).toHaveBeenCalledTimes(1);
-    expect(mockToasterSuccess).toHaveBeenLastCalledWith(['Successefully logged in']);
+    expect(mockToasterSuccess).toHaveBeenLastCalledWith(['Successfully logged in']);
     expect(mockToasterError).toBeCalledTimes(0);
+
   });
 
   it('Invalid Authorization submited', async () => {
     const auth = SetupFirebaseMock(false);
+    const badPass = 'badpassword';
     await defaultRender(auth);
-    await fillNameAndPass(testEmail, testPassword);
+    await fillNameAndPass(testEmail, badPass);
 
     const btnSignIn = screen.getByRole('button', { name: 'Sign In' });
-
-    const errorMessage = 'Invalid password';
-    auth.signIn.mockReturnValueOnce(errorMessage);
-
     await userEvent.click(btnSignIn);
-
+    await waitRender();
     expect(auth.signIn).toBeCalledTimes(1);
-    expect(auth.signIn).toHaveBeenLastCalledWith(testEmail, testPassword);
+
+    expect(auth.signIn).toHaveBeenLastCalledWith(testEmail, badPass);
     expect(mockToasterSuccess).toHaveBeenCalledTimes(0);
     expect(mockToasterError).toBeCalledTimes(1);
-    expect(mockToasterError).toHaveBeenLastCalledWith([errorMessage]);
+    expect(mockToasterError).toHaveBeenLastCalledWith(['Invalid password']);
   });
 
   async function defaultRender(auth: FirebaseMock) {
@@ -93,5 +90,6 @@ describe('Authorization', () => {
     const textboxPassword = screen.getByTestId('editPassword');
     await userEvent.type(textboxPassword, testPassword);
     expect((textboxPassword as HTMLInputElement).value).toBe(testPassword);
+    await waitRender();
   }
 });

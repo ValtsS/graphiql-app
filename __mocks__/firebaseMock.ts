@@ -1,6 +1,9 @@
 import { User } from '@firebase/auth';
 import { FirebaseAuth, OnAuthChange } from '../src/core/firebase/firebase';
 
+export const MOCK_PASS_VALID = 'Password1+@';
+export const MOCK_USER_BAD = 'ThisisBadUser';
+
 export class FirebaseMock implements FirebaseAuth {
   lastUser: User | null = null;
   public currentUser: User | undefined;
@@ -57,13 +60,13 @@ export function SetupFirebaseMock(loggedin: boolean): FirebaseMock {
   });
 
   auth.signIn.mockImplementation((email: string, password: string) => {
-    if (password !== 'password') return 'Invalid password';
+    if (password !== MOCK_PASS_VALID) return 'Invalid password';
     return null;
   });
 
   auth.logOut.mockReturnValue(null);
   auth.reg.mockImplementation((name: string) => {
-    if (name === 'bad') return 'Bad name';
+    if (name === MOCK_USER_BAD) return 'Bad name';
     return null;
   });
 

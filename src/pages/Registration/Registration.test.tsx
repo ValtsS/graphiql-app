@@ -1,4 +1,9 @@
-import { FirebaseMock, SetupFirebaseMock } from '@/../__mocks__/firebaseMock';
+import {
+  FirebaseMock,
+  MOCK_PASS_VALID,
+  MOCK_USER_BAD,
+  SetupFirebaseMock,
+} from '@/../__mocks__/firebaseMock';
 import { waitRender } from '@/../__mocks__/test-utils';
 import { AppContextProvider } from '@/provider';
 import { defaultRoutes } from '@/routes';
@@ -19,6 +24,8 @@ jest.mock('react-toastify', () => ({
 }));
 
 describe('Registration', () => {
+  const testEmail = 'user07@gmail.com';
+
   it('Registration renders correctly', async () => {
     const auth = SetupFirebaseMock(false);
     await defaultRender(auth);
@@ -37,10 +44,9 @@ describe('Registration', () => {
     const auth = SetupFirebaseMock(false);
     await defaultRender(auth);
     await fillBoxes();
-    await waitRender();
-
     expect(auth.reg).toBeCalledTimes(1);
-    expect(auth.reg).toHaveBeenLastCalledWith('Skave', 'user07@gmail.com', 'password', null);
+
+    expect(auth.reg).toHaveBeenLastCalledWith('Skave', testEmail, MOCK_PASS_VALID, null);
 
     expect(mockToasterSuccess).toHaveBeenCalledTimes(1);
     expect(mockToasterSuccess).toHaveBeenLastCalledWith(['Sign up succeeded']);
@@ -50,11 +56,9 @@ describe('Registration', () => {
   it('should handle invalid registration', async () => {
     const auth = SetupFirebaseMock(false);
     await defaultRender(auth);
-    await fillBoxes('bad');
-    await waitRender();
-
+    await fillBoxes(MOCK_USER_BAD);
     expect(auth.reg).toBeCalledTimes(1);
-    expect(auth.reg).toHaveBeenLastCalledWith('bad', 'user07@gmail.com', 'password', null);
+    expect(auth.reg).toHaveBeenLastCalledWith(MOCK_USER_BAD, testEmail, MOCK_PASS_VALID, null);
 
     expect(mockToasterSuccess).toHaveBeenCalledTimes(0);
     expect(mockToasterError).toBeCalledTimes(1);
@@ -80,16 +84,18 @@ describe('Registration', () => {
     expect((textboxName as HTMLInputElement).value).toBe(name);
 
     const textboxEmail = screen.getByTestId('editEmail');
-    const testEmail = 'user07@gmail.com';
     await userEvent.type(textboxEmail, testEmail);
     expect((textboxEmail as HTMLInputElement).value).toBe(testEmail);
 
     const textboxPassword = screen.getByTestId('editPassword');
-    const testPass = 'password';
-    await userEvent.type(textboxPassword, testPass);
-    expect((textboxPassword as HTMLInputElement).value).toBe(testPass);
+
+    await userEvent.type(textboxPassword, MOCK_PASS_VALID);
+    expect((textboxPassword as HTMLInputElement).value).toBe(MOCK_PASS_VALID);
+
+    await waitRender();
 
     const btnSignUp = screen.getByRole('button', { name: 'Sign Up' });
     await userEvent.click(btnSignUp);
+    await waitRender();
   }
 });

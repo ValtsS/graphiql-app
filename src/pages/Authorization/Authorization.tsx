@@ -2,11 +2,11 @@ import React, { ReactElement, useEffect, useState, MouseEvent } from 'react';
 import { Button, Grid, Typography, Paper, Box, TextField, Link } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import style from '../Registration/Registration.module.css';
-import { toast } from 'react-toastify';
 import { SideBar } from '@/components';
 import { useTranslation } from 'react-i18next';
 import { useAppContext } from '@/provider';
 import useAuth from '@/custom-hooks/useAuth';
+import { toast } from 'react-toastify';
 
 export const Authorization = (): ReactElement => {
   const [email, setEmail] = useState('');
@@ -26,7 +26,7 @@ export const Authorization = (): ReactElement => {
       if (error) {
         toast.error(error);
       } else {
-        toast.success(t('Successefully logged in'));
+        toast.success(t('Successfully logged in'));
         navigate('/main');
       }
     } catch (err) {
