@@ -20,7 +20,8 @@ export interface FirebaseAuth {
     name: string,
     email: string,
     password: string,
-    file: File | null
+    file: File | null,
+    uploadResult: (error: string | null) => void
   ): Promise<string | null>;
 
   signInWithEmailAndPassword(email: string, password: string): Promise<string | null>;
@@ -51,7 +52,8 @@ export class FirebaseAuthReal implements FirebaseAuth {
     name: string,
     email: string,
     password: string,
-    file: File | null
+    file: File | null,
+    uploadResult: (error: string | null) => void
   ): Promise<string | null> {
     try {
       const auth = getAuth(this.app);
@@ -65,6 +67,7 @@ export class FirebaseAuthReal implements FirebaseAuth {
         'state_changed',
         () => {},
         (error: Error) => {
+          uploadResult(error.message);
           return error.message;
         },
         () => {
@@ -80,6 +83,7 @@ export class FirebaseAuthReal implements FirebaseAuth {
               email,
               photoURL: downloadURL,
             });
+            uploadResult(null);
           });
         }
       );

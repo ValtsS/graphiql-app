@@ -17,11 +17,12 @@ export class FirebaseMock implements FirebaseAuth {
     name: string,
     email: string,
     password: string,
-    file: File | null
+    file: File | null,
+    uploadResult: (error: string | null) => void
   ): Promise<string | null> {
     const error = this.reg(name, email, password, file);
+    uploadResult(error);
     if (!error) return this.signInWithEmailAndPassword(email, password);
-
     return error;
   }
   signInWithEmailAndPassword(email: string, password: string): Promise<string | null> {

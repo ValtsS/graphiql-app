@@ -24,7 +24,15 @@ export const Registration = (): ReactElement => {
     e.preventDefault();
     if (!auth) throw new Error('Auth not supplied');
     try {
-      const error = await auth.registerWithEmailAndPassword(name, email, password, file);
+      const error = await auth.registerWithEmailAndPassword(
+        name,
+        email,
+        password,
+        file,
+        (message) => {
+          if (message) toast.error(message);
+        }
+      );
       if (error) {
         toast.error(error);
       } else {
