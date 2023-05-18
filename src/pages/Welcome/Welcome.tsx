@@ -39,7 +39,11 @@ export const Welcome = ({ routes }: { routes: RouteConfig[] }): ReactElement => 
               display: 'flex',
               gap: langMode ? 2 : 5,
               justifyContent: 'center',
-              flexDirection: langMode ? 'column' : 'row',
+              flexDirection: {
+                xs: langMode ? 'column' : 'row',
+                sm: 'row',
+                md: langMode ? 'column' : 'row',
+              },
             }}
           >
             {currentUser ? (
@@ -54,9 +58,9 @@ export const Welcome = ({ routes }: { routes: RouteConfig[] }): ReactElement => 
                   component={RouterLink}
                   to={page.path}
                   size="large"
-                  // sx={{
-                  //   fontSize: { xs: '8px', sm: '8px', md: '14px' },
-                  // }}
+                  sx={{
+                    lineHeight: 'normal',
+                  }}
                 >
                   {page.menuText}
                 </Button>
