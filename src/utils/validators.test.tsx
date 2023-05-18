@@ -1,0 +1,48 @@
+import { validateEmail } from './validators';
+
+describe('Valdidators', () => {
+  it.each([
+    ['@', false],
+    ['john.doe@example.com', true],
+    ['jane_smith@example.com', true],
+    ['info123@example.com', true],
+    ['user1234@example.com', true],
+    ['test.email@example.com', true],
+    ['john+doe@example.com', true],
+    ['李雷@例子.广告', true],
+    ['катя@пример.рф', true],
+    ['山田@例子.コム', true],
+    ['email@domain.com', true],
+    ['firstname.lastname@domain.com', true],
+    ['email@subdomain.domain.com', true],
+    ['firstname+lastname@domain.com', true],
+    ['email@123.123.123.123', true],
+    ['email@[123.123.123.123]', true],
+    ['“email”@domain.com', true],
+    ['1234567890@domain.com', true],
+    ['email@domain-one.com', true],
+    ['_______@domain.com', true],
+    ["!#$%&'*+-/=?^_`{|}~@domain.com", true],
+    ['email@domain.name', true],
+    ['email@domain.co.jp', true],
+    ['firstname-lastname@domain.com', true],
+    ['plain address', false],
+    ['#@%^%#$@#$@#.com', false],
+    ['@domain.com', false],
+    ['Joe Smith <email@domain.com>', false],
+    ['email.domain.com', false],
+    ['email@domain@domain.com', false],
+    ['.email@domain.com', false],
+    ['email.@domain.com', false],
+    ['email..email@domain.com', false],
+    ['email@-domain.com', false],
+    ['-email@domain.com', false],
+    ['.email@domain.com', false],
+    ['email@111.222.333.44444', false],
+    ['email@domain..com', false],
+    ['abc#def@mail.com', true],
+    ['abc.def@mail#archive.com', false],
+  ])('Expect e-mail %s to be %s', (email: string, valid: boolean) => {
+    expect(validateEmail(email)).toBe(valid);
+  });
+});
