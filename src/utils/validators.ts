@@ -50,7 +50,7 @@ export function validateEmail(email: string): boolean {
 export function validatePassword(password: string): boolean {
   const matchLetter = /\p{L}/u;
   const matchDigit = /\d/;
-  const specialChar = /\p{P}/u;
+  const specialChar = /[^\p{L}\d]/u;
 
   return (
     password.length >= 8 &&

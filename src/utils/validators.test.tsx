@@ -1,4 +1,4 @@
-import { validateEmail } from './validators';
+import { validateEmail, validatePassword } from './validators';
 
 describe('Valdidators', () => {
   it.each([
@@ -48,5 +48,19 @@ describe('Valdidators', () => {
     ['Abc.def@[2001:db8:c000:221::]', true],
   ])('Expect e-mail %s to be %s', (email: string, valid: boolean) => {
     expect(validateEmail(email)).toBe(valid);
+  });
+
+  it.each([
+    ['', false],
+    ['Aa09!@#', false],
+    ['012345%a', true],
+    ['01234!ņБ', true],
+    ['01234+ņБ', true],
+    ['ņБņБ7,ņБ', true],
+    ['abcd7$ef', true],
+    ['ņБņБББ,ņБ', false],
+    ['ņБņБББ6ņБ', false],
+  ])('Expect password %s to be %s', (password: string, valid: boolean) => {
+    expect(validatePassword(password)).toBe(valid);
   });
 });
