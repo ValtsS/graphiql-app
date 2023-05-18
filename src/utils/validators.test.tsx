@@ -20,7 +20,7 @@ describe('Valdidators', () => {
     ['email@[123.123.123.123]', true],
     ['“email”@domain.com', true],
     ['1234567890@domain.com', true],
-    ['email@domain-one.com', true],
+    ['email@Domain-one.com', true],
     ['_______@domain.com', true],
     ["!#$%&'*+-/=?^_`{|}~@domain.com", true],
     ['email@domain.name', true],
