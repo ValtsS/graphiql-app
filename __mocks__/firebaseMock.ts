@@ -10,6 +10,7 @@ export class FirebaseMock implements FirebaseAuth {
   public reg = jest.fn();
   public signIn = jest.fn();
   public logOut = jest.fn();
+  public upload = jest.fn();
 
   observers: OnAuthChange[] = [];
 
@@ -21,7 +22,7 @@ export class FirebaseMock implements FirebaseAuth {
     uploadResult: (error: string | null) => void
   ): Promise<string | null> {
     const error = this.reg(name, email, password, file);
-    uploadResult(error);
+    if (file) uploadResult(this.upload());
     if (!error) return this.signInWithEmailAndPassword(email, password);
     return error;
   }
