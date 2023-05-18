@@ -62,6 +62,7 @@ describe('Registration', () => {
 
     expect(mockToasterSuccess).toHaveBeenCalledTimes(0);
     expect(mockToasterError).toBeCalledTimes(1);
+    expect(mockToasterError).toHaveBeenLastCalledWith(['Bad name']);
   });
 
   it('should handle error in firebase', async () => {
