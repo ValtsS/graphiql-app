@@ -17,6 +17,7 @@ export function splitEmail(email: string) {
 
 export function convertIDNAEmailToASCII(email: string): string {
   const { localPart, domainPart } = splitEmail(email);
+
   const asciiLocalPart = toASCII(localPart);
   const asciiDomainPart = toASCII(domainPart);
 
