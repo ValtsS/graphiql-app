@@ -23,14 +23,14 @@ describe('Header', () => {
     auth.signIn.mockReturnValueOnce(null);
 
     await defaultRender(auth);
-    expect(screen.getAllByText(new RegExp('Welcome', 'i')).length).toBe(2);
-    expect(screen.queryAllByText(new RegExp('Main', 'i')).length).toBe(0);
-    expect(screen.queryAllByText(new RegExp('Sign out', 'i')).length).toBe(0);
+    expect(screen.getAllByText(/Welcome/i).length).toBe(2);
+    expect(screen.queryAllByText(/Main/i).length).toBe(0);
+    expect(screen.queryAllByText(/Sign out/i).length).toBe(0);
 
     const language = screen.getByRole('checkbox');
     await userEvent.click(language);
 
-    expect(screen.getAllByText(new RegExp('Приветствие', 'i')).length).toBe(2);
+    expect(screen.getAllByText(/Приветствие/i).length).toBe(2);
   });
 
   it('render for logged in', async () => {
@@ -45,9 +45,9 @@ describe('Header', () => {
     auth.lastUser = auth.currentUser;
 
     await defaultRender(auth);
-    expect(screen.getAllByText(new RegExp('Welcome', 'i')).length).toBe(2);
-    expect(screen.getAllByText(new RegExp('Main', 'i')).length).toBe(2);
-    expect(screen.getAllByText(new RegExp('Sign out', 'i')).length).toBe(2);
+    expect(screen.getAllByText(/Welcome/i).length).toBe(2);
+    expect(screen.getAllByText(/Main/i).length).toBe(2);
+    expect(screen.getAllByText(/Sign out/i).length).toBe(2);
 
     const logout = screen.getByRole('button', { name: 'Sign Out' });
     await userEvent.click(logout);
