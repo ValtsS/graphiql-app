@@ -8,13 +8,15 @@ export function validateName(name: string): boolean {
 function isHostValid(hostname: string): boolean {
   if (isIP(hostname) > 0) return true;
 
-  if (/^\[.+\]$/.test(hostname) && isIP(hostname.substring(1, hostname.length - 2)) > 0)
+  if (/^\[.+\]$/.test(hostname) && isIP(hostname.substring(1, hostname.length - 1)) > 0)
     return true;
 
   if (!/^[a-zA-Z0-9-.]{1,253}$/.test(hostname)) return false;
 
   const mightBeIpV4 = hostname.split('.').some((label: string) => /^\d+$/.test(label));
   if (mightBeIpV4) return isIP(hostname) > 0;
+
+  if (hostname.includes(':')) return isIP(hostname) >= 6;
 
   return hostname.split('.').every((label: string) => {
     if (!/^([a-zA-Z0-9-]{1,63})$/.test(label)) return false;
