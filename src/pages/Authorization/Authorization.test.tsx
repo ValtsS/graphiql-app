@@ -81,7 +81,7 @@ describe('Authorization', () => {
     await waitRender();
   }
 
-  it('should throw exception', async () => {
+  it('should throw an exception', async () => {
     const badPass = 'badpassword';
     await defaultRender(null);
     await fillNameAndPass(testEmail, badPass);

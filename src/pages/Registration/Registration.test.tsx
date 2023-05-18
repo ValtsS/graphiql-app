@@ -64,8 +64,30 @@ describe('Registration', () => {
     expect(mockToasterError).toBeCalledTimes(1);
   });
 
-  async function defaultRender(auth: FirebaseMock) {
-    act(() =>
+  it('should handle error in firebase', async () => {
+    const auth = SetupFirebaseMock(false);
+    await defaultRender(auth);
+    auth.reg.mockRejectedValue(new Error('Firebase down'));
+    await fillBoxes();
+    expect(auth.reg).toBeCalledTimes(1);
+    expect(auth.reg).toHaveBeenLastCalledWith('Skave', testEmail, MOCK_PASS_VALID, null);
+
+    expect(mockToasterSuccess).toHaveBeenCalledTimes(0);
+    expect(mockToasterError).toBeCalledTimes(1);
+    expect(mockToasterError).toHaveBeenLastCalledWith(['Something went wrong']);
+  });
+
+  it('should throw exception', async () => {
+    try {
+      await defaultRender(null);
+      expect(true).toBe(false);
+    } catch {
+      expect(true).toBe(true);
+    }
+  });
+
+  async function defaultRender(auth: FirebaseMock | null) {
+    await act(() =>
       render(
         <AppContextProvider apiClient={null} auth={auth} routing={defaultRoutes}>
           <BrowserRouter>
