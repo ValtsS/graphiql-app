@@ -3,16 +3,8 @@ import { FirebaseApp, initializeApp } from '@firebase/app';
 import { FirebaseAuthReal } from './firebase';
 import {
   User,
-  createUserWithEmailAndPassword,
-  getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-  updateProfile,
   UserCredential,
 } from '@firebase/auth';
-import { doc, getFirestore, setDoc } from '@firebase/firestore';
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from '@firebase/storage';
 import { waitRender } from '@/../__mocks__/test-utils';
 import { waitFor } from '@testing-library/react';
 
