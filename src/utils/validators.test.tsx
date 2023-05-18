@@ -39,6 +39,7 @@ describe('Valdidators', () => {
     ['-email@domain.com', false],
     ['.email@domain.com', false],
     ['email@111.222.333.44444', false],
+    ['email@111.222.111.222.11', false],
     ['email@domain..com', false],
     ['abc#def@mail.com', true],
     ['abc.def@mail#archive.com', false],

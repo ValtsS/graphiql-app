@@ -13,17 +13,12 @@ function isHostValid(hostname: string): boolean {
 
   if (!/^[a-zA-Z0-9-.]{1,253}$/.test(hostname)) return false;
 
+  const mightBeIpV4 = hostname.split('.').some((label: string) => /^\d+$/.test(label));
+  if (mightBeIpV4) return isIP(hostname) > 0;
+
   return hostname.split('.').every((label: string) => {
     if (!/^([a-zA-Z0-9-]{1,63})$/.test(label)) return false;
-
     if (label.startsWith('-') || label.endsWith('-')) return false;
-
-    if (/^\d+$/.test(label)) {
-      const part = parseInt(label, 10);
-      if (isNaN(part)) return false;
-      if (part > 255) return false;
-    }
-
     return true;
   });
 }
