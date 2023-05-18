@@ -48,7 +48,6 @@ describe('Authorization', () => {
     expect(mockToasterSuccess).toHaveBeenCalledTimes(1);
     expect(mockToasterSuccess).toHaveBeenLastCalledWith(['Successfully logged in']);
     expect(mockToasterError).toBeCalledTimes(0);
-
   });
 
   it('Invalid Authorization submited', async () => {

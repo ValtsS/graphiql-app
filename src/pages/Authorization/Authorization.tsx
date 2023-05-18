@@ -7,9 +7,15 @@ import { useTranslation } from 'react-i18next';
 import { useAppContext } from '@/provider';
 import useAuth from '@/custom-hooks/useAuth';
 import { toast } from 'react-toastify';
+import { useValidator } from '@/custom-hooks/useValidator';
+import { validateEmail } from '@/utils/validators';
 
 export const Authorization = (): ReactElement => {
-  const [email, setEmail] = useState('');
+  const {
+    isValid: isEmailValid,
+    val: email,
+    valChange: setEmail,
+  } = useValidator({ validator: validateEmail });
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
@@ -72,6 +78,7 @@ export const Authorization = (): ReactElement => {
                 autoFocus
                 value={email}
                 inputProps={{ 'data-testid': 'editEmail' }}
+                error={!isEmailValid}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
@@ -93,6 +100,7 @@ export const Authorization = (): ReactElement => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2, color: '#fff' }}
                 onClick={(e) => handleSignUp(e)}
+                disabled={!isEmailValid}
               >
                 {t('SignIn')}
               </Button>
