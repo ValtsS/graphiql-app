@@ -34,4 +34,12 @@
 .Editor {
   min-height: 40vh;
   text-align: left;
+  border-radius: 5px;
+}
+
+.monaco-editor,
+.monaco-editor .selections-layer,
+.monaco-editor .selected-text,
+.monaco-editor .overflow-guard {
+  border-radius: 8px !important;
 }

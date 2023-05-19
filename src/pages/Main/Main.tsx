@@ -70,14 +70,74 @@ export const Main = (): ReactElement => {
   const errors = editorState?.queryError !== undefined;
 
   return (
-    <Grid container>
-      <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-        <EditorVariables uuid={VARIABLE_EDITOR_UUID} />
+    <Box sx={{ padding: '8px', background: '#00999924', borderRadius: '8px', mb: 5 }}>
+      {/* panel */}
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Typography
+          variant="h6"
+          sx={{
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+            background: '#00999929',
+            width: 'fit-content',
+            padding: '5px',
+            borderRadius: '5px 0px 0px 5px',
+            fontSize: '14px',
+          }}
+        >
+          {mainState.endpoint}
+        </Typography>
+        <Button
+          variant="contained"
+          size="small"
+          onClick={changeEndpointClick}
+          sx={{ borderRadius: '0px 5px 5px 0px' }}
+        >
+          {t('Change')}
+        </Button>
+      </Box>
+
+      <Grid item xs={4} sx={{ display: 'flex' }}>
+        <Button
+          variant="contained"
+          size="small"
+          onClick={sendQueryClick}
+          disabled={processing || errors}
+        >
+          {t('Query')}
+        </Button>
       </Grid>
-      <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-        <EditorQueryGraphQL uuid={QUERY_EDITOR_UUID} />
+      {/* <Grid item xs={4}>
+        
+      </Grid> */}
+
+      <Grid item xs={12} mt={2}>
+        <Box sx={{ pl: '1rem', background: 'white' }}>
+          <DocumentPageComponent />
+        </Box>
       </Grid>
-      <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
+
+      {/* panel end */}
+      <Grid container spacing={1}>
+        <Grid item xs={12} md={6}>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <EditorQueryGraphQL uuid={QUERY_EDITOR_UUID} />
+            </Grid>
+            <Grid item xs={12}>
+              <EditorVariables uuid={VARIABLE_EDITOR_UUID} />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          {/* <Grid item xs={12}> */}
+          {processing && <CircularProgress size={'1.5rem'} />}
+          <Typography variant="inherit">{editorState.queryError}</Typography>
+          {/* </Grid> */}
+          <EditorResponse />
+        </Grid>
+
+        {/* <Grid item xs={12} md={4}>
         <Typography variant="h6" sx={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
           {mainState.endpoint}
         </Typography>
@@ -104,14 +164,55 @@ export const Main = (): ReactElement => {
             </Box>
           </Grid>
         </Grid>
-      </Grid>
-      <Grid item xs={12} borderColor={'red'} border={'1px solid'}>
+      </Grid> */}
+        {/* <Grid item xs={12}>
         {processing && <CircularProgress size={'1.5rem'} />}
         <Typography variant="inherit">{editorState.queryError}</Typography>
+      </Grid> */}
       </Grid>
-      <Grid item xs={12} borderColor={'red'} border={'1px solid'}>
-        <EditorResponse />
-      </Grid>
-    </Grid>
+    </Box>
+    // <Grid container>
+    //   <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
+    //     <EditorVariables uuid={VARIABLE_EDITOR_UUID} />
+    //   </Grid>
+    //   <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
+    //     <EditorQueryGraphQL uuid={QUERY_EDITOR_UUID} />
+    //   </Grid>
+    //   <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
+    //     <Typography variant="h6" sx={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
+    //       {mainState.endpoint}
+    //     </Typography>
+    //     <Grid container sx={{ justifyContent: 'space-around' }}>
+    //       <Grid item xs={4} sx={{ display: 'flex' }}>
+    //         <Button
+    //           variant="contained"
+    //           size="small"
+    //           onClick={sendQueryClick}
+    //           disabled={processing || errors}
+    //         >
+    //           {t('Query')}
+    //         </Button>
+    //       </Grid>
+    //       <Grid item xs={4}>
+    //         <Button variant="contained" size="small" onClick={changeEndpointClick}>
+    //           {t('Change')}
+    //         </Button>
+    //       </Grid>
+
+    //       <Grid item xs={12} mt={2}>
+    //         <Box sx={{ pl: '1rem', background: 'white' }}>
+    //           <DocumentPageComponent />
+    //         </Box>
+    //       </Grid>
+    //     </Grid>
+    //   </Grid>
+    //   <Grid item xs={12} borderColor={'red'} border={'1px solid'}>
+    //     {processing && <CircularProgress size={'1.5rem'} />}
+    //     <Typography variant="inherit">{editorState.queryError}</Typography>
+    //   </Grid>
+    //   <Grid item xs={12} borderColor={'red'} border={'1px solid'}>
+    //     <EditorResponse />
+    //   </Grid>
+    // </Grid>
   );
 };

@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Uri, editor } from 'monaco-editor';
 import customTheme from './editorTheme';
-import styles from './editor.module.css';
+import './editor.css';
+import { Box } from '@mui/system';
 
 interface Props {
   language: string;
@@ -53,7 +54,15 @@ export const Editor = (props: Props) => {
     return () => editorControl?.dispose();
   }, [props.language, props.model, props.readOnly, props.hoverEnabled, editorControl]);
 
-  return <div className={styles.Editor} ref={monacoEl}></div>;
+  return (
+    <Box
+      ref={monacoEl}
+      className="Editor"
+      sx={{
+        boxShadow: ' 0px 5px 10px 2px rgba(34, 60, 80, 0.2)',
+      }}
+    />
+  );
 };
 
 export function getOrCreateModel(uri: string, value: string): editor.ITextModel {
