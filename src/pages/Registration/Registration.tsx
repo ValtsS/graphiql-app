@@ -1,12 +1,10 @@
 import { SideBar } from '@/components';
-import useAuth from '@/custom-hooks/useAuth';
 import { FieldName, useSingupValidation } from '@/custom-hooks/useSingupValidation';
 import { useAppContext } from '@/provider';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
 import React, { MouseEvent, ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import style from './Registration.module.css';
 
