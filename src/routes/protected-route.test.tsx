@@ -3,9 +3,9 @@ import { waitRender } from '@/../__mocks__/test-utils';
 import { AppContextProvider } from '@/provider';
 import { render } from '@testing-library/react';
 import React from 'react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { ProtectedRoute } from './protected-route';
 import { AccessMode } from './routes-config';
-import { BrowserRouter, MemoryRouter, Route, Routes } from 'react-router-dom';
 
 describe('Protected Route', () => {
   const mockChildrenText = 'Test Child Component';
