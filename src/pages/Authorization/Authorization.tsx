@@ -2,40 +2,48 @@ import React, { ReactElement, useEffect, useState, MouseEvent } from 'react';
 import { Button, Grid, Typography, Paper, Box, TextField, Link } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import style from '../Registration/Registration.module.css';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '@/core/firebase';
-import { signInWithEmailAndPassword } from '@firebase/auth';
-import { toast } from 'react-toastify';
 import { SideBar } from '@/components';
 import { useTranslation } from 'react-i18next';
+import { useAppContext } from '@/provider';
+import useAuth from '@/custom-hooks/useAuth';
+import { toast } from 'react-toastify';
+import { useValidator } from '@/custom-hooks/useValidator';
+import { validateEmail } from '@/utils/validators';
 
 export const Authorization = (): ReactElement => {
-  const [email, setEmail] = useState('');
+  const {
+    isValid: isEmailValid,
+    val: email,
+    valChange: setEmail,
+  } = useValidator({ validator: validateEmail });
   const [password, setPassword] = useState('');
-  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
+
+  const { auth } = useAppContext();
+  const { currentUser } = useAuth();
+  const { t } = useTranslation();
 
   const handleSignUp = async (e: MouseEvent) => {
     e.preventDefault();
-
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      toast.success('Successefully logged in');
-      navigate('/main');
+      if (!auth) throw new Error('Missing auth');
+
+      const error = await auth.signInWithEmailAndPassword(email, password);
+      if (error) {
+        toast.error(error);
+      } else {
+        toast.success(t('Successfully logged in'));
+        navigate('/main');
+      }
     } catch (err) {
-      toast.error('something went wrong');
-      console.log(err);
+      toast.error(t('Something went wrong'));
     }
   };
 
   useEffect(() => {
-    if (loading) {
-      return;
-    }
-    if (user) navigate('/main');
-  }, [user, loading, navigate]);
-
-  const { t } = useTranslation();
+    if (!auth) return;
+    if (currentUser) navigate('/main');
+  }, [auth, navigate, currentUser]);
 
   const data = {
     greet: t('Hello'),
@@ -68,6 +76,8 @@ export const Authorization = (): ReactElement => {
                 autoComplete="email"
                 autoFocus
                 value={email}
+                inputProps={{ 'data-testid': 'editEmail' }}
+                error={!isEmailValid}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
@@ -80,6 +90,7 @@ export const Authorization = (): ReactElement => {
                 id="password"
                 autoComplete="current-password"
                 value={password}
+                inputProps={{ 'data-testid': 'editPassword' }}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <Button
@@ -88,15 +99,11 @@ export const Authorization = (): ReactElement => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2, color: '#fff' }}
                 onClick={(e) => handleSignUp(e)}
+                disabled={!isEmailValid}
               >
                 {t('SignIn')}
               </Button>
               <Grid container sx={{ display: 'flex', justifyContent: 'space-around' }}>
-                {/* <Grid item>
-                  <Link href="#" variant="body2">
-                  {t('Forgot')}
-                  </Link>
-                </Grid> */}
                 <Grid item>
                   <Link variant="body2" component={RouterLink} to="/reg">
                     {t(`Don'tHave`)}

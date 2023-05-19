@@ -35,3 +35,4 @@ junit.xml
 # trash from vite build
 src/**/*.js
 .vite
+i18output.json
