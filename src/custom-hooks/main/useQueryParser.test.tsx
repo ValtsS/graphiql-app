@@ -69,7 +69,7 @@ describe('useQueryparser', () => {
 
   async function defaultRender(schema: GraphQLSchema) {
     render(
-      <AppContextProvider apiClient={null}>
+      <AppContextProvider apiClient={null} auth={null}>
         <Provider store={store}>
           <TestQueryParser schema={schema} />
         </Provider>

@@ -1,8 +1,5 @@
-import { logout } from '@/core/firebase';
 import useAuth from '@/custom-hooks/useAuth';
-import { RouteConfig } from '@/routes/routes-config';
-import { SwitchMode } from './langSwitch';
-import { useTranslation } from 'react-i18next';
+import { useAppContext } from '@/provider';
 import HiveIcon from '@mui/icons-material/Hive';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
@@ -21,8 +18,12 @@ import {
   Typography,
 } from '@mui/material';
 import React, { MouseEvent, ReactElement, useLayoutEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import './header.css';
+import { SwitchMode } from './langSwitch';
+import { DisplayMode, RouteConfig, filterByMode } from '@/routes/routes-config';
 
 interface Props {
   routesConfig: RouteConfig[];
@@ -43,6 +44,7 @@ export const Header = (props: Props): ReactElement => {
     setAnchorElNav(null);
   };
 
+  const { auth } = useAppContext();
   const { currentUser } = useAuth();
 
   useLayoutEffect(() => {
@@ -54,12 +56,23 @@ export const Header = (props: Props): ReactElement => {
     return () => window.removeEventListener('scroll', update);
   });
 
-  const headerMenu = routesConfig.filter((el) => !el.displayInRegistration);
-  const signMenu = routesConfig.filter((el) => el.displayInRegistration);
+  const routes = filterByMode(routesConfig, [
+    DisplayMode.Always,
+    currentUser ? DisplayMode.LoggedIn : DisplayMode.Guest,
+  ]);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
+  const headerMenu = routes.filter((el) => !el.displayInRegistration);
+  const signMenu = routes.filter((el) => el.displayInRegistration);
+
+  const handleLogout = async () => {
+    if (auth) {
+      const error = await auth.logout();
+      if (error) toast.error(error);
+      else {
+        toast.success('Logged out');
+        navigate('/');
+      }
+    }
   };
 
   return (

@@ -1,18 +1,18 @@
+import { useAppContext } from '@/provider';
+import { User } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import { User, onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/core/firebase';
 
 const useAuth = () => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const { auth } = useAppContext();
+  const [currentUser, setCurrentUser] = useState<User | null>(auth?.lastUser ?? null);
+
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
+    if (auth) {
+      auth.onAuthStateChange((user) => {
         setCurrentUser(user);
-      } else {
-        setCurrentUser(null);
-      }
-    });
-  });
+      });
+    }
+  }, [auth]);
   return { currentUser };
 };
 

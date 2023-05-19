@@ -4,42 +4,109 @@ import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import { Authorization } from './Authorization';
 import { waitRender } from '@/../__mocks__/test-utils';
+import { AppContextProvider } from '@/provider';
+import { FirebaseMock, MOCK_PASS_VALID, SetupFirebaseMock } from '@/../__mocks__/firebaseMock';
+import { defaultRoutes } from '@/routes';
+
+const mockToasterError = jest.fn();
+const mockToasterSuccess = jest.fn();
+
+jest.mock('react-toastify', () => ({
+  toast: {
+    error: jest.fn().mockImplementation((...args) => mockToasterError(args)),
+    success: jest.fn().mockImplementation((...args) => mockToasterSuccess(args)),
+  },
+}));
 
 describe('Authorization', () => {
-  it('Authorization renders correctly', async () => {
-    await defaultRender();
+  const testEmail = 'user07@gmail.com';
 
-    const textboxEmail = screen.getByRole('textbox', { name: 'Email' });
+  beforeEach(() => {});
+
+  it('Authorization renders correctly', async () => {
+    const auth = SetupFirebaseMock(false);
+    await defaultRender(auth);
+
+    const textboxEmail = screen.getByTestId('editEmail');
     expect(textboxEmail).toBeInTheDocument;
 
-    const textboxPassword = screen.getByLabelText('Password *');
+    const textboxPassword = screen.getByTestId('editPassword');
     expect(textboxPassword).toBeInTheDocument;
   });
 
-  it('Authorization submited', async () => {
-    await defaultRender();
+  it('Valid Authorization submited', async () => {
+    const auth = SetupFirebaseMock(false);
+    await defaultRender(auth);
+    await fillNameAndPass(testEmail, MOCK_PASS_VALID);
 
-    const textboxEmail = screen.getByRole('textbox', { name: 'Email' });
-    await userEvent.type(textboxEmail, 'user07@gmail.com');
-    expect((textboxEmail as HTMLInputElement).value).toBe('user07@gmail.com');
+    const btnSignIn = screen.getByRole('button', { name: 'Sign In' });
+    await userEvent.click(btnSignIn);
+    await waitRender();
 
-    const textboxPassword = screen.getByLabelText('Password *');
-    await userEvent.type(textboxPassword, 'myPassword');
-    expect((textboxPassword as HTMLInputElement).value).toBe('myPassword');
-
-    const btnSignUp = screen.getByRole('button', { name: 'SignIn' });
-    userEvent.click(btnSignUp);
+    expect(auth.signIn).toBeCalledTimes(1);
+    expect(auth.signIn).toHaveBeenLastCalledWith(testEmail, MOCK_PASS_VALID);
+    expect(mockToasterSuccess).toHaveBeenCalledTimes(1);
+    expect(mockToasterSuccess).toHaveBeenLastCalledWith(['Successfully logged in']);
+    expect(mockToasterError).toBeCalledTimes(0);
   });
 
-  async function defaultRender() {
-    act(() =>
+  it('Invalid Authorization submited', async () => {
+    const auth = SetupFirebaseMock(false);
+    const badPass = 'badpassword';
+    await defaultRender(auth);
+    await fillNameAndPass(testEmail, badPass);
+
+    const btnSignIn = screen.getByRole('button', { name: 'Sign In' });
+    await userEvent.click(btnSignIn);
+    await waitRender();
+    expect(auth.signIn).toBeCalledTimes(1);
+
+    expect(auth.signIn).toHaveBeenLastCalledWith(testEmail, badPass);
+    expect(mockToasterSuccess).toHaveBeenCalledTimes(0);
+    expect(mockToasterError).toBeCalledTimes(1);
+    expect(mockToasterError).toHaveBeenLastCalledWith(['Invalid password']);
+  });
+
+  async function defaultRender(auth: FirebaseMock | null) {
+    await act(() =>
       render(
-        <BrowserRouter>
-          <Authorization />
-        </BrowserRouter>
+        <AppContextProvider apiClient={null} auth={auth} routing={defaultRoutes}>
+          <BrowserRouter>
+            <Authorization />
+          </BrowserRouter>
+        </AppContextProvider>
       )
     );
 
+    await waitRender();
+  }
+
+  it('should throw an exception', async () => {
+    const badPass = 'badpassword';
+    await defaultRender(null);
+    await fillNameAndPass(testEmail, badPass);
+
+    const btnSignIn = screen.getByRole('button', { name: 'Sign In' });
+    try {
+      await userEvent.click(btnSignIn);
+      await waitRender();
+      expect(true).toBe(false);
+    } catch {
+      expect(true).toBe(true);
+    }
+
+    expect(mockToasterError).toBeCalledTimes(1);
+    expect(mockToasterError).toHaveBeenLastCalledWith(['Something went wrong']);
+  });
+
+  async function fillNameAndPass(testEmail: string, testPassword: string) {
+    const textboxEmail = screen.getByTestId('editEmail');
+    await userEvent.type(textboxEmail, testEmail);
+    expect((textboxEmail as HTMLInputElement).value).toBe(testEmail);
+
+    const textboxPassword = screen.getByTestId('editPassword');
+    await userEvent.type(textboxPassword, testPassword);
+    expect((textboxPassword as HTMLInputElement).value).toBe(testPassword);
     await waitRender();
   }
 });

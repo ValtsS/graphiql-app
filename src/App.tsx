@@ -1,4 +1,4 @@
-import { Crash } from '@/pages';
+import { Crash } from '@/pages/Crash';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';

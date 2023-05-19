@@ -1,37 +1,52 @@
-import React, { MouseEvent, ReactElement, useEffect, useState } from 'react';
-import { Button, Grid, Typography, Paper, Box, TextField } from '@mui/material';
+import { SideBar } from '@/components';
+import useAuth from '@/custom-hooks/useAuth';
+import { FieldName, useSingupValidation } from '@/custom-hooks/useSingupValidation';
+import { useAppContext } from '@/provider';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
-import { useNavigate } from 'react-router-dom';
-import style from './Registration.module.css';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, registerWithEmailAndPassword } from '@/core/firebase';
-import { toast } from 'react-toastify';
-import { SideBar } from '../../components';
+import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
+import React, { MouseEvent, ReactElement, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import style from './Registration.module.css';
 
 export const Registration = (): ReactElement => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState<string>('');
-  const [name, setName] = useState<string>('');
+  const { email, emailChange, name, nameChange, password, passwordChange, isValid } =
+    useSingupValidation();
   const [file, setFile] = useState<File | null>(null);
-  const [user, loading] = useAuthState(auth);
+
+  const { auth } = useAppContext();
+  const { currentUser } = useAuth();
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
   const register = async (e: MouseEvent) => {
     e.preventDefault();
+    if (!auth) throw new Error('Auth not supplied');
     try {
-      await registerWithEmailAndPassword(name, email, password, file);
-      toast.success('Sign up');
+      const error = await auth.registerWithEmailAndPassword(
+        name,
+        email,
+        password,
+        file,
+        (message) => {
+          if (message) toast.error(message);
+        }
+      );
+      if (error) {
+        toast.error(error);
+      } else {
+        toast.success(t('Sign up succeeded'));
+      }
     } catch (err) {
-      toast.error('Something went wrong');
-      console.log(err);
+      toast.error(t('Something went wrong'));
     }
   };
-  useEffect(() => {
-    if (loading) return;
-    if (user) navigate('/main', { replace: true });
-  }, [user, loading, navigate]);
 
-  const { t } = useTranslation();
+  useEffect(() => {
+    if (!auth) return;
+    if (currentUser) navigate('/main');
+  }, [auth, navigate, currentUser]);
 
   const data = {
     greet: t('WelcomeBack'),
@@ -65,7 +80,10 @@ export const Registration = (): ReactElement => {
                 name="userName"
                 aria-label="textbox-name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                inputProps={{ 'data-testid': 'editName' }}
+                error={!isValid?.has(FieldName.Name)}
+                helperText={t('Name needs to be at least 3 characters')}
+                onChange={(e) => nameChange(e.target.value)}
               />
               <input
                 accept="image/*"
@@ -90,7 +108,9 @@ export const Registration = (): ReactElement => {
                 name="email"
                 aria-label="textbox-email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                inputProps={{ 'data-testid': 'editEmail' }}
+                error={!isValid?.has(FieldName.Email)}
+                onChange={(e) => emailChange(e.target.value)}
               />
               <TextField
                 margin="normal"
@@ -102,10 +122,14 @@ export const Registration = (): ReactElement => {
                 id="password"
                 aria-label="textbox-password"
                 value={password}
+                helperText={t(
+                  'minimum 8 symbols, at least one letter, one digit, one special character'
+                )}
+                error={!isValid?.has(FieldName.Password)}
                 inputProps={{
-                  pattern: '(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{8,}',
+                  'data-testid': 'editPassword',
                 }}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => passwordChange(e.target.value)}
               />
               <Button
                 type="submit"
@@ -113,6 +137,7 @@ export const Registration = (): ReactElement => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2, color: '#fff' }}
                 onClick={(e) => register(e)}
+                disabled={isValid?.size !== 3}
               >
                 {t('SignUp')}
               </Button>
