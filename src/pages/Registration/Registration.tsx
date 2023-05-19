@@ -43,11 +43,6 @@ export const Registration = (): ReactElement => {
     }
   };
 
-  useEffect(() => {
-    if (!auth) return;
-    if (currentUser) navigate('/main');
-  }, [auth, navigate, currentUser]);
-
   const data = {
     greet: t('WelcomeBack'),
     desc: t('keepConnected'),

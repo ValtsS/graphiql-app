@@ -40,11 +40,6 @@ export const Authorization = (): ReactElement => {
     }
   };
 
-  useEffect(() => {
-    if (!auth) return;
-    if (currentUser) navigate('/main');
-  }, [auth, navigate, currentUser]);
-
   const data = {
     greet: t('Hello'),
     desc: t('personal'),
