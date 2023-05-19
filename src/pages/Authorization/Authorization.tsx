@@ -1,11 +1,10 @@
-import React, { ReactElement, useEffect, useState, MouseEvent } from 'react';
+import React, { ReactElement, useState, MouseEvent } from 'react';
 import { Button, Grid, Typography, Paper, Box, TextField, Link } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import style from '../Registration/Registration.module.css';
 import { SideBar } from '@/components';
 import { useTranslation } from 'react-i18next';
 import { useAppContext } from '@/provider';
-import useAuth from '@/custom-hooks/useAuth';
 import { toast } from 'react-toastify';
 import { useValidator } from '@/custom-hooks/useValidator';
 import { validateEmail } from '@/utils/validators';
@@ -20,7 +19,6 @@ export const Authorization = (): ReactElement => {
   const navigate = useNavigate();
 
   const { auth } = useAppContext();
-  const { currentUser } = useAuth();
   const { t } = useTranslation();
 
   const handleSignUp = async (e: MouseEvent) => {

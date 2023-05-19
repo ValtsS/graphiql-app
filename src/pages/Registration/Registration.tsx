@@ -4,7 +4,7 @@ import { FieldName, useSingupValidation } from '@/custom-hooks/useSingupValidati
 import { useAppContext } from '@/provider';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
-import React, { MouseEvent, ReactElement, useEffect, useState } from 'react';
+import React, { MouseEvent, ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -16,10 +16,8 @@ export const Registration = (): ReactElement => {
   const [file, setFile] = useState<File | null>(null);
 
   const { auth } = useAppContext();
-  const { currentUser } = useAuth();
   const { t } = useTranslation();
 
-  const navigate = useNavigate();
   const register = async (e: MouseEvent) => {
     e.preventDefault();
     if (!auth) throw new Error('Auth not supplied');
