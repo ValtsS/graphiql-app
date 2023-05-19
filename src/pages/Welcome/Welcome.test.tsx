@@ -30,7 +30,7 @@ describe('Welcome', () => {
     await waitRender();
     const developers = screen.getByText('Developers');
     expect(developers).toBeInTheDocument;
-    expect(screen.getByRole('link', { name: 'Main' })).toBeVisible();
+    expect(screen.getByRole('link', { name: 'Go to Main Page' })).toBeVisible();
   });
 
   function defaultRender(auth: FirebaseMock) {
