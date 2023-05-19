@@ -11,8 +11,10 @@ import { Link as RouterLink } from 'react-router-dom';
 export const Welcome = (): ReactElement => {
   const { currentUser } = useAuth();
   const { routing } = useAppContext();
-  const signMenu = routing?.filter((el) => el.displayInRegistration) ?? [];
   const { t } = useTranslation();
+
+  const signMenu =
+    routing?.filter((el) => (currentUser ? el.path === '/main' : el.displayInRegistration)) ?? [];
 
   return (
     <Container>
@@ -33,23 +35,17 @@ export const Welcome = (): ReactElement => {
 
         <Grid item xs={12} md={4} sx={{ gap: '50px', display: 'flex', flexDirection: 'column' }}>
           <Box sx={{ display: 'flex', gap: 5, justifyContent: 'center' }}>
-            {currentUser ? (
-              <Button variant="contained" component={RouterLink} to="/main">
-                {t('mainPage')}
+            {signMenu.map((page) => (
+              <Button
+                variant="contained"
+                key={page.uuid}
+                component={RouterLink}
+                to={page.path}
+                size="large"
+              >
+                {page.menuText}
               </Button>
-            ) : (
-              signMenu.map((page) => (
-                <Button
-                  variant="contained"
-                  key={page.uuid}
-                  component={RouterLink}
-                  to={page.path}
-                  size="large"
-                >
-                  {page.menuText}
-                </Button>
-              ))
-            )}
+            ))}
           </Box>
           <Typography sx={{ textAlign: 'left' }}>{t('description')}</Typography>
         </Grid>
