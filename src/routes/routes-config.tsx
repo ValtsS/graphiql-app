@@ -25,7 +25,7 @@ const regRoutes: RouteConfig[] = [
     uuid: uuidv4(),
     path: '/auth',
     element: () => (
-      <ProtectedRoute mode={AccessMode.Guest}>
+      <ProtectedRoute mode={AccessMode.Guest} redirectTo="/main">
         <Authorization />
       </ProtectedRoute>
     ),
@@ -38,7 +38,7 @@ const regRoutes: RouteConfig[] = [
     uuid: uuidv4(),
     path: '/reg',
     element: () => (
-      <ProtectedRoute mode={AccessMode.Guest}>
+      <ProtectedRoute mode={AccessMode.Guest} redirectTo="/main">
         <Registration />
       </ProtectedRoute>
     ),

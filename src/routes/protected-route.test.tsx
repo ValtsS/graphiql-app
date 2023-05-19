@@ -40,7 +40,7 @@ describe('Protected Route', () => {
             <Route
               path={'/auth'}
               element={
-                <ProtectedRoute mode={mode}>
+                <ProtectedRoute mode={mode} redirectTo="/">
                   <div>{mockChildrenText}</div>
                 </ProtectedRoute>
               }
