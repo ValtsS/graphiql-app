@@ -16,6 +16,7 @@ export interface RouteConfig {
   element: () => React.ReactNode;
   displayInMenu?: boolean;
   menuText?: React.ReactNode;
+  buttonText?: React.ReactNode;
   displayInRegistration?: boolean;
   displayMode: AccessMode;
 }
@@ -71,7 +72,8 @@ export const defaultRoutes: RouteConfig[] = [
       </ProtectedRoute>
     ),
     displayInMenu: true,
-    menuText: <Translation>{(t) => t('toMain')}</Translation>,
+    menuText: <Translation>{(t) => t('Main')}</Translation>,
+    buttonText: <Translation>{(t) => t('toMain')}</Translation>,
     displayMode: AccessMode.LoggedIn,
   },
   ...regRoutes,

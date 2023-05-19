@@ -43,7 +43,7 @@ export const Welcome = (): ReactElement => {
                 to={page.path}
                 size="large"
               >
-                {page.menuText}
+                {page.buttonText ?? page.menuText}
               </Button>
             ))}
           </Box>
