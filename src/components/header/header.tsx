@@ -23,7 +23,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import './header.css';
 import { SwitchMode } from './langSwitch';
-import { DisplayMode, RouteConfig, filterByMode } from '@/routes/routes-config';
+import { AccessMode, RouteConfig, filterByMode } from '@/routes/routes-config';
 
 interface Props {
   routesConfig: RouteConfig[];
@@ -57,8 +57,8 @@ export const Header = (props: Props): ReactElement => {
   });
 
   const routes = filterByMode(routesConfig, [
-    DisplayMode.Always,
-    currentUser ? DisplayMode.LoggedIn : DisplayMode.Guest,
+    AccessMode.Always,
+    currentUser ? AccessMode.LoggedIn : AccessMode.Guest,
   ]);
 
   const headerMenu = routes.filter((el) => !el.displayInRegistration);
