@@ -145,8 +145,13 @@ export const Header = (props: Props): ReactElement => {
                   ))
                 ) : (
                   <MenuItem onClick={handleCloseNavMenu}>
-                    <Link to="/" component={RouterLink} sx={{ textDecoration: 'none' }}>
-                      <Typography textAlign="center">Sign Out</Typography>
+                    <Link
+                      to="#"
+                      component={RouterLink}
+                      sx={{ textDecoration: 'none' }}
+                      onClick={handleLogout}
+                    >
+                      <Typography textAlign="center">{t('SignOut')}</Typography>
                     </Link>
                   </MenuItem>
                 )}
