@@ -101,6 +101,7 @@ export const Main = (): ReactElement => {
           disabled={processing || errors}
           color="inherit"
           sx={{ p: 0, ml: '15px' }}
+          data-testid='send-query-button'
         >
           <PlayCircleFilledWhiteOutlinedIcon fontSize="large" />
         </IconButton>
