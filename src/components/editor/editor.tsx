@@ -55,7 +55,9 @@ export const Editor = (props: Props) => {
         editorRef.current = null;
       }
     };
-  });
+    // This is a special case due to a way monaco editor handles create/dispose
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (editorRef.current) {
