@@ -8,16 +8,13 @@ jobs:
     timeout-minutes: 10
     strategy:
       fail-fast: false
-      matrix:
-        mode: [sonar]
     defaults:
       run:
-        working-directory: sonar
+        working-directory: build
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
-          path: ${{ matrix.mode }}
+          path: build
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -30,20 +27,26 @@ jobs:
         run: npm run coverage
       - name: Debug
         run: pwd && ls -la
+      - name: Cleanup
+        if: always()
+        run: |
+          pwd
+          cd .. && rm -rf ./build
 
   sonarqube:
     runs-on: [self-hosted, linux, x64]
-    needs: build-and-test
     strategy:
       fail-fast: false
-      matrix:
-        mode: [sonar]
     defaults:
       run:
         working-directory: sonar
     steps:
       - name: Debug
         run: pwd && ls -la
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          path: build
       - name: Sonarqube
         run: npm run sonar
       - name: Debug
@@ -59,10 +62,15 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
       - name: 'Show SonarQube Quality Gate Status value'
         run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
+      - name: Cleanup
+        if: always()
+        run: |
+          pwd
+          cd .. && rm -rf ./sonar
 
   deploy:
     runs-on: [self-hosted, linux, x64]
-    needs: sonarqube
+    needs: [build-and-test, sonarqube]
     if: |
       github.ref == 'refs/heads/main' ||
       github.ref == 'refs/heads/master' ||
@@ -75,16 +83,3 @@ jobs:
         run: |
           echo ${DEPLOY_REPO}
           echo ${{ secrets.GITHUB_TOKEN }}
-
-  cleanup:
-    runs-on: [self-hosted, linux, x64]
-    needs: deploy
-    defaults:
-      run:
-        working-directory: sonar
-    if: always()
-    steps:
-      - name: Cleanup
-        run: |
-          pwd
-          cd .. && rm -rf ./sonar
