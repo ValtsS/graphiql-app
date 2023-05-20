@@ -1,12 +1,10 @@
 import { SideBar } from '@/components';
-import useAuth from '@/custom-hooks/useAuth';
 import { FieldName, useSingupValidation } from '@/custom-hooks/useSingupValidation';
 import { useAppContext } from '@/provider';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
-import React, { MouseEvent, ReactElement, useEffect, useState } from 'react';
+import React, { MouseEvent, ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import style from './Registration.module.css';
 
@@ -16,10 +14,8 @@ export const Registration = (): ReactElement => {
   const [file, setFile] = useState<File | null>(null);
 
   const { auth } = useAppContext();
-  const { currentUser } = useAuth();
   const { t } = useTranslation();
 
-  const navigate = useNavigate();
   const register = async (e: MouseEvent) => {
     e.preventDefault();
     if (!auth) throw new Error('Auth not supplied');
@@ -42,11 +38,6 @@ export const Registration = (): ReactElement => {
       toast.error(t('Something went wrong'));
     }
   };
-
-  useEffect(() => {
-    if (!auth) return;
-    if (currentUser) navigate('/main');
-  }, [auth, navigate, currentUser]);
 
   const data = {
     greet: t('WelcomeBack'),
