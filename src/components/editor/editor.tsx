@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Uri, editor } from 'monaco-editor';
 import customTheme from './editorTheme';
 import './editor.css';
@@ -25,34 +25,61 @@ const MONACO_OPTIONS: editor.IEditorOptions = {
 };
 
 export const Editor = (props: Props) => {
-  const [editorControl, setEditorControl] = useState<editor.IStandaloneCodeEditor | null>(null);
   const monacoEl = useRef(null);
+  const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
   useEffect(() => {
     editor.defineTheme('customTheme', customTheme as never);
   }, []);
 
-  useEffect(() => {
-    if (monacoEl) {
-      setEditorControl((editorControl) => {
-        if (editorControl) return editorControl;
-        const newEditor = editor.create(monacoEl.current!, {
-          language: props.language,
-          theme: 'customTheme',
-          model: props.model,
-          ...MONACO_OPTIONS,
-          readOnly: props.readOnly,
-          hover: {
-            enabled: props.hoverEnabled,
-          },
-        });
-
-        return newEditor;
+  const init = () => {
+    if (monacoEl.current) {
+      editorRef.current = editor.create(monacoEl.current!, {
+        language: props.language,
+        theme: 'customTheme',
+        model: props.model,
+        ...MONACO_OPTIONS,
+        readOnly: props.readOnly,
+        hover: {
+          enabled: props.hoverEnabled,
+        },
       });
     }
+  };
 
-    return () => editorControl?.dispose();
-  }, [props.language, props.model, props.readOnly, props.hoverEnabled, editorControl]);
+  useEffect(() => {
+    init();
+    return () => {
+      if (editorRef.current) {
+        editorRef.current.dispose();
+        editorRef.current = null;
+      }
+    };
+  });
+
+  useEffect(() => {
+    if (editorRef.current) {
+      const model = editorRef.current.getModel();
+      if (model) editor.setModelLanguage(model, props.language);
+    }
+  }, [props.language]);
+
+  useEffect(() => {
+    if (editorRef.current && props.model) {
+      editorRef.current.setModel(props.model);
+    }
+  }, [props.model]);
+
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.updateOptions({
+        readOnly: props.readOnly,
+        hover: {
+          enabled: props.hoverEnabled,
+        },
+      });
+    }
+  }, [props.hoverEnabled, props.readOnly]);
 
   return (
     <Box
