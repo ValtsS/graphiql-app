@@ -58,7 +58,7 @@ jobs:
       - name: Sonarqube
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
         run: |
           export SONAR_TOKEN
           export SONAR_HOST_URL
@@ -73,7 +73,7 @@ jobs:
         timeout-minutes: 5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
       - name: 'Show SonarQube Quality Gate Status value'
         run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
       - name: Cleanup
@@ -105,19 +105,20 @@ jobs:
         run: npm ci
       - name: Build code
         run: npm run build
-      - name: Debug
-        run: pwd && ls -la
       - name: Try
         run: |
           git clone https://${{ secrets.DEPLOY_TOKEN }}@${{ vars.DEPLOY_REPO }}
           cd graphiql-app-web
           git checkout develop
           git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          rm -rf ./*
-          cp -r ../../dist/ ./
+          git config user.email "valts@velns.org"
+          cd ..
+          rm -rf ./graphiql-app-web/*
+          cp -r ../dist/ ./graphiql-app-web/
+          cd graphiql-app-web
           git add .
           git commit -m "Automated push"
+          git push
           ls -la
       - name: Debug
         run: pwd && ls -la ./dist/
