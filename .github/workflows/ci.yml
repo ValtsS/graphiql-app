@@ -61,7 +61,6 @@ jobs:
           echo ${DEPLOY_REPO}
           echo ${{ secrets.GITHUB_TOKEN }}
 
-
   cleanup:
     runs-on: [self-hosted, linux, x64]
     needs: deploy
