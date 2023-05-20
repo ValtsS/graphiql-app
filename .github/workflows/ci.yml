@@ -111,7 +111,7 @@ jobs:
           cd graphiql-app-web &&  git checkout develop && git config user.name "GitHub Actions" &&  git config user.email "valts@velns.org"
           cd ..
           rm -rf ./graphiql-app-web/*
-          cp -r ./dist/ ./graphiql-app-web/* && \
+          cp -r ./dist/* ./graphiql-app-web/ && \
           cd graphiql-app-web && \
           git add . && \
           git commit -m "Automated push" && \
