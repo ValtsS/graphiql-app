@@ -110,6 +110,14 @@ jobs:
       - name: Try
         run: |
           git clone https://${{ secrets.DEPLOY_TOKEN }}@${{ vars.DEPLOY_REPO }}
+          cd graphiql-app-web
+          git checkout develop
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          rm -rf ./*
+          cp -r ../../dist/ ./
+          git add .
+          git commit -m "Automated push"
           ls -la
       - name: Debug
         run: pwd && ls -la ./dist/
