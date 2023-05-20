@@ -116,7 +116,7 @@ export const Main = (): ReactElement => {
         }}
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Documentation</Typography>
+          <Typography>{t('Documentation')}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography></Typography>
@@ -152,8 +152,6 @@ export const Main = (): ReactElement => {
           </Typography>
         </Grid>
       </Grid>
-      {/* </Grid>
-      </Grid> */}
     </Box>
   );
 };
