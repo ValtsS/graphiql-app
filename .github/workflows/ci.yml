@@ -103,12 +103,16 @@ jobs:
           node-version: '18.x'
       - name: Install dependencies
         run: npm ci
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >>$GITHUB_OUTPUT
+        id: extract_branch
       - name: Build code
         run: npm run build
       - name: Try
         run: |
           git clone https://${{ secrets.DEPLOY_TOKEN }}@${{ vars.DEPLOY_REPO }}
-          cd graphiql-app-web &&  git checkout develop && git config user.name "GitHub Actions" &&  git config user.email "valts@velns.org"
+          cd graphiql-app-web &&  git checkout ${{ steps.extract_branch.outputs.branch }} && git config user.name "GitHub Actions" &&  git config user.email "valts@velns.org"
           cd ..
           rm -rf ./graphiql-app-web/*
           cp -r ./dist/* ./graphiql-app-web/ && \
