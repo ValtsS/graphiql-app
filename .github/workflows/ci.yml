@@ -48,7 +48,12 @@ jobs:
       - name: Debug
         run: pwd && ls -la
       - name: Sonarqube
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
+          export SONAR_TOKEN
+          export SONAR_HOST_URL
           /sonar/runsonar.sh
       - name: Debug
         run: pwd && ls -la ./.scannerwork/
