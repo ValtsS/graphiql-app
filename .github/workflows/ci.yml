@@ -42,8 +42,12 @@ jobs:
       run:
         working-directory: sonar
     steps:
+      - name: Debug
+        run: pwd && ls -l
       - name: Sonarqube
         run: npm run sonar
+      - name: Debug
+        run: pwd && ls -l
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check
         uses: sonarsource/sonarqube-quality-gate-action@master
