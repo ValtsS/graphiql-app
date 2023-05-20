@@ -94,12 +94,6 @@ jobs:
       run:
         working-directory: deploy
     steps:
-      - name: Debug
-        run: pwd && ls -la
-      - name: Test
-        run: |
-          echo ${DEPLOY_REPO}
-          echo ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v3
         with:
           path: deploy
@@ -111,6 +105,12 @@ jobs:
         run: npm ci
       - name: Build code
         run: npm run build
+      - name: Debug
+        run: pwd && ls -la
+      - name: Test
+        run: |
+          echo ${DEPLOY_REPO}
+          echo ${{ secrets.GITHUB_TOKEN }}
       - name: Debug
         run: pwd && ls -la ./dist/
       - name: Cleanup
