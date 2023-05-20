@@ -88,7 +88,6 @@ jobs:
     if: |
       github.ref == 'refs/heads/main' ||
       github.ref == 'refs/heads/master' ||
-      github.ref == 'refs/heads/feature/auto-deploy' ||
       github.ref == 'refs/heads/develop'
     defaults:
       run:
