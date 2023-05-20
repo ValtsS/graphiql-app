@@ -29,7 +29,7 @@ jobs:
       - name: Unit Test
         run: npm run coverage
       - name: Debug
-        run: pwd && ls -l
+        run: pwd && ls -la
 
   sonarqube:
     runs-on: [self-hosted, linux, x64]
@@ -43,11 +43,11 @@ jobs:
         working-directory: sonar
     steps:
       - name: Debug
-        run: pwd && ls -l
+        run: pwd && ls -la
       - name: Sonarqube
         run: npm run sonar
       - name: Debug
-        run: pwd && ls -l
+        run: pwd && ls -la
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check
         uses: sonarsource/sonarqube-quality-gate-action@master
@@ -68,7 +68,7 @@ jobs:
       github.ref == 'refs/heads/develop'
     steps:
       - name: Debug
-        run: pwd && ls -l
+        run: pwd && ls -la
       - name: Test
         run: |
           echo ${DEPLOY_REPO}
