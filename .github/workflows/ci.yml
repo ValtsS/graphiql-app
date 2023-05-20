@@ -109,7 +109,7 @@ jobs:
         run: pwd && ls -la
       - name: Try
         run: |
-          git clone https://${{ secrets.GITHUB_TOKEN }}@${{ vars.DEPLOY_REPO }}
+          git clone https://${{ secrets.DEPLOY_TOKEN }}@${{ vars.DEPLOY_REPO }}
           ls -la
       - name: Debug
         run: pwd && ls -la ./dist/
