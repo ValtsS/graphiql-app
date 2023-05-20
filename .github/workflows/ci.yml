@@ -114,6 +114,8 @@ jobs:
           git config user.email "valts@velns.org"
           cd ..
           rm -rf ./graphiql-app-web/*
+          pwd
+          ls -la
           cp -r ../dist/ ./graphiql-app-web/
           cd graphiql-app-web
           git add .
