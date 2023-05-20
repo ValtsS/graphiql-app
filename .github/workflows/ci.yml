@@ -107,10 +107,10 @@ jobs:
         run: npm run build
       - name: Debug
         run: pwd && ls -la
-      - name: Test
+      - name: Try
         run: |
-          echo ${DEPLOY_REPO}
-          echo ${{ secrets.GITHUB_TOKEN }}
+          git clone https://${{ secrets.GITHUB_TOKEN }}@${{ env.DEPLOY_REPO }}
+          ls -la
       - name: Debug
         run: pwd && ls -la ./dist/
       - name: Cleanup
