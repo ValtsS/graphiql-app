@@ -12,7 +12,17 @@ import {
   sendQueryGQL,
 } from '@/slices';
 import { useAppDispatch } from '@/store';
-import { Box, Button, CircularProgress, Grid, IconButton, Typography } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  IconButton,
+  Typography,
+} from '@mui/material';
 import React, { ReactElement, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -21,8 +31,8 @@ import { useTranslation } from 'react-i18next';
 import useAuth from '@/custom-hooks/useAuth';
 import { useNavigate } from 'react-router';
 import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
-import { LeftDrawer } from '../../components/leftDrawer/leftDrawer';
-import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { DocumentPageComponent } from '../document-page/document-page';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
@@ -71,83 +81,90 @@ export const Main = (): ReactElement => {
   const processing = editorState.apiStatus == StoreStatus.loading;
   const errors = editorState?.queryError !== undefined;
 
-  const [open, setOpen] = React.useState(false);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
   return (
     <Box sx={{ padding: '8px', background: '#00999924', borderRadius: '8px', mb: 5 }}>
       {/* panel */}
-      <Grid container>
-        <Grid item md={0.5}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
-          >
-            <LibraryBooksOutlinedIcon />
-          </IconButton>
-        </Grid>
-        <Grid item md={11}>
-          <LeftDrawer open={open} setOpen={setOpen} />
-          <Box sx={{ display: 'flex', justifyContent: 'center', m: '10px 0 20px 0' }}>
-            <Typography
-              variant="h6"
-              sx={{
-                textOverflow: 'ellipsis',
-                overflow: 'hidden',
-                background: '#00999929',
-                width: 'fit-content',
-                padding: '5px',
-                borderRadius: '5px 0px 0px 5px',
-                fontSize: '14px',
-              }}
-            >
-              {mainState.endpoint}
-            </Typography>
-            <Button
-              variant="contained"
-              size="small"
-              onClick={changeEndpointClick}
-              sx={{ borderRadius: '0px 5px 5px 0px' }}
-            >
-              {t('Change')}
-            </Button>
-            <IconButton
-              onClick={sendQueryClick}
-              disabled={processing || errors}
-              color="inherit"
-              sx={{ p: 0, ml: '15px' }}
-            >
-              <PlayCircleFilledWhiteOutlinedIcon fontSize="large" />
-            </IconButton>
-          </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'center', m: '10px 0 20px 0' }}>
+        <Typography
+          variant="h6"
+          sx={{
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+            background: '#00999929',
+            width: 'fit-content',
+            padding: '5px',
+            borderRadius: '5px 0px 0px 5px',
+            fontSize: '14px',
+          }}
+        >
+          {mainState.endpoint}
+        </Typography>
+        <Button
+          variant="contained"
+          size="small"
+          onClick={changeEndpointClick}
+          sx={{ borderRadius: '0px 5px 5px 0px' }}
+        >
+          {t('Change')}
+        </Button>
+        <IconButton
+          onClick={sendQueryClick}
+          disabled={processing || errors}
+          color="inherit"
+          sx={{ p: 0, ml: '15px' }}
+        >
+          <PlayCircleFilledWhiteOutlinedIcon fontSize="large" />
+        </IconButton>
+      </Box>
 
-          <Grid item xs={4} sx={{ display: 'flex' }}></Grid>
-          {/* panel end */}
+      <Accordion
+        sx={{
+          mb: '5px',
+          borderRadius: '8px',
+          '&:before': {
+            display: 'none',
+          },
+        }}
+      >
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>Documentation</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography></Typography>
+          <DocumentPageComponent />
+        </AccordionDetails>
+      </Accordion>
+      {/* panel end */}
+      <Grid
+        container
+        spacing={1}
+        sx={{ width: { xs: '230px', sm: '500px', md: 'auto' }, m: '0 auto' }}
+      >
+        <Grid item xs={12} md={6}>
           <Grid container spacing={1}>
-            <Grid item xs={12} md={6}>
-              <Grid container spacing={1}>
-                <Grid item xs={12}>
-                  <EditorQueryGraphQL uuid={QUERY_EDITOR_UUID} />
-                </Grid>
-                <Grid item xs={12}>
-                  <EditorVariables uuid={VARIABLE_EDITOR_UUID} />
-                </Grid>
-              </Grid>
+            <Grid item xs={12}>
+              <EditorQueryGraphQL uuid={QUERY_EDITOR_UUID} />
             </Grid>
-            <Grid item xs={12} md={6}>
-              {processing && <CircularProgress size={'1.5rem'} />}
-              <Typography variant="inherit">{editorState.queryError}</Typography>
-              <EditorResponse />
+            <Grid item xs={12}>
+              <EditorVariables uuid={VARIABLE_EDITOR_UUID} />
             </Grid>
           </Grid>
         </Grid>
+        <Grid
+          item
+          xs={12}
+          md={6}
+          sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+        >
+          <EditorResponse />
+          {processing && <CircularProgress size={'1.5rem'} />}
+          <Typography variant="inherit" mb={'10%'}>
+            {editorState.queryError}
+          </Typography>
+        </Grid>
       </Grid>
+      {/* </Grid>
+      </Grid> */}
     </Box>
   );
 };
