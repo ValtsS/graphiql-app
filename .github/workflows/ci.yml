@@ -108,16 +108,10 @@ jobs:
       - name: Try
         run: |
           git clone https://${{ secrets.DEPLOY_TOKEN }}@${{ vars.DEPLOY_REPO }}
-          cd graphiql-app-web && \
-          git checkout develop && \
-          git config user.name "GitHub Actions" && \
-          git config user.email "valts@velns.org" && \
-          cd .. && \
-          rm -rf ./graphiql-app-web/* && \
-          pwd
-          ls -la
-          ls -la ../*
-          cp -r ../dist/ ./graphiql-app-web/ && \
+          cd graphiql-app-web &&  git checkout develop && git config user.name "GitHub Actions" &&  git config user.email "valts@velns.org"
+          cd ..
+          rm -rf ./graphiql-app-web/*
+          cp -r ./dist/ ./graphiql-app-web/ && \
           cd graphiql-app-web && \
           git add . && \
           git commit -m "Automated push" && \
