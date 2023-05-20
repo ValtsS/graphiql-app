@@ -4,7 +4,7 @@ import { ProtectedRoute } from './protected-route';
 import { v4 as uuidv4 } from 'uuid';
 import { Translation } from 'react-i18next';
 
-export const enum DisplayMode {
+export const enum AccessMode {
   Always,
   LoggedIn,
   Guest,
@@ -16,8 +16,9 @@ export interface RouteConfig {
   element: () => React.ReactNode;
   displayInMenu?: boolean;
   menuText?: React.ReactNode;
+  buttonText?: React.ReactNode;
   displayInRegistration?: boolean;
-  displayMode: DisplayMode;
+  displayMode: AccessMode;
 }
 
 const regRoutes: RouteConfig[] = [
@@ -25,27 +26,27 @@ const regRoutes: RouteConfig[] = [
     uuid: uuidv4(),
     path: '/auth',
     element: () => (
-      <ProtectedRoute>
+      <ProtectedRoute mode={AccessMode.Guest} redirectTo="/main">
         <Authorization />
       </ProtectedRoute>
     ),
     displayInMenu: true,
     menuText: <Translation>{(t) => t('SignIn')}</Translation>,
     displayInRegistration: true,
-    displayMode: DisplayMode.Guest,
+    displayMode: AccessMode.Guest,
   },
   {
     uuid: uuidv4(),
     path: '/reg',
     element: () => (
-      <ProtectedRoute>
+      <ProtectedRoute mode={AccessMode.Guest} redirectTo="/main">
         <Registration />
       </ProtectedRoute>
     ),
     displayInMenu: true,
     menuText: <Translation>{(t) => t('SignUp')}</Translation>,
     displayInRegistration: true,
-    displayMode: DisplayMode.Guest,
+    displayMode: AccessMode.Guest,
   },
 ];
 
@@ -53,22 +54,31 @@ export const defaultRoutes: RouteConfig[] = [
   {
     uuid: uuidv4(),
     path: '/',
-    element: () => <Welcome />,
+    element: () => (
+      <ProtectedRoute mode={AccessMode.Always}>
+        <Welcome />
+      </ProtectedRoute>
+    ),
     displayInMenu: true,
     menuText: <Translation>{(t) => t('Welcome')}</Translation>,
-    displayMode: DisplayMode.Always,
+    displayMode: AccessMode.Always,
   },
   {
     uuid: uuidv4(),
     path: '/main',
-    element: () => <Main />,
+    element: () => (
+      <ProtectedRoute mode={AccessMode.LoggedIn}>
+        <Main />
+      </ProtectedRoute>
+    ),
     displayInMenu: true,
-    menuText: <Translation>{(t) => t('toMain')}</Translation>,
-    displayMode: DisplayMode.LoggedIn,
+    menuText: <Translation>{(t) => t('Main')}</Translation>,
+    buttonText: <Translation>{(t) => t('toMain')}</Translation>,
+    displayMode: AccessMode.LoggedIn,
   },
   ...regRoutes,
 ];
 
-export function filterByMode(routes: RouteConfig[], modes: DisplayMode[]) {
+export function filterByMode(routes: RouteConfig[], modes: AccessMode[]) {
   return routes.filter((route) => modes.includes(route.displayMode));
 }

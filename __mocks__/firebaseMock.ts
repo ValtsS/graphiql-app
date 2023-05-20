@@ -5,7 +5,7 @@ export const MOCK_PASS_VALID = 'Password1+@';
 export const MOCK_USER_BAD = 'ThisisBadUser';
 
 export class FirebaseMock implements FirebaseAuth {
-  lastUser: User | null = null;
+  lastUser: User | null | undefined = null;
   public currentUser: User | undefined;
   public reg = jest.fn();
   public signIn = jest.fn();

@@ -23,13 +23,11 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { QUERY_EDITOR_UUID, VARIABLE_EDITOR_UUID } from '@/core/consts';
 import { useTranslation } from 'react-i18next';
-import useAuth from '@/custom-hooks/useAuth';
-import { useNavigate } from 'react-router';
 import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { DocumentPageComponent } from '../document-page/document-page';
@@ -43,15 +41,6 @@ export const Main = (): ReactElement => {
   const editorState = useSelector(selectEditorsData);
   const { apiClient } = useAppContext();
   const notifyError = (message: string) => toast(message, { type: 'error' });
-
-  const { auth } = useAppContext();
-  const { currentUser } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!auth) return;
-    if (!currentUser) navigate('/');
-  }, [auth, navigate, currentUser]);
 
   const onEndPointChange = (newendpoint: string) => {
     hide();

@@ -6,16 +6,15 @@ import { useAppContext } from '@/provider';
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from '@/store';
 import { Link as RouterLink } from 'react-router-dom';
 
 export const Welcome = (): ReactElement => {
   const { currentUser } = useAuth();
   const { routing } = useAppContext();
-  const signMenu = routing?.filter((el) => el.displayInRegistration) ?? [];
   const { t } = useTranslation();
 
-  const langMode = useAppSelector((state) => state.langMode.langMode);
+  const signMenu =
+    routing?.filter((el) => (currentUser ? el.path === '/main' : el.displayInRegistration)) ?? [];
 
   return (
     <Container>
@@ -35,38 +34,18 @@ export const Welcome = (): ReactElement => {
         </Grid>
 
         <Grid item xs={12} md={4} sx={{ gap: '50px', display: 'flex', flexDirection: 'column' }}>
-          <Box
-            sx={{
-              display: 'flex',
-              gap: langMode ? 2 : 5,
-              justifyContent: 'center',
-              flexDirection: {
-                xs: langMode ? 'column' : 'row',
-                sm: 'row',
-                md: langMode ? 'column' : 'row',
-              },
-            }}
-          >
-            {currentUser ? (
-              <Button variant="contained" component={RouterLink} to="/main">
-                {t('mainPage')}
+          <Box sx={{ display: 'flex', gap: 5, justifyContent: 'center' }}>
+            {signMenu.map((page) => (
+              <Button
+                variant="contained"
+                key={page.uuid}
+                component={RouterLink}
+                to={page.path}
+                size="large"
+              >
+                {page.buttonText ?? page.menuText}
               </Button>
-            ) : (
-              signMenu.map((page) => (
-                <Button
-                  variant="contained"
-                  key={page.uuid}
-                  component={RouterLink}
-                  to={page.path}
-                  size="large"
-                  sx={{
-                    lineHeight: 'normal',
-                  }}
-                >
-                  {page.menuText}
-                </Button>
-              ))
-            )}
+            ))}
           </Box>
           <Typography sx={{ textAlign: 'left' }}>{t('description')}</Typography>
         </Grid>
