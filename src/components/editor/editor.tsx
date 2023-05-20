@@ -32,8 +32,8 @@ export const Editor = (props: Props) => {
     editor.defineTheme('customTheme', customTheme as never);
   }, []);
 
-  const init = () => {
-    if (monacoEl.current) {
+  const initOnce = () => {
+    if (monacoEl.current && editorRef.current === null) {
       editorRef.current = editor.create(monacoEl.current!, {
         language: props.language,
         theme: 'customTheme',
@@ -47,7 +47,7 @@ export const Editor = (props: Props) => {
     }
   };
   useEffect(() => {
-    if (monacoEl.current && editorRef.current === null) init();
+    initOnce();
   });
 
   useEffect(() => {
