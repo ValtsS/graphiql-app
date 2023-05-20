@@ -44,8 +44,33 @@ jobs:
     steps:
       - name: Sonarqube
         run: npm run sonar
+
+  deploy:
+    runs-on: [self-hosted, linux, x64]
+    needs: sonarqube
+    if: |
+      github.ref == 'refs/heads/main' ||
+      github.ref == 'refs/heads/master' ||
+      github.ref == 'refs/heads/develop/auto-deploy' ||
+      github.ref == 'refs/heads/develop'
+    steps:
+      - name: Debug
+        run: pwd && ls -l
+      - name: Test
+        run: |
+          echo ${DEPLOY_REPO}
+          echo ${{ secrets.GITHUB_TOKEN }}
+
+
+  cleanup:
+    runs-on: [self-hosted, linux, x64]
+    needs: deploy
+    defaults:
+      run:
+        working-directory: sonar
+    if: always()
+    steps:
       - name: Cleanup
-        if: always()
         run: |
           pwd
           cd .. && rm -rf ./sonar
