@@ -50,14 +50,14 @@ describe('Editors Slice', () => {
     [queryErrorKind.noError, queryErrorKind.unknownError],
   ])(
     'should handle query error update %s to be %s',
-    async (kind?: queryErrorKind, expected?: queryErrorKind) => {
+    async (kind: queryErrorKind | undefined, expected: queryErrorKind) => {
       const initial = store.getState().editors;
       const error = 'ErrorText';
       store.dispatch(setQueryError({ error, kind }));
       const updated = store.getState().editors;
       expect(updated.queryError).not.toBe(initial.queryError);
       expect(updated.queryError).toBe(error);
-      expect(updated.queryErrorKind).toBe(expected ?? kind ?? queryErrorKind.unknownError);
+      expect(updated.queryErrorKind).toBe(expected);
     }
   );
 
