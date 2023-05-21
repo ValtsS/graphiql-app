@@ -118,8 +118,25 @@ export const Main = (): ReactElement => {
           md={6}
           sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
         >
+          {processing && (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '40%',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                zIndex: 1,
+                pointerEvents: 'none',
+              }}
+            >
+              <CircularProgress size={'5rem'} />
+            </div>
+          )}
           <EditorResponse sx={{ minHeight: { xs: '10vh', sm: '20vh', md: '50vh' } }} />
-          {processing && <CircularProgress size={'1.5rem'} />}
           <Box>
             <Typography variant="inherit" mb={'10%'}>
               {editorState.queryError}
