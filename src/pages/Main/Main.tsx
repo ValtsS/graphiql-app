@@ -17,11 +17,22 @@ import {
 } from '@/slices';
 import { useAppDispatch } from '@/store';
 import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
-import { Box, Button, CircularProgress, Grid, IconButton, Typography } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  IconButton,
+  Typography,
+} from '@mui/material';
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
@@ -107,10 +118,20 @@ export const Main = (): ReactElement => {
         <Grid item xs={12} md={6}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
-              <EditorQueryGraphQL uuid={QUERY_EDITOR_UUID} />
+              <EditorQueryGraphQL
+                uuid={QUERY_EDITOR_UUID}
+                sx={{ minHeight: { xs: '10vh', sm: '20vh', md: '50vh' } }}
+              />
             </Grid>
             <Grid item xs={12}>
-              <EditorVariables uuid={VARIABLE_EDITOR_UUID} sx={{ minHeight: `10vh` }} />
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography>{t('Variables')}</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <EditorVariables uuid={VARIABLE_EDITOR_UUID} sx={{ minHeight: `10vh` }} />
+                </AccordionDetails>
+              </Accordion>
             </Grid>
           </Grid>
         </Grid>
