@@ -3,7 +3,6 @@ import { ApiClient } from '@/core/api/api-client';
 import { RootState } from '@/store';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { StoreStatus } from '../schema/schema';
-import { error } from 'console';
 
 export const enum queryErrorKind {
   noError,

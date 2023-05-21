@@ -108,11 +108,7 @@ export const Main = (): ReactElement => {
               />
             </Grid>
             <Grid item xs={12}>
-              <VariableAccordeon
-                sx={{
-                  minHeight: `15vh`,
-                }}
-              />
+              <VariableAccordeon sx={{ minHeight: { xs: '10vh', sm: '20vh', md: '50vh' } }} />
             </Grid>
           </Grid>
         </Grid>
@@ -122,7 +118,7 @@ export const Main = (): ReactElement => {
           md={6}
           sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
         >
-          <EditorResponse />
+          <EditorResponse sx={{ minHeight: { xs: '10vh', sm: '20vh', md: '50vh' } }} />
           {processing && <CircularProgress size={'1.5rem'} />}
           <Box>
             <Typography variant="inherit" mb={'10%'}>
