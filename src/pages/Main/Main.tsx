@@ -1,4 +1,10 @@
-import { AddressBar, EditorQueryGraphQL, EditorResponse, EditorVariables } from '@/components';
+import {
+  AddressBar,
+  DocAccordeon,
+  EditorQueryGraphQL,
+  EditorResponse,
+  EditorVariables,
+} from '@/components';
 import { QUERY_EDITOR_UUID, VARIABLE_EDITOR_UUID } from '@/core/consts';
 import { useAppContext } from '@/provider';
 import { useModalDialog } from '@/provider/modal-dialog';
@@ -7,28 +13,15 @@ import {
   changeEndpoint,
   selectEditorsData,
   selectMainData,
-  selectSchemaData,
   sendQueryGQL,
 } from '@/slices';
 import { useAppDispatch } from '@/store';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Button,
-  CircularProgress,
-  Grid,
-  IconButton,
-  Typography,
-} from '@mui/material';
+import { Box, Button, CircularProgress, Grid, IconButton, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { DocumentPageComponent } from '../document-page/document-page';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
@@ -37,7 +30,6 @@ export const Main = (): ReactElement => {
 
   const mainState = useSelector(selectMainData);
   const editorState = useSelector(selectEditorsData);
-  const schemaState = useSelector(selectSchemaData);
   const { apiClient } = useAppContext();
   const notifyError = (message: string) => toast(message, { type: 'error' });
 
@@ -68,10 +60,6 @@ export const Main = (): ReactElement => {
 
   const processing = editorState.apiStatus == StoreStatus.loading;
   const errors = editorState?.queryError !== undefined;
-
-  const schemaLoading = schemaState.status == StoreStatus.loading;
-  const schemaReady = schemaState.status == StoreStatus.succeeded;
-  const schemaError = schemaState.status == StoreStatus.failed ? schemaState.error : undefined;
 
   return (
     <Box sx={{ padding: '8px', background: '#00999924', borderRadius: '8px', mb: 5 }}>
@@ -110,31 +98,7 @@ export const Main = (): ReactElement => {
         </IconButton>
       </Box>
 
-      <Accordion
-        sx={{
-          mb: '5px',
-          borderRadius: '8px',
-          '&:before': {
-            display: 'none',
-          },
-        }}
-      >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography color={schemaError ? 'red' : 'inherited'}>
-            {t('Documentation')}
-            {schemaError ? '...' : ''}
-            {schemaLoading && <CircularProgress size={'small'} />}
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          {schemaError && (
-            <Typography fontStyle={'italic'} color={'red'}>
-              {' (' + schemaError + ')'}
-            </Typography>
-          )}
-          {schemaReady && <DocumentPageComponent />}
-        </AccordionDetails>
-      </Accordion>
+      <DocAccordeon />
       {/* panel end */}
       <Grid
         container
