@@ -23,7 +23,16 @@ describe('Header', () => {
     auth.signIn.mockReturnValueOnce(null);
 
     await defaultRender(auth);
-    expect(screen.getAllByText(/Welcome/i).length).toBe(2);
+    expect(screen.queryAllByText(/Main/i).length).toBe(0);
+    expect(screen.queryAllByText(/Sign out/i).length).toBe(0);
+  });
+
+  it('render for guest in auth', async () => {
+    const auth = SetupFirebaseMock(false);
+    auth.reg.mockReturnValueOnce(null);
+    auth.signIn.mockReturnValueOnce(null);
+
+    await defaultRender(auth, '/auth');
     expect(screen.queryAllByText(/Main/i).length).toBe(0);
     expect(screen.queryAllByText(/Sign out/i).length).toBe(0);
 
@@ -45,7 +54,6 @@ describe('Header', () => {
     auth.lastUser = auth.currentUser;
 
     await defaultRender(auth);
-    expect(screen.getAllByText(/Welcome/i).length).toBe(2);
     expect(screen.getAllByText(/Main/i).length).toBe(2);
     expect(screen.getAllByText(/Sign out/i).length).toBe(2);
 
@@ -54,12 +62,32 @@ describe('Header', () => {
     expect(auth.lastUser).toBeNull();
   });
 
-  async function defaultRender(auth: FirebaseMock) {
+  it('render for logged in on main', async () => {
+    const auth = SetupFirebaseMock(true);
+    auth.reg.mockReturnValueOnce(null);
+    auth.signIn.mockReturnValueOnce(null);
+    auth.currentUser = {
+      displayName: 'Sample user',
+      uid: '12345',
+    } as User;
+
+    auth.lastUser = auth.currentUser;
+
+    await defaultRender(auth, '/main');
+    expect(screen.getAllByText(/Welcome/i).length).toBe(2);
+    expect(screen.getAllByText(/Sign out/i).length).toBe(2);
+
+    const logout = screen.getByRole('button', { name: 'Sign Out' });
+    await userEvent.click(logout);
+    expect(auth.lastUser).toBeNull();
+  });
+
+  async function defaultRender(auth: FirebaseMock, path = '/') {
     const store = setupStore();
     render(
       <AppContextProvider apiClient={null} auth={auth} routing={defaultRoutes}>
         <Provider store={store}>
-          <MemoryRouter initialEntries={['/']}>
+          <MemoryRouter initialEntries={[path]}>
             <Header routesConfig={defaultRoutes} />
           </MemoryRouter>
         </Provider>

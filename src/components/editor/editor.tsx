@@ -1,7 +1,8 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Uri, editor } from 'monaco-editor';
 import customTheme from './editorTheme';
-import styles from './editor.module.css';
+import './editor.css';
+import { Box } from '@mui/system';
 
 interface Props {
   language: string;
@@ -24,36 +25,73 @@ const MONACO_OPTIONS: editor.IEditorOptions = {
 };
 
 export const Editor = (props: Props) => {
-  const [editorControl, setEditorControl] = useState<editor.IStandaloneCodeEditor | null>(null);
   const monacoEl = useRef(null);
+  const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
   useEffect(() => {
     editor.defineTheme('customTheme', customTheme as never);
   }, []);
 
-  useEffect(() => {
-    if (monacoEl) {
-      setEditorControl((editorControl) => {
-        if (editorControl) return editorControl;
-        const newEditor = editor.create(monacoEl.current!, {
-          language: props.language,
-          theme: 'customTheme',
-          model: props.model,
-          ...MONACO_OPTIONS,
-          readOnly: props.readOnly,
-          hover: {
-            enabled: props.hoverEnabled,
-          },
-        });
-
-        return newEditor;
+  const initOnce = () => {
+    if (monacoEl.current && editorRef.current === null) {
+      editorRef.current = editor.create(monacoEl.current!, {
+        language: props.language,
+        theme: 'customTheme',
+        model: props.model,
+        ...MONACO_OPTIONS,
+        readOnly: props.readOnly,
+        hover: {
+          enabled: props.hoverEnabled,
+        },
       });
     }
+  };
+  useEffect(() => {
+    initOnce();
+  });
 
-    return () => editorControl?.dispose();
-  }, [props.language, props.model, props.readOnly, props.hoverEnabled, editorControl]);
+  useEffect(() => {
+    return () => {
+      if (editorRef.current) {
+        editorRef.current.dispose();
+        editorRef.current = null;
+      }
+    };
+  }, []);
 
-  return <div className={styles.Editor} ref={monacoEl}></div>;
+  useEffect(() => {
+    if (editorRef.current) {
+      const model = editorRef.current.getModel();
+      if (model) editor.setModelLanguage(model, props.language);
+    }
+  }, [props.language]);
+
+  useEffect(() => {
+    if (editorRef.current && props.model) {
+      editorRef.current.setModel(props.model);
+    }
+  }, [props.model]);
+
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.updateOptions({
+        readOnly: props.readOnly,
+        hover: {
+          enabled: props.hoverEnabled,
+        },
+      });
+    }
+  }, [props.hoverEnabled, props.readOnly]);
+
+  return (
+    <Box
+      ref={monacoEl}
+      className="Editor"
+      sx={{
+        boxShadow: ' 0px 5px 10px 2px rgba(34, 60, 80, 0.2)',
+      }}
+    />
+  );
 };
 
 export function getOrCreateModel(uri: string, value: string): editor.ITextModel {

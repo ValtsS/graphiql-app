@@ -1,7 +1,11 @@
-import { AddressBar } from '@/components';
-import { EditorQueryGraphQL } from '@/components/editor-query/editor-query';
-import { EditorResponse } from '@/components/editor-response/editor-response';
-import { EditorVariables } from '@/components/editor-variables/editor-variables';
+import {
+  AddressBar,
+  DocAccordeon,
+  EditorQueryGraphQL,
+  EditorResponse,
+  EditorVariables,
+} from '@/components';
+import { QUERY_EDITOR_UUID, VARIABLE_EDITOR_UUID } from '@/core/consts';
 import { useAppContext } from '@/provider';
 import { useModalDialog } from '@/provider/modal-dialog';
 import {
@@ -12,13 +16,12 @@ import {
   sendQueryGQL,
 } from '@/slices';
 import { useAppDispatch } from '@/store';
-import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
+import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
+import { Box, Button, CircularProgress, Grid, IconButton, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { DocumentPageComponent } from '../document-page/document-page';
-import { QUERY_EDITOR_UUID, VARIABLE_EDITOR_UUID } from '@/core/consts';
-import { useTranslation } from 'react-i18next';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
@@ -59,48 +62,72 @@ export const Main = (): ReactElement => {
   const errors = editorState?.queryError !== undefined;
 
   return (
-    <Grid container>
-      <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-        <EditorVariables uuid={VARIABLE_EDITOR_UUID} />
-      </Grid>
-      <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-        <EditorQueryGraphQL uuid={QUERY_EDITOR_UUID} />
-      </Grid>
-      <Grid item xs={12} md={4} borderColor={'red'} border={'1px solid'}>
-        <Typography variant="h6" sx={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
+    <Box sx={{ padding: '8px', background: '#00999924', borderRadius: '8px', mb: 5 }}>
+      {/* panel */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', m: '10px 0 20px 0' }}>
+        <Typography
+          variant="h6"
+          sx={{
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+            background: '#00999929',
+            width: 'fit-content',
+            padding: '5px',
+            borderRadius: '5px 0px 0px 5px',
+            fontSize: '14px',
+          }}
+        >
           {mainState.endpoint}
         </Typography>
-        <Grid container sx={{ justifyContent: 'space-around' }}>
-          <Grid item xs={4} sx={{ display: 'flex' }}>
-            <Button
-              variant="contained"
-              size="small"
-              onClick={sendQueryClick}
-              disabled={processing || errors}
-            >
-              {t('Query')}
-            </Button>
-          </Grid>
-          <Grid item xs={4}>
-            <Button variant="contained" size="small" onClick={changeEndpointClick}>
-              {t('Change')}
-            </Button>
-          </Grid>
+        <Button
+          variant="contained"
+          size="small"
+          onClick={changeEndpointClick}
+          sx={{ borderRadius: '0px 5px 5px 0px' }}
+        >
+          {t('Change')}
+        </Button>
+        <IconButton
+          onClick={sendQueryClick}
+          disabled={processing || errors}
+          color="inherit"
+          sx={{ p: 0, ml: '15px' }}
+          data-testid="send-query-button"
+        >
+          <PlayCircleFilledWhiteOutlinedIcon fontSize="large" />
+        </IconButton>
+      </Box>
 
-          <Grid item xs={12} mt={2}>
-            <Box sx={{ pl: '1rem', background: 'white' }}>
-              <DocumentPageComponent />
-            </Box>
+      <DocAccordeon />
+      {/* panel end */}
+      <Grid
+        container
+        spacing={1}
+        sx={{ width: { xs: '100%', sm: '100%', md: 'auto' }, m: '0 auto' }}
+      >
+        <Grid item xs={12} md={6}>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <EditorQueryGraphQL uuid={QUERY_EDITOR_UUID} />
+            </Grid>
+            <Grid item xs={12}>
+              <EditorVariables uuid={VARIABLE_EDITOR_UUID} />
+            </Grid>
           </Grid>
         </Grid>
+        <Grid
+          item
+          xs={12}
+          md={6}
+          sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+        >
+          <EditorResponse />
+          {processing && <CircularProgress size={'1.5rem'} />}
+          <Typography variant="inherit" mb={'10%'}>
+            {editorState.queryError}
+          </Typography>
+        </Grid>
       </Grid>
-      <Grid item xs={12} borderColor={'red'} border={'1px solid'}>
-        {processing && <CircularProgress size={'1.5rem'} />}
-        <Typography variant="inherit">{editorState.queryError}</Typography>
-      </Grid>
-      <Grid item xs={12} borderColor={'red'} border={'1px solid'}>
-        <EditorResponse />
-      </Grid>
-    </Grid>
+    </Box>
   );
 };

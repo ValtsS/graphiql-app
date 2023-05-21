@@ -4,6 +4,7 @@ import { useAppDispatch } from '@/store';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Editor } from '../editor/editor';
+import { Box } from '@mui/system';
 
 export const EditorQueryGraphQL = ({ uuid }: { uuid: string }) => {
   const dispatch = useAppDispatch();
@@ -23,10 +24,13 @@ export const EditorQueryGraphQL = ({ uuid }: { uuid: string }) => {
   });
 
   return (
-    <div>
-      <div style={{ width: '100%' }}>
-        <Editor language={'graphql'} model={model} hoverEnabled={false} />
-      </div>
-    </div>
+    <Box
+      sx={{
+        width: '100%',
+        borderRadius: '8px',
+      }}
+    >
+      <Editor language={'graphql'} model={model} hoverEnabled={false} />
+    </Box>
   );
 };

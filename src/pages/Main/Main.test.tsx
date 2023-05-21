@@ -69,7 +69,7 @@ describe('Main page component', () => {
     const responseText = 'ZZZZDummy';
     callback.mockResolvedValue(responseText);
 
-    const sendButton = screen.getByRole('button', { name: 'Send query' });
+    const sendButton = screen.getByTestId('send-query-button');
     expect(sendButton).toBeVisible();
     expect(sendButton).toBeEnabled();
     await userEvent.click(sendButton);
@@ -88,8 +88,7 @@ describe('Main page component', () => {
 
     const errorText = 'This is an error';
     callback.mockRejectedValueOnce(new Error(errorText));
-
-    const sendButton = screen.getByRole('button', { name: 'Send query' });
+    const sendButton = screen.getByTestId('send-query-button');
     expect(sendButton).toBeVisible();
     expect(sendButton).toBeEnabled();
     await userEvent.click(sendButton);
