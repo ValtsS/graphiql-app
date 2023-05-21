@@ -2,7 +2,14 @@ import { SimpleMockApiClient } from '@/../__mocks__/SimpleMockApiClient';
 import { IntrospectionResponseData } from '@/core/api/api';
 import { AppStore, setupStore } from '@/store';
 import { StoreStatus } from '../schema/schema';
-import { sendQueryGQL, setQuery, setQueryError, setResponse, setVariables } from './editorsSlice';
+import {
+  queryErrorKind,
+  sendQueryGQL,
+  setQuery,
+  setQueryError,
+  setResponse,
+  setVariables,
+} from './editorsSlice';
 
 describe('Editors Slice', () => {
   let store: AppStore;
@@ -35,14 +42,24 @@ describe('Editors Slice', () => {
     expect(updated.queryVersion).toBe(initial.queryVersion);
   });
 
-  it('should handle query error update', async () => {
-    const initial = store.getState().editors;
-    const error = 'ErrorText';
-    store.dispatch(setQueryError({ error }));
-    const updated = store.getState().editors;
-    expect(updated.queryError).not.toBe(initial.queryError);
-    expect(updated.queryError).toBe(error);
-  });
+  it.each([
+    [undefined, queryErrorKind.unknownError],
+    [queryErrorKind.queryError, queryErrorKind.queryError],
+    [queryErrorKind.variableError, queryErrorKind.variableError],
+    [queryErrorKind.unknownError, queryErrorKind.unknownError],
+    [queryErrorKind.noError, queryErrorKind.unknownError],
+  ])(
+    'should handle query error update %s to be %s',
+    async (kind?: queryErrorKind, expected?: queryErrorKind) => {
+      const initial = store.getState().editors;
+      const error = 'ErrorText';
+      store.dispatch(setQueryError({ error, kind }));
+      const updated = store.getState().editors;
+      expect(updated.queryError).not.toBe(initial.queryError);
+      expect(updated.queryError).toBe(error);
+      expect(updated.queryErrorKind).toBe(expected ?? kind ?? queryErrorKind.unknownError);
+    }
+  );
 
   it('should handle variables update', async () => {
     const initial = store.getState().editors;

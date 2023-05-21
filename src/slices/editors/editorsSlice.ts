@@ -4,10 +4,18 @@ import { RootState } from '@/store';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { StoreStatus } from '../schema/schema';
 
+export const enum queryErrorKind {
+  noError,
+  variableError,
+  queryError,
+  unknownError,
+}
+
 export type EditorsState = {
   queryVersion: number;
   query: string;
   queryError?: string;
+  queryErrorKind: queryErrorKind;
 
   variablesVersion: number;
   variables: string;
@@ -56,6 +64,7 @@ const initialState: EditorsState = {
   variablesVersion: -1,
   response: '',
   apiStatus: StoreStatus.idle,
+  queryErrorKind: queryErrorKind.noError,
 };
 
 export const editorsSlice = createSlice({
@@ -68,8 +77,13 @@ export const editorsSlice = createSlice({
         state.queryVersion = action.payload.version;
       }
     },
-    setQueryError: (state, action: PayloadAction<{ error?: string }>) => {
+    setQueryError: (state, action: PayloadAction<{ error?: string; kind?: queryErrorKind }>) => {
       state.queryError = action.payload.error;
+      state.queryErrorKind =
+        action.payload.kind ??
+        (state.queryError ? queryErrorKind.unknownError : queryErrorKind.noError);
+      if (state.queryError && state.queryErrorKind == queryErrorKind.noError)
+        state.queryErrorKind = queryErrorKind.unknownError;
     },
 
     setVariables: (state, action: PayloadAction<{ version: number; text: string }>) => {
