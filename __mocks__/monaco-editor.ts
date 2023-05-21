@@ -1,5 +1,21 @@
 const mockSchemaConfig = jest.fn();
 
+class FakeModel {}
+
+class FakeEditor {
+  model: FakeModel = new FakeModel();
+
+  public dispose() {}
+
+  public getModel() {
+    return this.model;
+  }
+
+  public setModel() {}
+
+  public updateOptions() {}
+}
+
 module.exports = {
   KeyMod: { CtrlCmd: '' },
   KeyCode: { Enter: '' },
@@ -12,8 +28,9 @@ module.exports = {
   },
   editor: {
     defineTheme: jest.fn(),
-    create: jest.fn(),
+    create: jest.fn().mockReturnValue(new FakeEditor()),
     getModel: jest.fn(),
+    setModelLanguage: jest.fn(),
     createModel: jest.fn().mockReturnValue({
       onDidChangeContent: jest.fn(),
       setValue: jest.fn(),

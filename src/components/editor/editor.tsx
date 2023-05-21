@@ -4,11 +4,24 @@ import customTheme from './editorTheme';
 import './editor.css';
 import { Box } from '@mui/system';
 
+export const enum EditorEventType {
+  willMount,
+  Mounted,
+  willUnmount,
+  unMounted,
+}
+
+export type EditorEvent = (
+  editor: editor.IStandaloneCodeEditor | null,
+  event: EditorEventType
+) => void;
+
 interface Props {
   language: string;
   model?: editor.ITextModel;
   readOnly?: boolean;
   hoverEnabled: boolean;
+  onEvent?: EditorEvent;
 }
 
 const MONACO_OPTIONS: editor.IEditorOptions = {
@@ -34,6 +47,7 @@ export const Editor = (props: Props) => {
 
   const initOnce = () => {
     if (monacoEl.current && editorRef.current === null) {
+      if (props.onEvent) props.onEvent(editorRef.current, EditorEventType.willMount);
       editorRef.current = editor.create(monacoEl.current!, {
         language: props.language,
         theme: 'customTheme',
@@ -44,6 +58,7 @@ export const Editor = (props: Props) => {
           enabled: props.hoverEnabled,
         },
       });
+      if (props.onEvent) props.onEvent(editorRef.current, EditorEventType.Mounted);
     }
   };
   useEffect(() => {
@@ -53,8 +68,10 @@ export const Editor = (props: Props) => {
   useEffect(() => {
     return () => {
       if (editorRef.current) {
+        if (props.onEvent) props.onEvent(editorRef.current, EditorEventType.willUnmount);
         editorRef.current.dispose();
         editorRef.current = null;
+        if (props.onEvent) props.onEvent(editorRef.current, EditorEventType.unMounted);
       }
     };
   }, []);
