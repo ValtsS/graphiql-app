@@ -100,6 +100,10 @@ export const Editor = (props: Props) => {
     }
   }, [props.hoverEnabled, props.readOnly, props.className]);
 
+  useEffect(() => {
+    if (editorRef.current) editorRef.current.layout();
+  }, [props.sx]);
+
   return (
     <Box
       ref={monacoEl}
