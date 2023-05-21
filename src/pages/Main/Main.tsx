@@ -1,39 +1,33 @@
 import {
   AddressBar,
   DocAccordeon,
-  EditorQueryGraphQL,
-  EditorResponse,
-  EditorVariables,
+  EditorResponse
 } from '@/components';
-import { QUERY_EDITOR_UUID, VARIABLE_EDITOR_UUID } from '@/core/consts';
+import { QueryAndVariableEditors } from '@/components/query-var-editors/query-var-editors';
 import { useAppContext } from '@/provider';
 import { useModalDialog } from '@/provider/modal-dialog';
 import {
   StoreStatus,
   changeEndpoint,
-  queryErrorKind,
   selectEditorsData,
   selectMainData,
-  sendQueryGQL,
+  sendQueryGQL
 } from '@/slices';
 import { useAppDispatch } from '@/store';
 import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   Button,
   CircularProgress,
   Grid,
   IconButton,
-  Typography,
+  Typography
 } from '@mui/material';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
@@ -43,7 +37,6 @@ export const Main = (): ReactElement => {
   const editorState = useSelector(selectEditorsData);
   const { apiClient } = useAppContext();
   const notifyError = (message: string) => toast(message, { type: 'error' });
-  const [varsVisible, setVarsVisible] = useState<boolean>(false);
 
   const onEndPointChange = (newendpoint: string) => {
     hide();
@@ -72,8 +65,6 @@ export const Main = (): ReactElement => {
 
   const processing = editorState.apiStatus == StoreStatus.loading;
   const errors = editorState?.queryError !== undefined;
-  const variableError = editorState.queryErrorKind === queryErrorKind.variableError;
-  const variableOpacity = varsVisible ? '1.0' : '0';
 
   return (
     <Box sx={{ padding: '8px', background: '#00999924', borderRadius: '8px', mb: 5 }}>
@@ -120,34 +111,7 @@ export const Main = (): ReactElement => {
         sx={{ width: { xs: '100%', sm: '100%', md: 'auto' }, m: '0 auto' }}
       >
         <Grid item xs={12} md={6}>
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <EditorQueryGraphQL
-                uuid={QUERY_EDITOR_UUID}
-                sx={{ minHeight: { xs: '10vh', sm: '20vh', md: '50vh' } }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Accordion onChange={(_, expanded) => setVarsVisible(expanded)}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography color={variableError ? 'red' : 'inherited'}>
-                    {t('Variables')}
-                    {variableError ? '...' : ''}
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <EditorVariables
-                    uuid={VARIABLE_EDITOR_UUID}
-                    sx={{
-                      minHeight: `10vh`,
-                      transition: 'opacity 0.3s ease',
-                      opacity: `${variableOpacity}`,
-                    }}
-                  />
-                </AccordionDetails>
-              </Accordion>
-            </Grid>
-          </Grid>
+          <QueryAndVariableEditors />
         </Grid>
         <Grid
           item
