@@ -11,6 +11,7 @@ import { useModalDialog } from '@/provider/modal-dialog';
 import {
   StoreStatus,
   changeEndpoint,
+  queryErrorKind,
   selectEditorsData,
   selectMainData,
   sendQueryGQL,
@@ -28,7 +29,7 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -42,6 +43,7 @@ export const Main = (): ReactElement => {
   const editorState = useSelector(selectEditorsData);
   const { apiClient } = useAppContext();
   const notifyError = (message: string) => toast(message, { type: 'error' });
+  const [varsVisible, setVarsVisible] = useState<boolean>(false);
 
   const onEndPointChange = (newendpoint: string) => {
     hide();
@@ -70,6 +72,8 @@ export const Main = (): ReactElement => {
 
   const processing = editorState.apiStatus == StoreStatus.loading;
   const errors = editorState?.queryError !== undefined;
+  const variableError = editorState.queryErrorKind === queryErrorKind.variableError;
+  const variableOpacity = varsVisible ? '1.0' : '0';
 
   return (
     <Box sx={{ padding: '8px', background: '#00999924', borderRadius: '8px', mb: 5 }}>
@@ -124,12 +128,22 @@ export const Main = (): ReactElement => {
               />
             </Grid>
             <Grid item xs={12}>
-              <Accordion>
+              <Accordion onChange={(_, expanded) => setVarsVisible(expanded)}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography>{t('Variables')}</Typography>
+                  <Typography color={variableError ? 'red' : 'inherited'}>
+                    {t('Variables')}
+                    {variableError ? '...' : ''}
+                  </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <EditorVariables uuid={VARIABLE_EDITOR_UUID} sx={{ minHeight: `10vh` }} />
+                  <EditorVariables
+                    uuid={VARIABLE_EDITOR_UUID}
+                    sx={{
+                      minHeight: `10vh`,
+                      transition: 'opacity 0.3s ease',
+                      opacity: `${variableOpacity}`,
+                    }}
+                  />
                 </AccordionDetails>
               </Accordion>
             </Grid>
