@@ -30,7 +30,12 @@ export const EditorQueryGraphQL = ({ uuid }: { uuid: string }) => {
         borderRadius: '8px',
       }}
     >
-      <Editor language={'graphql'} model={model} hoverEnabled={false} />
+      <Editor
+        language={'graphql'}
+        model={model}
+        hoverEnabled={false}
+        extraClassName={'query-monaco-editor'}
+      />
     </Box>
   );
 };

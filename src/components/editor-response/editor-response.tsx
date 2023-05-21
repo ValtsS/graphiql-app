@@ -16,7 +16,13 @@ export const EditorResponse = () => {
 
   return (
     <Box style={{ width: '100%', height: '500px' }}>
-      <Editor language={'json'} model={model} readOnly={true} hoverEnabled={true} />
+      <Editor
+        language={'json'}
+        model={model}
+        readOnly={true}
+        hoverEnabled={true}
+        extraClassName={'response-monaco-editor'}
+      />
     </Box>
   );
 };

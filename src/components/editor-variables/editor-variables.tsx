@@ -23,7 +23,12 @@ export const EditorVariables = ({ uuid }: { uuid: string }) => {
 
   return (
     <div style={{ width: '100%' }}>
-      <Editor language={'json'} model={model} hoverEnabled={true} />
+      <Editor
+        language={'json'}
+        model={model}
+        hoverEnabled={true}
+        extraClassName={'variables-monaco-editor'}
+      />
     </div>
   );
 };
