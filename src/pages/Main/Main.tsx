@@ -125,7 +125,7 @@ export const Main = (): ReactElement => {
       <Grid
         container
         spacing={1}
-        sx={{ width: { xs: '230px', sm: '500px', md: 'auto' }, m: '0 auto' }}
+        sx={{ width: { xs: '100%', sm: '100%', md: 'auto' }, m: '0 auto' }}
       >
         <Grid item xs={12} md={6}>
           <Grid container spacing={1}>
