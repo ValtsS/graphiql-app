@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import React, { MouseEvent, ReactElement, useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import './header.css';
 import { SwitchMode } from './langSwitch';
@@ -56,10 +56,12 @@ export const Header = (props: Props): ReactElement => {
     return () => window.removeEventListener('scroll', update);
   });
 
+  const { pathname } = useLocation();
+
   const routes = filterByMode(routesConfig, [
     AccessMode.Always,
     currentUser ? AccessMode.LoggedIn : AccessMode.Guest,
-  ]);
+  ]).filter((e) => e.path !== pathname);
 
   const headerMenu = routes.filter((el) => !el.displayInRegistration);
   const signMenu = routes.filter((el) => el.displayInRegistration);

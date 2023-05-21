@@ -1,4 +1,10 @@
-import { AddressBar, EditorQueryGraphQL, EditorResponse, EditorVariables } from '@/components';
+import {
+  AddressBar,
+  DocAccordeon,
+  EditorQueryGraphQL,
+  EditorResponse,
+  EditorVariables,
+} from '@/components';
 import { QUERY_EDITOR_UUID, VARIABLE_EDITOR_UUID } from '@/core/consts';
 import { useAppContext } from '@/provider';
 import { useModalDialog } from '@/provider/modal-dialog';
@@ -10,24 +16,12 @@ import {
   sendQueryGQL,
 } from '@/slices';
 import { useAppDispatch } from '@/store';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Button,
-  CircularProgress,
-  Grid,
-  IconButton,
-  Typography,
-} from '@mui/material';
+import { Box, Button, CircularProgress, Grid, IconButton, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { DocumentPageComponent } from '../document-page/document-page';
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
@@ -104,23 +98,7 @@ export const Main = (): ReactElement => {
         </IconButton>
       </Box>
 
-      <Accordion
-        sx={{
-          mb: '5px',
-          borderRadius: '8px',
-          '&:before': {
-            display: 'none',
-          },
-        }}
-      >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>{t('Documentation')}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography></Typography>
-          <DocumentPageComponent />
-        </AccordionDetails>
-      </Accordion>
+      <DocAccordeon />
       {/* panel end */}
       <Grid
         container
