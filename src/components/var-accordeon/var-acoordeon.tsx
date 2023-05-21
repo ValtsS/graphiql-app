@@ -15,14 +15,14 @@ export const VariableAccordeon = ({ sx }: { sx?: SxProps }) => {
   const variableOpacity = varsVisible ? '1.0' : '0';
 
   return (
-    <Accordion onChange={(_, expanded) => setVarsVisible(expanded)}>
+    <Accordion onChange={(_, expanded) => setVarsVisible(expanded)} disableGutters={true}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography color={variableError ? 'red' : 'inherited'}>
           {t('Variables')}
           {variableError ? '...' : ''}
         </Typography>
       </AccordionSummary>
-      <AccordionDetails>
+      <AccordionDetails sx={{ padding: '0' }}>
         <EditorVariables
           uuid={VARIABLE_EDITOR_UUID}
           sx={{
