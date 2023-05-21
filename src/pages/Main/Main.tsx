@@ -71,6 +71,7 @@ export const Main = (): ReactElement => {
 
   const schemaLoading = schemaState.status == StoreStatus.loading;
   const schemaReady = schemaState.status == StoreStatus.succeeded;
+  const schemaError = schemaState.status == StoreStatus.failed ? schemaState.error : undefined;
 
   return (
     <Box sx={{ padding: '8px', background: '#00999924', borderRadius: '8px', mb: 5 }}>
@@ -118,18 +119,21 @@ export const Main = (): ReactElement => {
           },
         }}
       >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} disabled={!schemaReady}>
-          <Typography>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography color={schemaError ? 'red' : 'inherited'}>
             {t('Documentation')}
+            {schemaError ? '...' : ''}
             {schemaLoading && <CircularProgress size={'small'} />}
           </Typography>
         </AccordionSummary>
-        {schemaReady && (
-          <AccordionDetails>
-            <Typography></Typography>
-            <DocumentPageComponent />
-          </AccordionDetails>
-        )}
+        <AccordionDetails>
+          {schemaError && (
+            <Typography fontStyle={'italic'} color={'red'}>
+              {' (' + schemaError + ')'}
+            </Typography>
+          )}
+          {schemaReady && <DocumentPageComponent />}
+        </AccordionDetails>
       </Accordion>
       {/* panel end */}
       <Grid
