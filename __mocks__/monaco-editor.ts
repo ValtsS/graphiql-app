@@ -4,15 +4,12 @@ class FakeModel {}
 
 class FakeEditor {
   model: FakeModel = new FakeModel();
-
-  public dispose() {}
-
   public getModel() {
     return this.model;
   }
-
+  public dispose() {}
   public setModel() {}
-
+  public layout() {}
   public updateOptions() {}
 }
 
