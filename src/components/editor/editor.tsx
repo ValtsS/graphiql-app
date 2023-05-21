@@ -48,7 +48,7 @@ export const Editor = (props: Props) => {
   const initOnce = () => {
     if (monacoEl.current && editorRef.current === null) {
       if (props.onEvent) props.onEvent(editorRef.current, EditorEventType.willMount);
-      editorRef.current = editor.create(monacoEl.current!, {
+      editorRef.current = editor.create(monacoEl.current, {
         language: props.language,
         theme: 'customTheme',
         model: props.model,
