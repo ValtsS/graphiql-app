@@ -17,7 +17,7 @@ export const VariableAccordeon = ({ sx }: { sx?: SxProps }) => {
   return (
     <Accordion onChange={(_, expanded) => setVarsVisible(expanded)} disableGutters={true}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography color={variableError ? 'red' : 'inherited'}>
+        <Typography color={variableError ? 'red' : 'inherited'} variant="button">
           {t('Variables')}
           {variableError ? '...' : ''}
         </Typography>
