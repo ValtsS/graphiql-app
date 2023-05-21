@@ -9,4 +9,4 @@ export * from './editor-query';
 export * from './editor-response';
 export * from './editor-variables';
 export * from './doc-accordeon';
-export * from './query-var-editors';
+export * from './var-accordeon';

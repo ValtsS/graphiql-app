@@ -1,9 +1,6 @@
-import {
-  AddressBar,
-  DocAccordeon,
-  EditorResponse
-} from '@/components';
-import { QueryAndVariableEditors } from '@/components/query-var-editors/query-var-editors';
+import { AddressBar, DocAccordeon, EditorQueryGraphQL, EditorResponse } from '@/components';
+import { VariableAccordeon } from '@/components/var-accordeon/var-acoordeon';
+import { QUERY_EDITOR_UUID } from '@/core/consts';
 import { useAppContext } from '@/provider';
 import { useModalDialog } from '@/provider/modal-dialog';
 import {
@@ -11,23 +8,15 @@ import {
   changeEndpoint,
   selectEditorsData,
   selectMainData,
-  sendQueryGQL
+  sendQueryGQL,
 } from '@/slices';
 import { useAppDispatch } from '@/store';
 import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Grid,
-  IconButton,
-  Typography
-} from '@mui/material';
+import { Box, Button, CircularProgress, Grid, IconButton, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-
 
 export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
@@ -111,7 +100,21 @@ export const Main = (): ReactElement => {
         sx={{ width: { xs: '100%', sm: '100%', md: 'auto' }, m: '0 auto' }}
       >
         <Grid item xs={12} md={6}>
-          <QueryAndVariableEditors />
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <EditorQueryGraphQL
+                uuid={QUERY_EDITOR_UUID}
+                sx={{ minHeight: { xs: '10vh', sm: '20vh', md: '50vh' } }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <VariableAccordeon
+                sx={{
+                  minHeight: `15vh`,
+                }}
+              />
+            </Grid>
+          </Grid>
         </Grid>
         <Grid
           item
