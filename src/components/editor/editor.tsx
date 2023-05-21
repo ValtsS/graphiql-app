@@ -7,8 +7,6 @@ import { Box } from '@mui/system';
 export const enum EditorEventType {
   willMount,
   Mounted,
-  willUnmount,
-  unMounted,
 }
 
 export type EditorEvent = (
@@ -22,6 +20,7 @@ interface Props {
   readOnly?: boolean;
   hoverEnabled: boolean;
   onEvent?: EditorEvent;
+  extraClassName?: string;
 }
 
 const MONACO_OPTIONS: editor.IEditorOptions = {
@@ -54,6 +53,7 @@ export const Editor = (props: Props) => {
         model: props.model,
         ...MONACO_OPTIONS,
         readOnly: props.readOnly,
+        ...(props.extraClassName ? { extraEditorClassName: props.extraClassName } : {}),
         hover: {
           enabled: props.hoverEnabled,
         },
@@ -68,10 +68,8 @@ export const Editor = (props: Props) => {
   useEffect(() => {
     return () => {
       if (editorRef.current) {
-        if (props.onEvent) props.onEvent(editorRef.current, EditorEventType.willUnmount);
         editorRef.current.dispose();
         editorRef.current = null;
-        if (props.onEvent) props.onEvent(editorRef.current, EditorEventType.unMounted);
       }
     };
   }, []);
@@ -96,9 +94,10 @@ export const Editor = (props: Props) => {
         hover: {
           enabled: props.hoverEnabled,
         },
+        ...(props.extraClassName ? { extraEditorClassName: props.extraClassName } : {}),
       });
     }
-  }, [props.hoverEnabled, props.readOnly]);
+  }, [props.hoverEnabled, props.readOnly, props.extraClassName]);
 
   return (
     <Box
