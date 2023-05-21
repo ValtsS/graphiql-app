@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { Uri, editor } from 'monaco-editor';
 import customTheme from './editorTheme';
 import './editor.css';
-import { Box } from '@mui/system';
+import { Box, SxProps } from '@mui/system';
 
 export const enum EditorEventType {
   willMount,
@@ -20,7 +20,8 @@ interface Props {
   readOnly?: boolean;
   hoverEnabled: boolean;
   onEvent?: EditorEvent;
-  extraClassName?: string;
+  className?: string;
+  sx?: SxProps;
 }
 
 const MONACO_OPTIONS: editor.IEditorOptions = {
@@ -53,7 +54,7 @@ export const Editor = (props: Props) => {
         model: props.model,
         ...MONACO_OPTIONS,
         readOnly: props.readOnly,
-        ...(props.extraClassName ? { extraEditorClassName: props.extraClassName } : {}),
+        ...(props.className ? { extraEditorClassName: props.className } : {}),
         hover: {
           enabled: props.hoverEnabled,
         },
@@ -94,17 +95,19 @@ export const Editor = (props: Props) => {
         hover: {
           enabled: props.hoverEnabled,
         },
-        ...(props.extraClassName ? { extraEditorClassName: props.extraClassName } : {}),
+        ...(props.className ? { extraEditorClassName: props.className } : {}),
       });
     }
-  }, [props.hoverEnabled, props.readOnly, props.extraClassName]);
+  }, [props.hoverEnabled, props.readOnly, props.className]);
 
   return (
     <Box
       ref={monacoEl}
-      className="Editor"
+      className={props.className}
       sx={{
         boxShadow: ' 0px 5px 10px 2px rgba(34, 60, 80, 0.2)',
+        textAlign: 'left',
+        ...props.sx,
       }}
     />
   );

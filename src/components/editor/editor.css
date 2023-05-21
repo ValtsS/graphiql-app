@@ -1,7 +1,3 @@
-.editorsContainer {
-  height: 100vh;
-}
-
 .editors {
   display: flex;
   border: 1px solid gray;
@@ -29,13 +25,6 @@
 .monaco {
   height: 40vh;
   text-align: left;
-}
-
-.Editor {
-  min-height: 40vh;
-  text-align: left;
-  border-radius: 5px;
-  height: inherit;
 }
 
 .monaco-editor,

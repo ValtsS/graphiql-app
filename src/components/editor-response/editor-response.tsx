@@ -3,9 +3,9 @@ import React, { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { Editor, getOrCreateModel } from '../editor/editor';
-import { Box } from '@mui/material';
+import { SxProps } from '@mui/system';
 
-export const EditorResponse = () => {
+export const EditorResponse = ({ sx }: { sx?: SxProps }) => {
   const editorData = useSelector(selectEditorsData);
   const [uuid] = useState<string>(uuidv4() + '.json');
   const model = useMemo(() => {
@@ -15,14 +15,13 @@ export const EditorResponse = () => {
   }, [uuid, editorData.response]);
 
   return (
-    <Box style={{ width: '100%', height: '500px' }}>
-      <Editor
-        language={'json'}
-        model={model}
-        readOnly={true}
-        hoverEnabled={true}
-        extraClassName={'response-monaco-editor'}
-      />
-    </Box>
+    <Editor
+      language={'json'}
+      model={model}
+      readOnly={true}
+      hoverEnabled={true}
+      className={'response-monaco-editor'}
+      sx={{ minHeight: '20vh', ...sx }}
+    />
   );
 };

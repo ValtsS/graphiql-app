@@ -4,8 +4,9 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Editor } from '../editor/editor';
 import { useCertainModel } from '@/custom-hooks/useEditorModel';
+import { SxProps } from '@mui/system';
 
-export const EditorVariables = ({ uuid }: { uuid: string }) => {
+export const EditorVariables = ({ uuid, sx }: { uuid: string; sx?: SxProps }) => {
   const dispatch = useAppDispatch();
   const editorData = useSelector(selectEditorsData);
   const model = useCertainModel({
@@ -22,13 +23,12 @@ export const EditorVariables = ({ uuid }: { uuid: string }) => {
   });
 
   return (
-    <div style={{ width: '100%' }}>
-      <Editor
-        language={'json'}
-        model={model}
-        hoverEnabled={true}
-        extraClassName={'variables-monaco-editor'}
-      />
-    </div>
+    <Editor
+      language={'json'}
+      model={model}
+      hoverEnabled={true}
+      className={'variables-monaco-editor'}
+      sx={{ minHeight: '20vh', ...sx }}
+    />
   );
 };

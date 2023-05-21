@@ -27,7 +27,6 @@ export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
   const { hide, showDialog } = useModalDialog();
   const { t } = useTranslation();
-
   const mainState = useSelector(selectMainData);
   const editorState = useSelector(selectEditorsData);
   const { apiClient } = useAppContext();
@@ -111,7 +110,7 @@ export const Main = (): ReactElement => {
               <EditorQueryGraphQL uuid={QUERY_EDITOR_UUID} />
             </Grid>
             <Grid item xs={12}>
-              <EditorVariables uuid={VARIABLE_EDITOR_UUID} />
+              <EditorVariables uuid={VARIABLE_EDITOR_UUID} sx={{ minHeight: `10vh` }} />
             </Grid>
           </Grid>
         </Grid>
@@ -123,9 +122,11 @@ export const Main = (): ReactElement => {
         >
           <EditorResponse />
           {processing && <CircularProgress size={'1.5rem'} />}
-          <Typography variant="inherit" mb={'10%'}>
-            {editorState.queryError}
-          </Typography>
+          <Box>
+            <Typography variant="inherit" mb={'10%'}>
+              {editorState.queryError}
+            </Typography>
+          </Box>
         </Grid>
       </Grid>
     </Box>
