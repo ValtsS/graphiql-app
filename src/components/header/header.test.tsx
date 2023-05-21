@@ -82,7 +82,7 @@ describe('Header', () => {
     expect(auth.lastUser).toBeNull();
   });
 
-  async function defaultRender(auth: FirebaseMock, path: string = '/') {
+  async function defaultRender(auth: FirebaseMock, path = '/') {
     const store = setupStore();
     render(
       <AppContextProvider apiClient={null} auth={auth} routing={defaultRoutes}>
