@@ -7,6 +7,7 @@ import {
   changeEndpoint,
   selectEditorsData,
   selectMainData,
+  selectSchemaData,
   sendQueryGQL,
 } from '@/slices';
 import { useAppDispatch } from '@/store';
@@ -36,6 +37,7 @@ export const Main = (): ReactElement => {
 
   const mainState = useSelector(selectMainData);
   const editorState = useSelector(selectEditorsData);
+  const schemaState = useSelector(selectSchemaData);
   const { apiClient } = useAppContext();
   const notifyError = (message: string) => toast(message, { type: 'error' });
 
@@ -66,6 +68,9 @@ export const Main = (): ReactElement => {
 
   const processing = editorState.apiStatus == StoreStatus.loading;
   const errors = editorState?.queryError !== undefined;
+
+  const schemaLoading = schemaState.status == StoreStatus.loading;
+  const schemaReady = schemaState.status == StoreStatus.succeeded;
 
   return (
     <Box sx={{ padding: '8px', background: '#00999924', borderRadius: '8px', mb: 5 }}>
@@ -113,13 +118,18 @@ export const Main = (): ReactElement => {
           },
         }}
       >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>{t('Documentation')}</Typography>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} disabled={!schemaReady}>
+          <Typography>
+            {t('Documentation')}
+            {schemaLoading && <CircularProgress size={'small'} />}
+          </Typography>
         </AccordionSummary>
-        <AccordionDetails>
-          <Typography></Typography>
-          <DocumentPageComponent />
-        </AccordionDetails>
+        {schemaReady && (
+          <AccordionDetails>
+            <Typography></Typography>
+            <DocumentPageComponent />
+          </AccordionDetails>
+        )}
       </Accordion>
       {/* panel end */}
       <Grid
