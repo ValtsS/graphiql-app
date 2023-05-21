@@ -138,7 +138,7 @@ export const Main = (): ReactElement => {
           )}
           <EditorResponse sx={{ minHeight: { xs: '10vh', sm: '20vh', md: '50vh' } }} />
           <Box>
-            <Typography variant="inherit" mb={'10%'}>
+            <Typography variant="inherit" marginBottom={'4%'} marginTop={'1%'}>
               {editorState.queryError}
             </Typography>
           </Box>
