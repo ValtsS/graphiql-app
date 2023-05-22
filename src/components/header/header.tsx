@@ -61,7 +61,7 @@ export const Header = (props: Props): ReactElement => {
   const routes = filterByMode(routesConfig, [
     AccessMode.Always,
     currentUser ? AccessMode.LoggedIn : AccessMode.Guest,
-  ]).filter((e) => e.path !== pathname && e.path !== '/404' && e.path !== '*');
+  ]).filter((e) => e.path !== pathname && e.displayInMenu);
 
   const headerMenu = routes.filter((el) => !el.displayInRegistration);
   const signMenu = routes.filter((el) => el.displayInRegistration);
