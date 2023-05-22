@@ -4,9 +4,9 @@ import { useAppDispatch } from '@/store';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Editor } from '../editor/editor';
-import { Box } from '@mui/system';
+import { SxProps } from '@mui/system';
 
-export const EditorQueryGraphQL = ({ uuid }: { uuid: string }) => {
+export const EditorQueryGraphQL = ({ uuid, sx }: { uuid: string; sx?: SxProps }) => {
   const dispatch = useAppDispatch();
   const editorData = useSelector(selectEditorsData);
 
@@ -24,13 +24,12 @@ export const EditorQueryGraphQL = ({ uuid }: { uuid: string }) => {
   });
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        borderRadius: '8px',
-      }}
-    >
-      <Editor language={'graphql'} model={model} hoverEnabled={false} />
-    </Box>
+    <Editor
+      language={'graphql'}
+      model={model}
+      hoverEnabled={false}
+      className={'query-monaco-editor'}
+      sx={{ minHeight: '20vh', ...sx }}
+    />
   );
 };

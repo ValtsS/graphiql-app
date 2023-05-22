@@ -1,7 +1,6 @@
 import { SimpleMockApiClient } from '@/../__mocks__/SimpleMockApiClient';
 import { setupMockIntrospection } from '@/../__mocks__/api-mock-helper';
 import { IntrospectionResponseData } from '@/core/api/api';
-import { DocumentPageComponent } from '@/pages/document-page/document-page';
 import { fetchSchema } from '@/slices';
 import { setupStore } from '@/store';
 import { waitFor } from '@testing-library/dom';

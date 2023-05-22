@@ -31,7 +31,7 @@ export const DocAccordeon = () => {
       }}
     >
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography color={schemaError ? 'red' : 'inherited'}>
+        <Typography color={schemaError ? 'red' : 'inherited'} variant="button">
           {t('Documentation')}
           {schemaError ? '...' : ''}
           {schemaLoading && <CircularProgress size={'small'} />}
