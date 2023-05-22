@@ -1,8 +1,9 @@
-import { Authorization, Main, Registration, Welcome } from '@/pages';
+import { Authorization, ErrorPage, Main, Registration, Welcome } from '@/pages';
 import React from 'react';
 import { ProtectedRoute } from './protected-route';
 import { v4 as uuidv4 } from 'uuid';
 import { Translation } from 'react-i18next';
+import { Navigate } from 'react-router-dom';
 
 export const enum AccessMode {
   Always,
@@ -76,19 +77,28 @@ export const defaultRoutes: RouteConfig[] = [
     buttonText: <Translation>{(t) => t('toMain')}</Translation>,
     displayMode: AccessMode.LoggedIn,
   },
-  // {
-  //   uuid: uuidv4(),
-  //   path: '/404',
-  //   element: () => (
-  //     <ProtectedRoute mode={AccessMode.Always}>
-  //       <ErrorPage />
-  //     </ProtectedRoute>
-  //   ),
-  //   displayInMenu: false,
-  //   menuText: <Translation>{(t) => t('404')}</Translation>,
-  //   buttonText: <Translation>{(t) => t('404')}</Translation>,
-  //   displayMode: AccessMode.Always,
-  // },
+  {
+    uuid: uuidv4(),
+    path: '/404',
+    element: () => (
+      <ProtectedRoute mode={AccessMode.Always}>
+        <ErrorPage />
+      </ProtectedRoute>
+    ),
+    displayInMenu: false,
+    menuText: <Translation>{(t) => t('404')}</Translation>,
+    buttonText: <Translation>{(t) => t('404')}</Translation>,
+    displayMode: AccessMode.Always,
+  },
+  {
+    uuid: uuidv4(),
+    path: '*',
+    element: () => <Navigate to="404" replace />,
+    displayInMenu: false,
+    menuText: <Translation>{(t) => t('404')}</Translation>,
+    buttonText: <Translation>{(t) => t('404')}</Translation>,
+    displayMode: AccessMode.Always,
+  },
   ...regRoutes,
 ];
 

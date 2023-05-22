@@ -1,4 +1,4 @@
-import { Button, Container, Typography } from '@mui/material';
+import { Button, CardMedia, Container, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
@@ -6,26 +6,28 @@ import { Link as RouterLink } from 'react-router-dom';
 export const ErrorPage = (): ReactElement => {
   const { t } = useTranslation();
   return (
-    <>
-      <Container>
-        <Typography variant="h4">404</Typography>
-        <img
-          src="https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif"
-          alt="error"
-          style={{ width: '40%' }}
-        />
-        <Typography variant="h5">{t('lost')}</Typography>
-        <Typography variant="h6">{t('notAvaible')}</Typography>
-        <Button
-          variant="outlined"
-          sx={{ color: 'white', border: '1px solid white', m: '50px 0' }}
-          fullWidth
-          component={RouterLink}
-          to={'/'}
-        >
-          {t('toMain')}
-        </Button>
-      </Container>
-    </>
+    <Container
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '10px',
+      }}
+    >
+      <Typography variant="h4">404</Typography>
+      <CardMedia
+        component="img"
+        image="https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif"
+        alt="error404"
+        sx={{ width: { xs: '80%', sm: '60%', md: '40%' } }}
+      />
+      <Typography variant="h5" mb={5}>
+        {t('lost')}
+      </Typography>
+      <Button variant="outlined" component={RouterLink} to={'/'}>
+        {t('toMain')}
+      </Button>
+    </Container>
   );
 };
