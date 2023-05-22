@@ -47,95 +47,100 @@ export const Registration = (): ReactElement => {
   };
 
   return (
-    <>
-      <Paper className={style.paper} elevation={6}>
-        <Grid container>
-          <SideBar data={data} />
+    <Paper className={style.paper} elevation={6} sx={{ mb: '100px' }}>
+      <Grid container>
+        <SideBar data={data} />
 
-          <Grid item md={6} xs={12} order={{ xs: 2, md: 2 }}>
-            <Box component="form" sx={{ p: '50px' }} aria-label="form">
-              <Typography
-                variant="h4"
-                component="h1"
-                gutterBottom
-                sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', md: '2rem' } }}
-              >
-                {t('Create')}
-              </Typography>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="userName"
-                label={t('Name')}
-                name="userName"
-                aria-label="textbox-name"
-                value={name}
-                inputProps={{ 'data-testid': 'editName' }}
-                error={!isValid?.has(FieldName.Name)}
-                helperText={t('Name needs to be at least 3 characters')}
-                onChange={(e) => nameChange(e.target.value)}
-              />
-              <input
-                accept="image/*"
-                style={{ display: 'none' }}
-                id="raised-button-file"
-                multiple
-                type="file"
-                onChange={(e) => setFile((e.target.files as FileList)[0])}
-              />
-              <label htmlFor="raised-button-file">
-                <Button component="span" variant="outlined">
-                  {t('Upload')}
-                  <CloudUploadOutlinedIcon />
-                </Button>
-              </label>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label={t('Email')}
-                name="email"
-                aria-label="textbox-email"
-                value={email}
-                inputProps={{ 'data-testid': 'editEmail' }}
-                error={!isValid?.has(FieldName.Email)}
-                onChange={(e) => emailChange(e.target.value)}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label={t('Password')}
-                type="password"
-                id="password"
-                aria-label="textbox-password"
-                value={password}
-                helperText={t(
-                  'minimum 8 symbols, at least one letter, one digit, one special character'
-                )}
-                error={!isValid?.has(FieldName.Password)}
-                inputProps={{
-                  'data-testid': 'editPassword',
-                }}
-                onChange={(e) => passwordChange(e.target.value)}
-              />
+        <Grid item md={6} xs={12} order={{ xs: 2, md: 2 }}>
+          <Box component="form" sx={{ p: '50px' }} aria-label="form">
+            <Typography
+              variant="h4"
+              component="h1"
+              gutterBottom
+              sx={{ fontWeight: 'bold', fontSize: { xs: '14px', sm: '2rem' } }}
+            >
+              {t('Create')}
+            </Typography>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="userName"
+              label={t('Name')}
+              name="userName"
+              aria-label="textbox-name"
+              value={name}
+              inputProps={{ 'data-testid': 'editName' }}
+              error={!isValid?.has(FieldName.Name)}
+              helperText={t('Name needs to be at least 3 characters')}
+              onChange={(e) => nameChange(e.target.value)}
+              sx={{
+                '.MuiInputBase-input': { fontSize: '10px' },
+              }}
+            />
+            <input
+              accept="image/*"
+              style={{ display: 'none' }}
+              id="raised-button-file"
+              multiple
+              type="file"
+              onChange={(e) => setFile((e.target.files as FileList)[0])}
+            />
+            <label htmlFor="raised-button-file">
               <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2, color: '#fff' }}
-                onClick={(e) => register(e)}
-                disabled={isValid?.size !== 3}
+                component="span"
+                variant="outlined"
+                sx={{ fontSize: { xs: '8px', sm: '14px' } }}
               >
-                {t('SignUp')}
+                {t('Upload')}
+                <CloudUploadOutlinedIcon />
               </Button>
-            </Box>
-          </Grid>
+            </label>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label={t('Email')}
+              name="email"
+              aria-label="textbox-email"
+              value={email}
+              inputProps={{ 'data-testid': 'editEmail' }}
+              error={!isValid?.has(FieldName.Email)}
+              onChange={(e) => emailChange(e.target.value)}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label={t('Password')}
+              type="password"
+              id="password"
+              aria-label="textbox-password"
+              value={password}
+              helperText={t(
+                'minimum 8 symbols, at least one letter, one digit, one special character'
+              )}
+              error={!isValid?.has(FieldName.Password)}
+              inputProps={{
+                'data-testid': 'editPassword',
+              }}
+              onChange={(e) => passwordChange(e.target.value)}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2, color: '#fff', fontSize: { xs: '8px', sm: '14px' } }}
+              onClick={(e) => register(e)}
+              disabled={isValid?.size !== 3}
+            >
+              {t('SignUp')}
+            </Button>
+          </Box>
         </Grid>
-      </Paper>
-    </>
+      </Grid>
+    </Paper>
   );
 };

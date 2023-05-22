@@ -7,11 +7,13 @@ import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
+import { useAppSelector } from '@/store';
 
 export const Welcome = (): ReactElement => {
   const { currentUser } = useAuth();
   const { routing } = useAppContext();
   const { t } = useTranslation();
+  const langMode = useAppSelector((state) => state.langMode.langMode);
 
   const signMenu =
     routing?.filter((el) => (currentUser ? el.path === '/main' : el.displayInRegistration)) ?? [];
@@ -42,6 +44,7 @@ export const Welcome = (): ReactElement => {
                 component={RouterLink}
                 to={page.path}
                 size="large"
+                sx={{ fontSize: { xs: '8px', sm: '12px', md: langMode ? '9px' : '14px' } }}
               >
                 {page.buttonText ?? page.menuText}
               </Button>

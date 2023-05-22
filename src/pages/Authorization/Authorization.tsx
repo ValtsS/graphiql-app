@@ -46,68 +46,66 @@ export const Authorization = (): ReactElement => {
   };
 
   return (
-    <>
-      <Paper elevation={6} className={style.paper}>
-        <Grid container>
-          <Grid item md={6} xs={12} order={{ xs: 2, md: 1 }}>
-            <Box component="form" noValidate sx={{ p: '50px' }}>
-              <Typography
-                variant="h4"
-                component="h1"
-                gutterBottom
-                sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', md: '2rem' } }}
-              >
-                {t('SignIn')}
-              </Typography>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label={t('Email')}
-                name="email"
-                autoComplete="email"
-                autoFocus
-                value={email}
-                inputProps={{ 'data-testid': 'editEmail' }}
-                error={!isEmailValid}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label={t('Password')}
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={password}
-                inputProps={{ 'data-testid': 'editPassword' }}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2, color: '#fff' }}
-                onClick={(e) => handleSignUp(e)}
-                disabled={!isEmailValid}
-              >
-                {t('SignIn')}
-              </Button>
-              <Grid container sx={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Grid item>
-                  <Link variant="body2" component={RouterLink} to="/reg">
-                    {t(`Don'tHave`)}
-                  </Link>
-                </Grid>
+    <Paper elevation={6} className={style.paper} sx={{ mb: '100px' }}>
+      <Grid container>
+        <Grid item md={6} xs={12} order={{ xs: 2, md: 1 }}>
+          <Box component="form" noValidate sx={{ p: '50px' }}>
+            <Typography
+              variant="h4"
+              component="h1"
+              gutterBottom
+              sx={{ fontWeight: 'bold', fontSize: { xs: '14px', sm: '2rem' } }}
+            >
+              {t('SignIn')}
+            </Typography>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label={t('Email')}
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={email}
+              inputProps={{ 'data-testid': 'editEmail' }}
+              error={!isEmailValid}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label={t('Password')}
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              inputProps={{ 'data-testid': 'editPassword' }}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2, color: '#fff', fontSize: { xs: '8px', sm: '14px' } }}
+              onClick={(e) => handleSignUp(e)}
+              disabled={!isEmailValid}
+            >
+              {t('SignIn')}
+            </Button>
+            <Grid container sx={{ display: 'flex', justifyContent: 'space-around' }}>
+              <Grid item>
+                <Link variant="body2" component={RouterLink} to="/reg">
+                  {t(`Don'tHave`)}
+                </Link>
               </Grid>
-            </Box>
-          </Grid>
-          <SideBar data={data} />
+            </Grid>
+          </Box>
         </Grid>
-      </Paper>
-    </>
+        <SideBar data={data} />
+      </Grid>
+    </Paper>
   );
 };
