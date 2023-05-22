@@ -1,11 +1,6 @@
-import {
-  AddressBar,
-  DocAccordeon,
-  EditorQueryGraphQL,
-  EditorResponse,
-  EditorVariables,
-} from '@/components';
-import { QUERY_EDITOR_UUID, VARIABLE_EDITOR_UUID } from '@/core/consts';
+import { AddressBar, DocAccordeon, EditorQueryGraphQL, EditorResponse } from '@/components';
+import { VariableAccordeon } from '@/components/var-accordeon/var-acoordeon';
+import { QUERY_EDITOR_UUID } from '@/core/consts';
 import { useAppContext } from '@/provider';
 import { useModalDialog } from '@/provider/modal-dialog';
 import {
@@ -27,7 +22,6 @@ export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
   const { hide, showDialog } = useModalDialog();
   const { t } = useTranslation();
-
   const mainState = useSelector(selectMainData);
   const editorState = useSelector(selectEditorsData);
   const { apiClient } = useAppContext();
@@ -107,10 +101,13 @@ export const Main = (): ReactElement => {
         <Grid item xs={12} md={6}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
-              <EditorQueryGraphQL uuid={QUERY_EDITOR_UUID} />
+              <EditorQueryGraphQL
+                uuid={QUERY_EDITOR_UUID}
+                sx={{ minHeight: { xs: '10vh', sm: '20vh', md: '50vh' } }}
+              />
             </Grid>
             <Grid item xs={12}>
-              <EditorVariables uuid={VARIABLE_EDITOR_UUID} />
+              <VariableAccordeon sx={{ minHeight: { xs: '10vh', sm: '20vh', md: '50vh' } }} />
             </Grid>
           </Grid>
         </Grid>
@@ -120,11 +117,30 @@ export const Main = (): ReactElement => {
           md={6}
           sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
         >
-          <EditorResponse />
-          {processing && <CircularProgress size={'1.5rem'} />}
-          <Typography variant="inherit" mb={'10%'}>
-            {editorState.queryError}
-          </Typography>
+          {processing && (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '40%',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                zIndex: 1,
+                pointerEvents: 'none',
+              }}
+            >
+              <CircularProgress size={'5rem'} />
+            </div>
+          )}
+          <EditorResponse sx={{ minHeight: { xs: '10vh', sm: '20vh', md: '50vh' } }} />
+          <Box>
+            <Typography variant="inherit" marginBottom={'4%'} marginTop={'1%'}>
+              {editorState.queryError}
+            </Typography>
+          </Box>
         </Grid>
       </Grid>
     </Box>
