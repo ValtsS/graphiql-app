@@ -76,6 +76,19 @@ export const defaultRoutes: RouteConfig[] = [
     buttonText: <Translation>{(t) => t('toMain')}</Translation>,
     displayMode: AccessMode.LoggedIn,
   },
+  // {
+  //   uuid: uuidv4(),
+  //   path: '/404',
+  //   element: () => (
+  //     <ProtectedRoute mode={AccessMode.Always}>
+  //       <ErrorPage />
+  //     </ProtectedRoute>
+  //   ),
+  //   displayInMenu: false,
+  //   menuText: <Translation>{(t) => t('404')}</Translation>,
+  //   buttonText: <Translation>{(t) => t('404')}</Translation>,
+  //   displayMode: AccessMode.Always,
+  // },
   ...regRoutes,
 ];
 
