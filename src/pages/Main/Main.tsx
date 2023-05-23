@@ -57,7 +57,6 @@ export const Main = (): ReactElement => {
 
   return (
     <Box sx={{ padding: '8px', background: '#00999924', borderRadius: '8px', mb: 5 }}>
-      {/* panel */}
       <Box sx={{ display: 'flex', justifyContent: 'center', m: '10px 0 20px 0' }}>
         <Typography
           variant="h6"
@@ -93,7 +92,7 @@ export const Main = (): ReactElement => {
       </Box>
 
       <DocAccordeon />
-      {/* panel end */}
+
       <Grid
         container
         spacing={1}

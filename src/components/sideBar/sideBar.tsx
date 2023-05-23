@@ -26,14 +26,22 @@ export const SideBar = (props: IData) => {
           component="h2"
           color={'white'}
           mt={5}
-          sx={{ fontWeight: 'bold', fontSize: { xs: '1.5rem', md: '2rem' } }}
+          mb={5}
+          sx={{ fontWeight: 'bold', fontSize: { xs: '14px', sm: '2rem' } }}
         >
           {greet}
         </Typography>
-        <Typography color={'white'}>{desc}</Typography>
+        <Typography color={'white'} sx={{ fontSize: { xs: '10px', sm: '14px' } }}>
+          {desc}
+        </Typography>
         <Button
           variant="outlined"
-          sx={{ color: 'white', border: '1px solid white', m: '50px 0' }}
+          sx={{
+            color: 'white',
+            border: '1px solid white',
+            m: '50px 0',
+            fontSize: { xs: '9px', sm: '14px' },
+          }}
           fullWidth
           component={RouterLink}
           to={path}

@@ -43,5 +43,6 @@
   "notFound": "Content not found",
   "personal": "Enter your personal details",
   "result": "result",
-  "toMain": "Go to Main Page"
+  "toMain": "Go to Main Page",
+  "lost": "Page not Found"
 }
