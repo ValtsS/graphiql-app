@@ -115,7 +115,7 @@ export const Main = (): ReactElement => {
           item
           xs={12}
           md={6}
-          sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+          sx={{ display: 'inline', flexDirection: 'column', justifyContent: 'space-between' }}
         >
           {processing && (
             <div
@@ -136,8 +136,8 @@ export const Main = (): ReactElement => {
             </div>
           )}
           <EditorResponse sx={{ minHeight: { xs: '10vh', sm: '20vh', md: '50vh' } }} />
-          <Box>
-            <Typography variant="inherit" marginBottom={'4%'} marginTop={'1%'}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', m: '10px 0 20px 0' }}>
+            <Typography variant="inherit" marginTop={'1%'}>
               {editorState.queryError}
             </Typography>
           </Box>

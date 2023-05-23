@@ -215,7 +215,7 @@ export const Header = (props: Props): ReactElement => {
                   <Tooltip title={currentUser?.displayName}>
                     <IconButton sx={{ p: 0 }}>
                       <Avatar
-                        alt="Remy Sharp"
+                        alt={currentUser.displayName ?? ''}
                         src={currentUser ? (currentUser.photoURL as string) : ''}
                       />
                     </IconButton>
