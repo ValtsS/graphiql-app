@@ -3,17 +3,15 @@ import { Course } from '@/components/course/course';
 import { Developers } from '@/components/developers/developers';
 import useAuth from '@/custom-hooks/useAuth';
 import { useAppContext } from '@/provider';
-import { Box, Button, Container, Grid, Typography } from '@mui/material';
+import { Button, Container, Grid, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import { useAppSelector } from '@/store';
 
 export const Welcome = (): ReactElement => {
   const { currentUser } = useAuth();
   const { routing } = useAppContext();
   const { t } = useTranslation();
-  const langMode = useAppSelector((state) => state.langMode.langMode);
 
   const signMenu =
     routing?.filter((el) => (currentUser ? el.path === '/main' : el.displayInRegistration)) ?? [];

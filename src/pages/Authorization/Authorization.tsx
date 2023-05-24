@@ -89,7 +89,7 @@ export const Authorization = (): ReactElement => {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, color: '#fff', fontSize: { xs: '14px' } }}
+              sx={{ mt: 3, mb: 2, color: '#fff', fontSize: '14px' }}
               onClick={(e) => handleSignUp(e)}
               disabled={!isEmailValid}
             >

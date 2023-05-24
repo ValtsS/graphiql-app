@@ -31,7 +31,7 @@ export const SideBar = (props: IData) => {
         >
           {greet}
         </Typography>
-        <Typography color={'white'} sx={{ fontSize: { xs: '14px' } }}>
+        <Typography color={'white'} sx={{ fontSize: '14px' }}>
           {desc}
         </Typography>
         <Button

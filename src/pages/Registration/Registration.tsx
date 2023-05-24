@@ -87,7 +87,7 @@ export const Registration = (): ReactElement => {
               onChange={(e) => setFile((e.target.files as FileList)[0])}
             />
             <label htmlFor="raised-button-file">
-              <Button component="span" variant="outlined" sx={{ fontSize: { xs: '14px' } }}>
+              <Button component="span" variant="outlined" sx={{ fontSize: '14px' }}>
                 {t('Upload')}
                 <CloudUploadOutlinedIcon />
               </Button>
