@@ -2,7 +2,9 @@ import { Footer, Header, Toaster } from '@/components';
 import { useAppContext } from '@/provider';
 import { useModalDialog } from '@/provider/modal-dialog';
 import { Box, Modal, SxProps } from '@mui/material';
+import { t } from 'i18next';
 import React, { ReactElement } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -22,6 +24,7 @@ const style: SxProps = {
 export const RootLayout = (props: RootLayoutProps): ReactElement => {
   const { state, hide } = useModalDialog();
   const { routing } = useAppContext();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -29,8 +32,8 @@ export const RootLayout = (props: RootLayoutProps): ReactElement => {
       <Modal
         open={state.show}
         onClose={hide}
-        aria-labelledby="Change endpoint"
-        aria-describedby="Change GraphQL Endpoint"
+        aria-labelledby={t('Change endpoint') as string}
+        aria-describedby={t('Change GraphQL Endpoint') as string}
       >
         <Box sx={style}>{state.control}</Box>
       </Modal>

@@ -52,7 +52,11 @@ export const Registration = (): ReactElement => {
         <SideBar data={data} />
 
         <Grid item md={6} xs={12} order={{ xs: 2, md: 2 }}>
-          <Box component="form" sx={{ p: { xs: '5px', sm: '50px' } }} aria-label="form">
+          <Box
+            component="form"
+            sx={{ p: { xs: '5px', sm: '50px' } }}
+            aria-label={t('regform') as string}
+          >
             <Typography
               variant="h4"
               component="h1"
@@ -68,7 +72,7 @@ export const Registration = (): ReactElement => {
               id="userName"
               label={t('Name')}
               name="userName"
-              aria-label="textbox-name"
+              aria-label={t('reg-edit-name') as string}
               value={name}
               inputProps={{ 'data-testid': 'editName' }}
               error={!isValid?.has(FieldName.Name)}
@@ -99,7 +103,7 @@ export const Registration = (): ReactElement => {
               id="email"
               label={t('Email')}
               name="email"
-              aria-label="textbox-email"
+              aria-label={t('reg-edit-email') as string}
               value={email}
               inputProps={{ 'data-testid': 'editEmail' }}
               error={!isValid?.has(FieldName.Email)}
@@ -113,7 +117,7 @@ export const Registration = (): ReactElement => {
               label={t('Password')}
               type="password"
               id="password"
-              aria-label="textbox-password"
+              aria-label={t('reg-edit-password') as string}
               value={password}
               helperText={t(
                 'minimum 8 symbols, at least one letter, one digit, one special character'
