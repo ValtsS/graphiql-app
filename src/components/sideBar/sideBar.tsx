@@ -27,11 +27,11 @@ export const SideBar = (props: IData) => {
           color={'white'}
           mt={5}
           mb={5}
-          sx={{ fontWeight: 'bold', fontSize: { xs: '14px', sm: '2rem' } }}
+          sx={{ fontWeight: 'bold', fontSize: { xs: '16px', sm: '2rem' } }}
         >
           {greet}
         </Typography>
-        <Typography color={'white'} sx={{ fontSize: { xs: '10px', sm: '14px' } }}>
+        <Typography color={'white'} sx={{ fontSize: { xs: '14px' } }}>
           {desc}
         </Typography>
         <Button
@@ -40,7 +40,6 @@ export const SideBar = (props: IData) => {
             color: 'white',
             border: '1px solid white',
             m: '50px 0',
-            fontSize: { xs: '9px', sm: '14px' },
           }}
           fullWidth
           component={RouterLink}

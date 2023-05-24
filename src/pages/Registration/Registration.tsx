@@ -52,7 +52,7 @@ export const Registration = (): ReactElement => {
         <SideBar data={data} />
 
         <Grid item md={6} xs={12} order={{ xs: 2, md: 2 }}>
-          <Box component="form" sx={{ p: '50px' }} aria-label="form">
+          <Box component="form" sx={{ p: { xs: '5px', sm: '50px' } }} aria-label="form">
             <Typography
               variant="h4"
               component="h1"
@@ -75,7 +75,7 @@ export const Registration = (): ReactElement => {
               helperText={t('Name needs to be at least 3 characters')}
               onChange={(e) => nameChange(e.target.value)}
               sx={{
-                '.MuiInputBase-input': { fontSize: '10px' },
+                '.MuiInputBase-input': { fontSize: '14px' },
               }}
             />
             <input
@@ -87,11 +87,7 @@ export const Registration = (): ReactElement => {
               onChange={(e) => setFile((e.target.files as FileList)[0])}
             />
             <label htmlFor="raised-button-file">
-              <Button
-                component="span"
-                variant="outlined"
-                sx={{ fontSize: { xs: '8px', sm: '14px' } }}
-              >
+              <Button component="span" variant="outlined" sx={{ fontSize: { xs: '14px' } }}>
                 {t('Upload')}
                 <CloudUploadOutlinedIcon />
               </Button>
@@ -132,7 +128,7 @@ export const Registration = (): ReactElement => {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, color: '#fff', fontSize: { xs: '8px', sm: '14px' } }}
+              sx={{ mt: 3, mb: 2, color: '#fff', fontSize: { xs: '14px' } }}
               onClick={(e) => register(e)}
               disabled={isValid?.size !== 3}
             >
