@@ -26,9 +26,9 @@ describe('Book generator test', () => {
 
   it('should render correct root', () => {
     renderPage('/');
-    expect(screen.getByRole('link', { name :'Queries'})).toBeInTheDocument();
-    expect(screen.getByRole('link', { name :'Mutations'})).toBeInTheDocument();
-    expect(screen.getByRole('link', { name :'Subscriptions'})).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Queries' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Mutations' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Subscriptions' })).toBeInTheDocument();
   });
   describe('API documentation pages', () => {
     it.each([
