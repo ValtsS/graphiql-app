@@ -13,7 +13,7 @@ export const enum DocumentPartKind {
 }
 
 export type RenderOnClick = (uuid: string) => void;
-export type JSXCallback = (event: RenderOnClick) => JSX.Element;
+export type JSXCallback = (event: RenderOnClick) => React.JSX.Element;
 
 export type DocumentPart = {
   kind: DocumentPartKind;
@@ -30,7 +30,7 @@ export type DocumentBook = {
   [uuid: string]: DocumentPage;
 };
 
-function formatText(e: JSX.Element, color?: string, testId?: string) {
+function formatText(e: React.JSX.Element, color?: string, testId?: string) {
   return (
     <Typography
       sx={{ color, fontFamily: 'monospace', fontSize: '14px' }}
