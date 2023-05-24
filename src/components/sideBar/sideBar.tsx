@@ -12,7 +12,7 @@ export const SideBar = (props: IData) => {
     <Grid item md={6} xs={12} order={{ xs: 1, md: 2 }}>
       <Box
         sx={{
-          background: 'linear-gradient(to right, #009999, #007195)',
+          background: 'linear-gradient(to right, #007f7f, #007195)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

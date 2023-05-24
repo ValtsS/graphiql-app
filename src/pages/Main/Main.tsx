@@ -63,7 +63,7 @@ export const Main = (): ReactElement => {
           sx={{
             textOverflow: 'ellipsis',
             overflow: 'hidden',
-            background: '#00999929',
+            background: '#007f7f29',
             width: 'fit-content',
             padding: '5px',
             borderRadius: '5px 0px 0px 5px',
