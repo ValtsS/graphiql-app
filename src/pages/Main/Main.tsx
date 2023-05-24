@@ -87,7 +87,7 @@ export const Main = (): ReactElement => {
           sx={{ p: 0, ml: '15px' }}
           data-testid="send-query-button"
         >
-          <PlayCircleFilledWhiteOutlinedIcon fontSize="large" aria-aria-label={t('Run')} />
+          <PlayCircleFilledWhiteOutlinedIcon fontSize="large" aria-label={t('Run')} />
         </IconButton>
       </Box>
 
