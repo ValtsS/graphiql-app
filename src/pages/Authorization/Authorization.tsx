@@ -70,7 +70,7 @@ export const Authorization = (): ReactElement => {
               value={email}
               inputProps={{ 'data-testid': 'editEmail' }}
               error={!isEmailValid}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => e && setEmail(e.target.value)}
             />
             <TextField
               margin="normal"
@@ -83,14 +83,14 @@ export const Authorization = (): ReactElement => {
               autoComplete="current-password"
               value={password}
               inputProps={{ 'data-testid': 'editPassword' }}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => e && setPassword(e.target.value)}
             />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2, color: '#fff', fontSize: '14px' }}
-              onClick={(e) => handleSignUp(e)}
+              onClick={(e) => e && handleSignUp(e)}
               disabled={!isEmailValid}
             >
               {t('SignIn')}
