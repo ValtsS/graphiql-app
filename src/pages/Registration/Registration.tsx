@@ -52,11 +52,7 @@ export const Registration = (): ReactElement => {
         <SideBar data={data} />
 
         <Grid item md={6} xs={12} order={{ xs: 2, md: 2 }}>
-          <Box
-            component="form"
-            sx={{ p: { xs: '5px', sm: '50px' } }}
-            aria-label={t('regform') as string}
-          >
+          <Box component="form" sx={{ p: { xs: '5px', sm: '50px' } }} aria-label={t('regform')}>
             <Typography
               variant="h4"
               component="h1"
