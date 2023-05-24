@@ -85,6 +85,7 @@ export function prepareTypePage(namedType: GraphQLNamedType, uuid: string): Docu
     parts: [],
   };
 
+  DocumentPageHelper.pushBreak(page);
   if (namedType.description) DocumentPageHelper.pushComment(page, namedType.description);
 
   if (namedType?.astNode) {
@@ -134,7 +135,6 @@ export function processFunction(f: FieldDefinitionNode, parent: DocumentPage) {
   };
 
   const name = f.name.value;
-
   DocumentPageHelper.pushFunction(inner, name);
 
   const args = describeArguments(f, inner);
@@ -161,6 +161,7 @@ export function processFunction(f: FieldDefinitionNode, parent: DocumentPage) {
 
   const doc = renderParts(parent, inner);
 
+  DocumentPageHelper.pushBreak(parent);
   const desc = f.description?.value;
   if (desc) DocumentPageHelper.pushComment(parent, desc);
 
