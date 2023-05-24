@@ -107,7 +107,7 @@ export const Main = (): ReactElement => {
               />
             </Grid>
             <Grid item xs={12}>
-              <VariableAccordeon sx={{ minHeight: { xs: '10vh', sm: '20vh', md: '50vh' } }} />
+              <VariableAccordeon sx={{ minHeight: { xs: '10vh', sm: '20vh', md: '25' } }} />
             </Grid>
           </Grid>
         </Grid>
