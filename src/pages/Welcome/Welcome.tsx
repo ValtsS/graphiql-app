@@ -31,11 +31,18 @@ export const Welcome = (): ReactElement => {
             alignItems: 'center',
             justifyContent: 'center',
           }}
+          order={{ xs: '2', md: '1' }}
         >
           <img src={graphqlImg} alt="img" style={{ width: '-webkit-fill-available' }} />
         </Grid>
 
-        <Grid item xs={12} md={5} sx={{ gap: '50px', display: 'flex', flexDirection: 'column' }}>
+        <Grid
+          item
+          xs={12}
+          md={5}
+          sx={{ gap: '50px', display: 'flex', flexDirection: 'column' }}
+          order={{ xs: '1', md: '2' }}
+        >
           <Grid container spacing={3}>
             {signMenu.map((page) => (
               <Grid item xs={12} md={6} key={page.uuid} sx={{ minWidth: '230px' }}>
@@ -44,7 +51,7 @@ export const Welcome = (): ReactElement => {
                   component={RouterLink}
                   to={page.path}
                   size="large"
-                  sx={{ minWidth: '230px' }}
+                  sx={{ minWidth: '229px' }}
                 >
                   {page.buttonText ?? page.menuText}
                 </Button>
