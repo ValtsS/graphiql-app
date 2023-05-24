@@ -49,7 +49,7 @@ export const Authorization = (): ReactElement => {
     <Paper elevation={6} className={style.paper} sx={{ mb: '100px' }}>
       <Grid container>
         <Grid item md={6} xs={12} order={{ xs: 2, md: 1 }}>
-          <Box component="form" noValidate sx={{ p: '50px' }}>
+          <Box component="form" noValidate sx={{ p: { xs: '5px', sm: '50px' } }}>
             <Typography
               variant="h4"
               component="h1"
@@ -89,7 +89,7 @@ export const Authorization = (): ReactElement => {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, color: '#fff', fontSize: { xs: '8px', sm: '14px' } }}
+              sx={{ mt: 3, mb: 2, color: '#fff', fontSize: '14px' }}
               onClick={(e) => handleSignUp(e)}
               disabled={!isEmailValid}
             >

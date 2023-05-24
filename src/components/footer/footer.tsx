@@ -16,7 +16,7 @@ export const Footer = () => {
               target="_blank"
               rel="noreferrer"
               className={style.link}
-              sx={{ fontSize: { xs: '12px', sm: '16px' } }}
+              sx={{ fontSize: { xs: '14px', sm: '16px' } }}
             >
               {develop.name}
             </Link>
