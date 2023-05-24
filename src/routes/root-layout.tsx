@@ -31,8 +31,8 @@ export const RootLayout = (props: RootLayoutProps): ReactElement => {
       <Modal
         open={state.show}
         onClose={hide}
-        aria-labelledby={t('Change endpoint') as string}
-        aria-describedby={t('Change GraphQL Endpoint') as string}
+        aria-labelledby={t('Change endpoint')}
+        aria-describedby={t('Change GraphQL Endpoint')}
       >
         <Box sx={style}>{state.control}</Box>
       </Modal>
