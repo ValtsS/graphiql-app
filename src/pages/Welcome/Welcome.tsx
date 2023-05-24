@@ -20,11 +20,11 @@ export const Welcome = (): ReactElement => {
 
   return (
     <Container>
-      <Grid container spacing={8} mt={5}>
+      <Grid container spacing={6} mt={5}>
         <Grid
           item
           xs={12}
-          md={8}
+          md={7}
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -35,21 +35,22 @@ export const Welcome = (): ReactElement => {
           <img src={graphqlImg} alt="img" style={{ width: '-webkit-fill-available' }} />
         </Grid>
 
-        <Grid item xs={12} md={4} sx={{ gap: '50px', display: 'flex', flexDirection: 'column' }}>
-          <Box sx={{ display: 'flex', gap: 5, justifyContent: 'center' }}>
+        <Grid item xs={12} md={5} sx={{ gap: '50px', display: 'flex', flexDirection: 'column' }}>
+          <Grid container spacing={3}>
             {signMenu.map((page) => (
-              <Button
-                variant="contained"
-                key={page.uuid}
-                component={RouterLink}
-                to={page.path}
-                size="large"
-                sx={{ fontSize: { xs: '8px', sm: '12px', md: langMode ? '9px' : '14px' } }}
-              >
-                {page.buttonText ?? page.menuText}
-              </Button>
+              <Grid item xs={12} md={6} key={page.uuid} sx={{ minWidth: '230px' }}>
+                <Button
+                  variant="contained"
+                  component={RouterLink}
+                  to={page.path}
+                  size="large"
+                  sx={{ minWidth: '230px' }}
+                >
+                  {page.buttonText ?? page.menuText}
+                </Button>
+              </Grid>
             ))}
-          </Box>
+          </Grid>
           <Typography sx={{ textAlign: 'left' }}>{t('description')}</Typography>
         </Grid>
       </Grid>
