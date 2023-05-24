@@ -128,7 +128,7 @@ export const Registration = (): ReactElement => {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, color: '#fff', fontSize: { xs: '14px' } }}
+              sx={{ mt: 3, mb: 2, color: '#fff', fontSize: '14px' }}
               onClick={(e) => register(e)}
               disabled={isValid?.size !== 3}
             >
