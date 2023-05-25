@@ -9,7 +9,7 @@ export const ProtectedRoute = ({
   mode,
   redirectTo = '/',
 }: {
-  children: JSX.Element;
+  children: React.JSX.Element;
   mode: AccessMode;
   redirectTo?: string;
 }) => {

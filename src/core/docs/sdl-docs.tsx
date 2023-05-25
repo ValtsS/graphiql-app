@@ -13,7 +13,7 @@ export const enum DocumentPartKind {
 }
 
 export type RenderOnClick = (uuid: string) => void;
-export type JSXCallback = (event: RenderOnClick) => JSX.Element;
+export type JSXCallback = (event: RenderOnClick) => React.JSX.Element;
 
 export type DocumentPart = {
   kind: DocumentPartKind;
@@ -30,6 +30,18 @@ export type DocumentBook = {
   [uuid: string]: DocumentPage;
 };
 
+function formatText(e: React.JSX.Element, color?: string, testId?: string) {
+  return (
+    <Typography
+      sx={{ color, fontFamily: 'monospace', fontSize: '14px' }}
+      component={'span'}
+      data-testid={testId}
+    >
+      {e}
+    </Typography>
+  );
+}
+
 export class DocumentPageHelper {
   static pushPart(page: DocumentPage, part: DocumentPart) {
     page.parts.push(part);
@@ -39,12 +51,13 @@ export class DocumentPageHelper {
     const part: DocumentPart = {
       kind: DocumentPartKind.Regular,
       link_uuid,
-      text: () => (
-        <>
-          {text}
-          <br />
-        </>
-      ),
+      text: () =>
+        formatText(
+          <>
+            {text}
+            <br />
+          </>
+        ),
     };
     DocumentPageHelper.pushPart(page, part);
   }
@@ -60,7 +73,7 @@ export class DocumentPageHelper {
   static pushFunction(page: DocumentPage, name: string) {
     const part: DocumentPart = {
       kind: DocumentPartKind.Regular,
-      text: () => <Typography sx={{ color: COLOR_FUNCTION }}>{name}</Typography>,
+      text: () => formatText(<>{name}</>, COLOR_FUNCTION),
     };
     DocumentPageHelper.pushPart(page, part);
   }
@@ -68,7 +81,7 @@ export class DocumentPageHelper {
   static pushText(page: DocumentPage, text: string, BreakLine = false) {
     const partName: DocumentPart = {
       kind: DocumentPartKind.Regular,
-      text: () => <>{text}</>,
+      text: () => formatText(<>{text}</>),
     };
     DocumentPageHelper.pushPart(page, partName);
     if (BreakLine) DocumentPageHelper.pushBreak(page);
@@ -77,12 +90,15 @@ export class DocumentPageHelper {
   static pushComment(page: DocumentPage, comment: string) {
     const partName: DocumentPart = {
       kind: DocumentPartKind.Regular,
-      text: () => (
-        <Typography sx={{ color: COLOR_COMMENT }} data-testid={'doc_comment'}>
-          {'//'}
-          {comment}
-        </Typography>
-      ),
+      text: () =>
+        formatText(
+          <>
+            {'//'}
+            {comment}
+          </>,
+          COLOR_COMMENT,
+          'doc_comment'
+        ),
     };
     DocumentPageHelper.pushPart(page, partName);
   }
@@ -91,11 +107,7 @@ export class DocumentPageHelper {
     const parType: DocumentPart = {
       kind: DocumentPartKind.Regular,
       link_uuid: link,
-      text: () => (
-        <Typography sx={{ color: COLOR_TYPE }} component={'span'}>
-          {typename}
-        </Typography>
-      ),
+      text: () => formatText(<>{typename}</>, COLOR_TYPE),
     };
     DocumentPageHelper.pushPart(page, parType);
   }
@@ -103,7 +115,7 @@ export class DocumentPageHelper {
   static pushRetType(page: DocumentPage, typename: string, link?: string) {
     const partCol: DocumentPart = {
       kind: DocumentPartKind.Regular,
-      text: () => <>:</>,
+      text: () => formatText(<>:</>),
     };
     DocumentPageHelper.pushPart(page, partCol);
     DocumentPageHelper.pushType(page, typename, link);
@@ -118,34 +130,27 @@ export class DocumentPageHelper {
   ) {
     const partName: DocumentPart = {
       kind: DocumentPartKind.Regular,
-      text: () => (
-        <Typography component={'span'} sx={{ color: COLOR_VAR }}>
-          {name}:
-        </Typography>
-      ),
+      text: () => formatText(<>{name}:</>, COLOR_VAR),
     };
     DocumentPageHelper.pushPart(page, partName);
 
     const partType: DocumentPart = {
       kind: DocumentPartKind.Regular,
       link_uuid: link,
-      text: () => (
-        <Typography sx={{ color: COLOR_TYPE }} component={'span'}>
-          {typename}
-        </Typography>
-      ),
+      text: () => formatText(<>{typename}</>, COLOR_TYPE),
     };
     DocumentPageHelper.pushPart(page, partType);
 
     if (defaultval) {
       const defaultVal: DocumentPart = {
         kind: DocumentPartKind.Regular,
-        text: () => (
-          <>
-            {'='}
-            {defaultval}
-          </>
-        ),
+        text: () =>
+          formatText(
+            <>
+              {'='}
+              {defaultval}
+            </>
+          ),
       };
       DocumentPageHelper.pushPart(page, defaultVal);
     }

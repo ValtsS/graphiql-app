@@ -52,7 +52,7 @@ export const Registration = (): ReactElement => {
         <SideBar data={data} />
 
         <Grid item md={6} xs={12} order={{ xs: 2, md: 2 }}>
-          <Box component="form" sx={{ p: { xs: '5px', sm: '50px' } }} aria-label="form">
+          <Box component="form" sx={{ p: { xs: '5px', sm: '50px' } }} aria-label={t('regform')}>
             <Typography
               variant="h4"
               component="h1"
@@ -68,12 +68,12 @@ export const Registration = (): ReactElement => {
               id="userName"
               label={t('Name')}
               name="userName"
-              aria-label="textbox-name"
+              aria-label={t('reg-edit-name') as string}
               value={name}
               inputProps={{ 'data-testid': 'editName' }}
               error={!isValid?.has(FieldName.Name)}
               helperText={t('Name needs to be at least 3 characters')}
-              onChange={(e) => nameChange(e.target.value)}
+              onChange={(e) => e && nameChange(e.target.value)}
               sx={{
                 '.MuiInputBase-input': { fontSize: '14px' },
               }}
@@ -84,7 +84,7 @@ export const Registration = (): ReactElement => {
               id="raised-button-file"
               multiple
               type="file"
-              onChange={(e) => setFile((e.target.files as FileList)[0])}
+              onChange={(e) => e && setFile((e.target.files as FileList)[0])}
             />
             <label htmlFor="raised-button-file">
               <Button component="span" variant="outlined" sx={{ fontSize: '14px' }}>
@@ -99,11 +99,11 @@ export const Registration = (): ReactElement => {
               id="email"
               label={t('Email')}
               name="email"
-              aria-label="textbox-email"
+              aria-label={t('reg-edit-email') as string}
               value={email}
               inputProps={{ 'data-testid': 'editEmail' }}
               error={!isValid?.has(FieldName.Email)}
-              onChange={(e) => emailChange(e.target.value)}
+              onChange={(e) => e && emailChange(e.target.value)}
             />
             <TextField
               margin="normal"
@@ -113,7 +113,7 @@ export const Registration = (): ReactElement => {
               label={t('Password')}
               type="password"
               id="password"
-              aria-label="textbox-password"
+              aria-label={t('reg-edit-password') as string}
               value={password}
               helperText={t(
                 'minimum 8 symbols, at least one letter, one digit, one special character'
@@ -122,14 +122,14 @@ export const Registration = (): ReactElement => {
               inputProps={{
                 'data-testid': 'editPassword',
               }}
-              onChange={(e) => passwordChange(e.target.value)}
+              onChange={(e) => e && passwordChange(e.target.value)}
             />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2, color: '#fff', fontSize: '14px' }}
-              onClick={(e) => register(e)}
+              onClick={(e) => e && register(e)}
               disabled={isValid?.size !== 3}
             >
               {t('SignUp')}

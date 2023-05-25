@@ -63,7 +63,7 @@ export const Main = (): ReactElement => {
           sx={{
             textOverflow: 'ellipsis',
             overflow: 'hidden',
-            background: '#00999929',
+            background: '#007f7f29',
             width: 'fit-content',
             padding: '5px',
             borderRadius: '5px 0px 0px 5px',
@@ -87,7 +87,7 @@ export const Main = (): ReactElement => {
           sx={{ p: 0, ml: '15px' }}
           data-testid="send-query-button"
         >
-          <PlayCircleFilledWhiteOutlinedIcon fontSize="large" />
+          <PlayCircleFilledWhiteOutlinedIcon fontSize="large" aria-label={t('Run')} />
         </IconButton>
       </Box>
 
@@ -107,7 +107,7 @@ export const Main = (): ReactElement => {
               />
             </Grid>
             <Grid item xs={12}>
-              <VariableAccordeon sx={{ minHeight: { xs: '10vh', sm: '20vh', md: '50vh' } }} />
+              <VariableAccordeon sx={{ minHeight: { xs: '10vh', sm: '15vh', md: '20vh' } }} />
             </Grid>
           </Grid>
         </Grid>

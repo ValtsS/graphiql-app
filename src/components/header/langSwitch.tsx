@@ -23,6 +23,7 @@ const LangSwitch = styled((props: SwitchProps) => {
       className={className}
       onChange={toggle}
       checked={!langMode}
+      aria-label="EN/RU"
     />
   );
 })(({ theme }) => ({
