@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-const Main = (): ReactElement => {
+export const Main = (): ReactElement => {
   const dispatch = useAppDispatch();
   const { hide, showDialog } = useModalDialog();
   const { t } = useTranslation();
@@ -146,5 +146,3 @@ const Main = (): ReactElement => {
     </Box>
   );
 };
-
-export default Main;
