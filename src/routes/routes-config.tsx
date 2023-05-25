@@ -1,9 +1,11 @@
-import { Authorization, ErrorPage, Main, Registration, Welcome } from '@/pages';
-import React from 'react';
+import { Authorization, ErrorPage, Registration, Welcome } from '@/pages';
+import React, { lazy } from 'react';
 import { ProtectedRoute } from './protected-route';
 import { v4 as uuidv4 } from 'uuid';
 import { Translation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
+
+const LazyMain = lazy(() => import('@/pages/Main/Main'));
 
 export const enum AccessMode {
   Always,
@@ -69,7 +71,7 @@ export const defaultRoutes: RouteConfig[] = [
     path: '/main',
     element: () => (
       <ProtectedRoute mode={AccessMode.LoggedIn}>
-        <Main />
+        <LazyMain />
       </ProtectedRoute>
     ),
     displayInMenu: true,
