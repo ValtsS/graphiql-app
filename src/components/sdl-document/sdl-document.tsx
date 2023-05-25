@@ -21,8 +21,8 @@ export class DocumentContent {
     this._page.parts = parts;
   }
 
-  public render(linkClick: RenderOnClick): React.JSX.Element {
-    const eles: React.JSX.Element[] = [];
+  public render(linkClick: RenderOnClick): React.ReactElement {
+    const eles: React.ReactElement[] = [];
 
     this._page.parts.forEach((p, i) => {
       switch (p.kind) {
