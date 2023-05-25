@@ -1,9 +1,10 @@
 import { Authorization, ErrorPage, Registration, Welcome } from '@/pages';
-import React, { lazy } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { ProtectedRoute } from './protected-route';
 import { v4 as uuidv4 } from 'uuid';
 import { Translation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
 
 const LazyMain = lazy(() => import('@/pages/Main/Main'));
 
@@ -71,7 +72,9 @@ export const defaultRoutes: RouteConfig[] = [
     path: '/main',
     element: () => (
       <ProtectedRoute mode={AccessMode.LoggedIn}>
-        <LazyMain />
+        <Suspense fallback={<CircularProgress />}>
+          <LazyMain />
+        </Suspense>
       </ProtectedRoute>
     ),
     displayInMenu: true,
