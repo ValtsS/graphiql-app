@@ -65,9 +65,9 @@ export const Authorization = (): ReactElement => {
               id="email"
               label={t('Email')}
               name="email"
-              autoComplete="email"
               autoFocus
               value={email}
+              autoComplete="off"
               inputProps={{ 'data-testid': 'editEmail' }}
               error={!isEmailValid}
               onChange={(e) => e && setEmail(e.target.value)}
