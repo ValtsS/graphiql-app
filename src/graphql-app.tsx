@@ -5,7 +5,6 @@ import {
 } from '@mui/material/styles';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { useMainLogic } from './custom-hooks/useMainLogic';
 import { RootLayout } from './routes/root-layout';
 import { useAppContext } from './provider';
 
@@ -23,8 +22,6 @@ const customTheme = extendTheme({
 
 export const GraphQLApp = () => {
   const { routing } = useAppContext();
-
-  useMainLogic();
 
   return (
     <>

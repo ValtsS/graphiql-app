@@ -1,6 +1,7 @@
 import { AddressBar, DocAccordeon, EditorQueryGraphQL, EditorResponse } from '@/components';
 import { VariableAccordeon } from '@/components/var-accordeon/var-acoordeon';
 import { QUERY_EDITOR_UUID } from '@/core/consts';
+import { useMainLogic } from '@/custom-hooks/useMainLogic';
 import { useAppContext } from '@/provider';
 import { useModalDialog } from '@/provider/modal-dialog';
 import {
@@ -26,6 +27,8 @@ export const Main = (): ReactElement => {
   const editorState = useSelector(selectEditorsData);
   const { apiClient } = useAppContext();
   const notifyError = (message: string) => toast(message, { type: 'error' });
+
+  useMainLogic();
 
   const onEndPointChange = (newendpoint: string) => {
     hide();
