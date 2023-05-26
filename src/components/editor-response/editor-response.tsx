@@ -18,7 +18,7 @@ export const EditorResponse = ({ sx }: { sx?: SxProps }) => {
     <Editor
       language={'json'}
       model={model}
-      readOnly={false}
+      readOnly={true}
       hoverEnabled={true}
       className={'response-monaco-editor'}
       sx={{ minHeight: '20vh', ...sx }}
