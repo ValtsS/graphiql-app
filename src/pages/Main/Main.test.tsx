@@ -12,7 +12,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { Main } from './Main';
 import userEvent from '@testing-library/user-event';
-import { StoreStatus } from '@/slices';
+import { StoreStatus, setQuery } from '@/slices';
 
 jest.mock('monaco-editor');
 
@@ -61,6 +61,7 @@ describe('Main page component', () => {
 
   it('should render and allow query to be pressed', async () => {
     const { store, callback } = await defaultRender();
+    await act(() => store.dispatch(setQuery({ version: 99, text: 'query { myNumber }' })));
     const state = store.getState();
 
     expect(state.main.endpoint.toLowerCase().startsWith('http')).toBe(true);
@@ -81,6 +82,7 @@ describe('Main page component', () => {
 
   it('should render and respond with an error in query', async () => {
     const { store, callback } = await defaultRender();
+    await act(() => store.dispatch(setQuery({ version: 99, text: 'query { myNumber }' })));
     const state = store.getState();
 
     expect(state.main.endpoint.toLowerCase().startsWith('http')).toBe(true);
