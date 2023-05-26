@@ -28,15 +28,13 @@ export const GraphQLApp = () => {
       <CssVarsProvider theme={customTheme}>
         <BrowserRouter>
           <Routes>
-            {routing &&
-              routing.map((c) => (
-                <Route
-                  path={c.path}
-                  element={<RootLayout key={c.uuid}>{c.element()}</RootLayout>}
-                  key={c.uuid}
-                />
-              ))}
-
+            {routing?.map((c) => (
+              <Route
+                path={c.path}
+                element={<RootLayout key={c.uuid}>{c.element()}</RootLayout>}
+                key={c.uuid}
+              />
+            ))}
             <Route path="*" element={<Crash error={new Error('Error 404')} />} />
           </Routes>
         </BrowserRouter>
