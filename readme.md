@@ -1,7 +1,6 @@
 
 <p align="center">
     <h1 align="center">This spa was created as a team task clone GraphQL for rsschool 05/2023 with React, TS, MUI</h1>
-  </a>
 </p>
 
 ![image](https://github.com/ValtsS/graphiql-app/assets/101521194/0fcd940b-4ddd-4a71-9ac3-803cebb017fd)
@@ -16,7 +15,7 @@ GraphiQL is a playground/IDE for graphQL requests.
 ```bash
 $ git clone https://github.com/ValtsS/graphiql-app.git
 $ cd graphiql-app
-$ git init
+$ npm i
 $ npm run dev
 ```
 
