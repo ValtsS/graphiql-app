@@ -70,6 +70,7 @@ export const Registration = (): ReactElement => {
               name="userName"
               aria-label={t('reg-edit-name') as string}
               value={name}
+              autoComplete="off"
               inputProps={{ 'data-testid': 'editName' }}
               error={!isValid?.has(FieldName.Name)}
               helperText={t('Name needs to be at least 3 characters')}
@@ -99,6 +100,7 @@ export const Registration = (): ReactElement => {
               id="email"
               label={t('Email')}
               name="email"
+              autoComplete="off"
               aria-label={t('reg-edit-email') as string}
               value={email}
               inputProps={{ 'data-testid': 'editEmail' }}
