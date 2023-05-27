@@ -1,0 +1,48 @@
+{
+  "env": {
+    "i18n": {
+      "presets": [
+        ["@babel/preset-env", { "targets": { "node": "current" }, "loose": true }],
+        ["@babel/preset-react", { "runtime": "automatic" }],
+        "@babel/preset-typescript"
+      ],
+      "plugins": [
+        [
+          "@babel/plugin-transform-typescript",
+          {
+            "allowDeclareFields": true
+          }
+        ],
+        [
+          "@babel/plugin-proposal-decorators",
+          {
+            "legacy": true
+          }
+        ],
+        "@babel/plugin-proposal-class-properties",
+        ["i18next-extract", { "locales": ["en", "ru"] }]
+      ]
+    }
+  },
+  "presets": [
+    ["@babel/preset-env", { "targets": { "node": "current" }, "loose": true }],
+    ["@babel/preset-react", { "runtime": "automatic" }],
+    "@babel/preset-typescript"
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-transform-typescript",
+      {
+        "allowDeclareFields": true
+      }
+    ],
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ],
+    "@babel/plugin-proposal-class-properties",
+    "babel-plugin-transform-vite-meta-env"
+  ]
+}

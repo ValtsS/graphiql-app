@@ -1,0 +1,128 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build-and-test:
+    runs-on: [self-hosted, linux, x64]
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+    defaults:
+      run:
+        working-directory: build
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: build
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build code
+        run: npm run build
+      - name: Unit Test
+        run: npm run coverage
+      - name: Debug
+        run: pwd && ls -la
+      - name: Cleanup
+        if: always()
+        run: |
+          pwd
+          cd .. && rm -rf ./build
+
+  sonarqube:
+    runs-on: [self-hosted, linux, x64]
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+    defaults:
+      run:
+        working-directory: sonar
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: sonar
+      - name: Debug
+        run: pwd && ls -la
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Install dependencies
+        run: npm ci
+      - name: Unit Test
+        run: npm run coverage
+      - name: Sonarqube
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+        run: |
+          export SONAR_TOKEN
+          export SONAR_HOST_URL
+          /sonar/runsonar.sh
+      - name: Debug
+        run: pwd && ls -la ./.scannerwork/
+      - name: SonarQube Quality Gate check
+        id: sonarqube-quality-gate-check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        with:
+          scanMetadataReportFile: /git/_work/graphiql-app/graphiql-app/sonar/.scannerwork/report-task.txt
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+      - name: 'Show SonarQube Quality Gate Status value'
+        run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
+      - name: Cleanup
+        if: always()
+        run: |
+          pwd
+          cd .. && rm -rf ./sonar
+
+  deploy:
+    runs-on: [self-hosted, linux, x64]
+    needs: [build-and-test, sonarqube]
+    if: |
+      github.ref == 'refs/heads/main' ||
+      github.ref == 'refs/heads/master' ||
+      github.ref == 'refs/heads/develop'
+    defaults:
+      run:
+        working-directory: deploy
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: deploy
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Install dependencies
+        run: npm ci
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >>$GITHUB_OUTPUT
+        id: extract_branch
+      - name: Build code
+        run: npm run build
+      - name: Try
+        run: |
+          git clone https://${{ secrets.DEPLOY_TOKEN }}@${{ vars.DEPLOY_REPO }}
+          cd graphiql-app-web &&  git checkout ${{ steps.extract_branch.outputs.branch }} && git config user.name "GitHub Actions" &&  git config user.email "valts@velns.org"
+          cd ..
+          rm -rf ./graphiql-app-web/*
+          cp -r ./dist/* ./graphiql-app-web/ && \
+          cd graphiql-app-web && \
+          git add . && \
+          git commit -m "Automated push" && \
+          git push
+      - name: Debug
+        run: pwd && ls -la ./dist/
+      - name: Cleanup
+        if: always()
+        run: |
+          pwd
+          cd .. && rm -rf ./deploy

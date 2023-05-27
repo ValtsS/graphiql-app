@@ -1,0 +1,13 @@
+.companyName {
+  font-style: italic;
+  float: left;
+  font-size: 1.25rem;
+}
+
+.sticky {
+  background: linear-gradient(to right, #007195, #009999) !important;
+}
+
+.lang {
+  font-size: 0.875rem !important;
+}

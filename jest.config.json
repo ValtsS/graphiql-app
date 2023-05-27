@@ -1,0 +1,24 @@
+{
+  "verbose": true,
+  "clearMocks": true,
+  "coverageDirectory": "coverage",
+  "testEnvironment": "jsdom",
+  "testEnvironmentOptions": {
+    "url": "http://127.0.0.1/"
+  },
+  "transform": {
+    "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
+  },
+  "setupFilesAfterEnv": ["<rootDir>/src/setup-test.ts"],
+  "testPathIgnorePatterns": ["<rootDir>/node_modules/"],
+  "moduleDirectories": ["node_modules", "src"],
+  "moduleNameMapper": {
+    "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+    "\\.(css|less|scss|sass)$": "<rootDir>/__mocks__/styleMock.js",
+    "^@/(.*)$": "<rootDir>/src/$1",
+    "\\.(jpg|jpeg|png|svg|css)$": "<rootDir>/spec/frontend/__mocks__/file_mock.js",
+    "monaco-editor": "<rootDir>/__mocks__/monaco-editor.ts",
+    "monaco-graphql/esm/initializeMode": "<rootDir>/__mocks__/monaco-editor.ts"
+  },
+  "transformIgnorePatterns": ["/node_modules/", "^.+\\.module\\.(css|sass|scss)$"]
+}
