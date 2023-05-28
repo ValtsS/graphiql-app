@@ -15,6 +15,7 @@ GraphiQL is a playground/IDE for graphQL requests.
 ```bash
 $ git clone https://github.com/ValtsS/graphiql-app.git
 $ cd graphiql-app
+$ git checkout develop
 $ npm i
 $ npm run dev
 ```
