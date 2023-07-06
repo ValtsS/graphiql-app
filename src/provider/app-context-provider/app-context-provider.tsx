@@ -21,11 +21,7 @@ type AppContextProviderProps = {
   routing?: RouteConfig[];
 };
 
-export const AppContextProvider = ({
-  children,
-  apiClient,
-  routing,
-}: AppContextProviderProps) => {
+export const AppContextProvider = ({ children, apiClient, routing }: AppContextProviderProps) => {
   const [currentSchema, setCurrentSchema] = useState<GraphQLSchema | undefined>(undefined);
 
   const updateCurrentSchema = useCallback((schema?: GraphQLSchema) => {

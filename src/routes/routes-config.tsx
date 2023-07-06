@@ -22,13 +22,10 @@ export interface RouteConfig {
 }
 
 export const defaultRoutes: RouteConfig[] = [
-
   {
     uuid: uuidv4(),
     path: '/',
-    element: () => (
-        <Main />
-    ),
+    element: () => <Main />,
     displayInMenu: true,
     menuText: <Translation>{(t) => t('Main')}</Translation>,
     buttonText: <Translation>{(t) => t('toMain')}</Translation>,
@@ -37,9 +34,7 @@ export const defaultRoutes: RouteConfig[] = [
   {
     uuid: uuidv4(),
     path: '/404',
-    element: () => (
-        <ErrorPage />
-    ),
+    element: () => <ErrorPage />,
     displayInMenu: false,
     menuText: <Translation>{(t) => t('404')}</Translation>,
     buttonText: <Translation>{(t) => t('404')}</Translation>,
@@ -54,7 +49,6 @@ export const defaultRoutes: RouteConfig[] = [
     buttonText: <Translation>{(t) => t('404')}</Translation>,
     displayMode: AccessMode.Always,
   },
-
 ];
 
 export function filterByMode(routes: RouteConfig[], modes: AccessMode[]) {

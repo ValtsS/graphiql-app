@@ -54,8 +54,6 @@ export const Header = (props: Props): ReactElement => {
 
   const { pathname } = useLocation();
 
-
-
   return (
     <>
       <CssBaseline />
@@ -132,7 +130,6 @@ export const Header = (props: Props): ReactElement => {
             >
               GraphQL
             </Typography>
-
 
             <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 5 }}>
               <SwitchMode />
