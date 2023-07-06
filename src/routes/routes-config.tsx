@@ -1,9 +1,8 @@
-import { Authorization, ErrorPage, Main, Registration, Welcome } from '@/pages';
+import { ErrorPage, Main } from '@/pages';
 import React from 'react';
-import { ProtectedRoute } from './protected-route';
-import { v4 as uuidv4 } from 'uuid';
 import { Translation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 export const enum AccessMode {
   Always,
@@ -22,55 +21,13 @@ export interface RouteConfig {
   displayMode: AccessMode;
 }
 
-const regRoutes: RouteConfig[] = [
-  {
-    uuid: uuidv4(),
-    path: '/auth',
-    element: () => (
-      <ProtectedRoute mode={AccessMode.Guest} redirectTo="/main">
-        <Authorization />
-      </ProtectedRoute>
-    ),
-    displayInMenu: true,
-    menuText: <Translation>{(t) => t('SignIn')}</Translation>,
-    displayInRegistration: true,
-    displayMode: AccessMode.Guest,
-  },
-  {
-    uuid: uuidv4(),
-    path: '/reg',
-    element: () => (
-      <ProtectedRoute mode={AccessMode.Guest} redirectTo="/main">
-        <Registration />
-      </ProtectedRoute>
-    ),
-    displayInMenu: true,
-    menuText: <Translation>{(t) => t('SignUp')}</Translation>,
-    displayInRegistration: true,
-    displayMode: AccessMode.Guest,
-  },
-];
-
 export const defaultRoutes: RouteConfig[] = [
+
   {
     uuid: uuidv4(),
     path: '/',
     element: () => (
-      <ProtectedRoute mode={AccessMode.Always}>
-        <Welcome />
-      </ProtectedRoute>
-    ),
-    displayInMenu: true,
-    menuText: <Translation>{(t) => t('Welcome')}</Translation>,
-    displayMode: AccessMode.Always,
-  },
-  {
-    uuid: uuidv4(),
-    path: '/main',
-    element: () => (
-      <ProtectedRoute mode={AccessMode.LoggedIn}>
         <Main />
-      </ProtectedRoute>
     ),
     displayInMenu: true,
     menuText: <Translation>{(t) => t('Main')}</Translation>,
@@ -81,9 +38,7 @@ export const defaultRoutes: RouteConfig[] = [
     uuid: uuidv4(),
     path: '/404',
     element: () => (
-      <ProtectedRoute mode={AccessMode.Always}>
         <ErrorPage />
-      </ProtectedRoute>
     ),
     displayInMenu: false,
     menuText: <Translation>{(t) => t('404')}</Translation>,
@@ -99,7 +54,7 @@ export const defaultRoutes: RouteConfig[] = [
     buttonText: <Translation>{(t) => t('404')}</Translation>,
     displayMode: AccessMode.Always,
   },
-  ...regRoutes,
+
 ];
 
 export function filterByMode(routes: RouteConfig[], modes: AccessMode[]) {

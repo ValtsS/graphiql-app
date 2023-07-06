@@ -1,7 +1,7 @@
 import { Footer, Header, Toaster } from '@/components';
 import { useAppContext } from '@/provider';
 import { useModalDialog } from '@/provider/modal-dialog';
-import { Box, Modal, SxProps } from '@mui/material';
+import { Box, CssBaseline, Modal, SxProps } from '@mui/material';
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 
