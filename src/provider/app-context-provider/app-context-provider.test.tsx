@@ -1,5 +1,4 @@
 import { setupMockIntrospection } from '@/../__mocks__/api-mock-helper';
-import { SetupFirebaseMock } from '@/../__mocks__/firebaseMock';
 import { defaultRoutes } from '@/routes';
 import { renderHook } from '@testing-library/react';
 import { GraphQLSchema } from 'graphql';

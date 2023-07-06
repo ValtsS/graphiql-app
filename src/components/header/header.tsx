@@ -1,11 +1,8 @@
-import { useAppContext } from '@/provider';
 import HiveIcon from '@mui/icons-material/Hive';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
-  Avatar,
   Box,
-  Button,
   Container,
   CssBaseline,
   IconButton,
@@ -13,27 +10,18 @@ import {
   Menu,
   MenuItem,
   Toolbar,
-  Tooltip,
   Typography,
 } from '@mui/material';
 import React, { MouseEvent, ReactElement, useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { Link as RouterLink } from 'react-router-dom';
 import './header.css';
 import { SwitchMode } from './langSwitch';
-import { AccessMode, RouteConfig, filterByMode } from '@/routes/routes-config';
 
-interface Props {
-  routesConfig: RouteConfig[];
-}
-
-export const Header = (props: Props): ReactElement => {
-  const { routesConfig } = props;
+export const Header = (): ReactElement => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [isSticky, setSticky] = useState(false);
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -51,8 +39,6 @@ export const Header = (props: Props): ReactElement => {
     update();
     return () => window.removeEventListener('scroll', update);
   });
-
-  const { pathname } = useLocation();
 
   return (
     <>

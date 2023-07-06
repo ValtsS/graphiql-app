@@ -1,7 +1,5 @@
 import { setupMockIntrospection } from '@/../__mocks__/api-mock-helper';
-import { SetupFirebaseMock } from '@/../__mocks__/firebaseMock';
 import { waitRender } from '@/../__mocks__/test-utils';
-import { FirebaseAuth } from '@/core/firebase/firebase';
 import { AppContextProvider } from '@/provider/app-context-provider/app-context-provider';
 import { ModalDialogProvider } from '@/provider/modal-dialog';
 import { RootLayout, defaultRoutes } from '@/routes';
@@ -19,11 +17,7 @@ jest.mock('monaco-editor');
 describe('Main page component', () => {
   const testURL = 'https://dummy/';
 
-  let mockAuth: FirebaseAuth;
-
-  beforeEach(() => {
-    mockAuth = SetupFirebaseMock(true);
-  });
+  beforeEach(() => {});
 
   it('should render and have change button', async () => {
     const { store } = await defaultRender();
@@ -105,7 +99,7 @@ describe('Main page component', () => {
 
     act(() => {
       render(
-        <AppContextProvider apiClient={mockClient} auth={mockAuth} routing={defaultRoutes}>
+        <AppContextProvider apiClient={mockClient} routing={defaultRoutes}>
           <Provider store={store}>
             <ModalDialogProvider>
               <BrowserRouter>
