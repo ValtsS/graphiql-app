@@ -15,7 +15,7 @@ export const Crash = (props: ErrorPageProps): ReactElement => {
     <>
       <div>
         <h1>{t('Oops')}</h1>
-        <p>{props.error?.message || unkErrorText}</p>
+        <p>{props.error?.message ?? unkErrorText}</p>
         <Link to="/">{t('GoBack')}</Link>
       </div>
     </>
