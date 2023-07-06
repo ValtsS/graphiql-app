@@ -88,7 +88,7 @@ describe('useFetchSchema', () => {
 
   async function defaultRender() {
     render(
-      <AppContextProvider apiClient={null} auth={null}>
+      <AppContextProvider apiClient={null}>
         <Provider store={store}>
           <TestApplySchema />
         </Provider>

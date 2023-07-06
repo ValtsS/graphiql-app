@@ -1,5 +1,4 @@
 import { Footer, Header, Toaster } from '@/components';
-import { useAppContext } from '@/provider';
 import { useModalDialog } from '@/provider/modal-dialog';
 import { Box, Modal, SxProps } from '@mui/material';
 import React, { ReactElement } from 'react';
@@ -22,12 +21,11 @@ const style: SxProps = {
 
 export const RootLayout = (props: RootLayoutProps): ReactElement => {
   const { state, hide } = useModalDialog();
-  const { routing } = useAppContext();
   const { t } = useTranslation();
 
   return (
     <>
-      <Header routesConfig={routing ?? []} />
+      <Header />
       <Modal
         open={state.show}
         onClose={hide}

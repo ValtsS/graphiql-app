@@ -31,13 +31,13 @@ export class DocumentContent {
           if (link) {
             eles.push(
               <a href="#" onClick={() => linkClick(link)} key={`${this._page.uuid}${i.toString()}`}>
-                {p.text && p.text(linkClick)}
+                {p.text?.(linkClick)}
               </a>
             );
           } else
             eles.push(
               <React.Fragment key={`${this._page.uuid}${i.toString()}`}>
-                {p.text && p.text(linkClick)}
+                {p.text?.(linkClick)}
               </React.Fragment>
             );
 

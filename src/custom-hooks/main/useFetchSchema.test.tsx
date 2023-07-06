@@ -55,7 +55,7 @@ describe('useFetchSchema', () => {
 
   async function defaultRender(mockClient: ApiClient) {
     render(
-      <AppContextProvider apiClient={mockClient} auth={null}>
+      <AppContextProvider apiClient={mockClient}>
         <Provider store={store}>
           <TestFetchSchema></TestFetchSchema>
         </Provider>

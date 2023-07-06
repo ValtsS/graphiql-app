@@ -59,6 +59,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+          SONAR_PROJECT: ${{ vars.SONAR_PROJECT }}
         run: |
           export SONAR_TOKEN
           export SONAR_HOST_URL
