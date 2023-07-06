@@ -3,6 +3,7 @@ import { ApiClient } from '@/core/api/api-client';
 import { RootState } from '@/store';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { StoreStatus } from '../schema/schema';
+import { DEFAULT_QUERY } from '@/core/consts';
 
 export const enum queryErrorKind {
   noError,
@@ -58,7 +59,7 @@ export const sendQueryGQL = createAsyncThunk(
 );
 
 const initialState: EditorsState = {
-  query: 'query { }',
+  query: DEFAULT_QUERY,
   queryVersion: -1,
   variables: '{}',
   variablesVersion: -1,
